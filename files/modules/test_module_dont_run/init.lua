@@ -30,7 +30,8 @@ local hooks = {
 }
 
 for hook_name,_ in pairs(hooks) do
-	hooks[hook_name] = {function(...)
+	---@diagnostic disable-next-line: assign-type-mismatch
+	hooks[hook_name] = function(...)
 		if ... ~= nil then
 			local vals = {...}
 			for i,v in ipairs(vals) do
@@ -41,7 +42,7 @@ for hook_name,_ in pairs(hooks) do
 			print(("[%s]"):format(hook_name))
 		end
 		return ...
-	end}
+	end
 end
 
 print("raw init")

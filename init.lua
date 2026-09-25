@@ -1,16 +1,26 @@
 -- TODO: make a mod :)
 -- Eba was here!!!
--- UserK is also around!
+-- UserK too!!
 
 
 dofile_once("mods/noita.hardmod/lib/utilities.lua")
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
 local modules = {
-	--"mods/noita.hardmod/files/modules/test_module_dont_run/init.lua",
+	"test_module_dont_run",
+	"example",
 }
 
+local force_enable = {
+	--example =  true
+}
 
+local enabled_modules = {}
+for _,module in ipairs(modules) do
+	if ModSettingGet("noita.hardmod."..module) or force_enable[module] then
+		enabled_modules[#enabled_modules+1] = module
+	end
+end
 
 local hooks = {
 	--Game/World Initialising
@@ -49,12 +59,17 @@ GLOBAL_DATA = {
 }
 local gd = GLOBAL_DATA
 
-for _,module in ipairs(modules) do
-	for hook_name,module_hooks in pairs(dofile(module) or {}) do
-		for _,hook in ipairs(module_hooks) do
-			hooks[hook_name][#hooks[hook_name]+1] = hook
-		end
+for _,module in ipairs(enabled_modules) do
+	for hook_name,hook in pairs(dofile("mods/noita.hardmod/files/modules/"..module.."/init.lua") or {}) do
+		hooks[hook_name][#hooks[hook_name]+1] = hook
 	end
+
+	--Alternative code for if we wanna support multiple functions for a hook from a single module:
+	--for hook_name,module_hooks in pairs(dofile(module) or {}) do
+	--	for _,hook in ipairs(module_hooks) do
+	--		hooks[hook_name][#hooks[hook_name]+1] = hook
+	--	end
+	--end
 end
 
 
@@ -117,7 +132,7 @@ function OnPlayerSpawned(p)
 	gd.player_does_not_exist = false
 	local is_run_start = GameHasFlagRun("noita.hardmod.on_player_spawned_flag")
 	for _,func in ipairs(hooks.player_spawned) do
-		func(is_run_start)
+		func(p, is_run_start)
 	end
 
 	GameAddFlagRun("noita.hardmod.on_player_spawned_flag")
@@ -128,7 +143,7 @@ function OnPlayerDied(p)
 	gd.player = nil
 	gd.player_poly_identity = nil
 	for _,func in ipairs(hooks.player_destroyed) do
-		func()
+		func(p)
 	end
 end
 
@@ -175,13 +190,15 @@ local check_entities = function()
 			::continue::
 		end
 		for _,func in ipairs(hooks.new_eid) do
-			local varcomp_tree = {}
-			for _,varcomp in ipairs(EntityGetComponent(i, "VariableStorageComponent") or {}) do
-				local name = ComponentGetValue2(varcomp, "name")
-				varcomp_tree[name] = varcomp_tree[name] or {}
-				varcomp_tree[name][#varcomp_tree[name]+1] = varcomp
-			end
-			func(i, varcomp_tree)
+			--Unused system for generating a table of all the entity's VariableStorageComponent data, shelved until it seems like it'd be actually useful
+			--local varcomp_tree = {}
+			--for _,varcomp in ipairs(EntityGetComponent(i, "VariableStorageComponent") or {}) do
+			--	local name = ComponentGetValue2(varcomp, "name")
+			--	varcomp_tree[name] = varcomp_tree[name] or {}
+			--	varcomp_tree[name][#varcomp_tree[name]+1] = varcomp
+			--end
+
+			func(i)
 		end
 	end
 	prev_max_eid = max_eid --we store prev max eid in case a rollback is necessary due to frame delay nonsense with EntityGetIsAlive.
@@ -197,7 +214,7 @@ local check_entities = function()
 		end
 		if gd.player ~= nil then
 			for _,func in ipairs(hooks.player_changed) do
-				func()
+				func(gd.player, gd.player_poly_identity)
 			end
 		end
 	end
