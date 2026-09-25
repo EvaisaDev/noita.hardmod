@@ -10,20 +10,20 @@ local hooks = {
 	world_init = function() end,
 
 	--Runtime hofunction() ends
-	pre_update = function() end, --beginning of every frame
-	new_eid = function(entity_id, varcomp_tree) end, --new entity
-	post_update = function() end, --end of every frame
+	pre_update = function(frame) end, --beginning of every frame
+	new_eid = function(entity_id) end, --new entity
+	post_update = function(frame) end, --end of every frame
 
 	--Player hofunction() ends
-	player_spawned = function() end, --When the player spawns in after world is initialised
-	player_changed = function() end, --Runs whenever polymorphing/unpolymorphing
-	player_destroyed = function() end, --OnPlayerDied
+	player_spawned = function(player) end, --When the player spawns in after world is initialised
+	player_changed = function(player, poly_identity) end, --Runs whenever polymorphing/unpolymorphing
+	player_destroyed = function(player) end, --OnPlayerDied
 
 	--Pause hofunction() ends
 	mod_settings_changed = function() end,
-	pause_pre_update = function() end,
+	pause_pre_update = function(is_paused, is_inventory_pause) end,
 	pause_changed = function() end,
-	count_secrets = function() end,
+	count_secrets = function(total, found) return total,found end,
 }
 
 local gd = GLOBAL_DATA
@@ -87,3 +87,5 @@ hooks.count_secrets = function(total, found)
     end
     return total,found --don't forget to return!!
 end
+
+return hooks --Don't forget to do this if you want your changes to apply!!!!
