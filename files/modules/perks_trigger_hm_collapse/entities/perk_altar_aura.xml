@@ -3,9 +3,9 @@
 	<ParticleEmitterComponent 
 		emitted_material_name="spark_red"
 		x_pos_offset_min="-30"
-		y_pos_offset_min="40"
+		y_pos_offset_min="0"
 		x_pos_offset_max="30"
-		y_pos_offset_max="40"
+		y_pos_offset_max="0"
 		x_vel_min="-2"
 		x_vel_max="2"
 		y_vel_min="-20"
