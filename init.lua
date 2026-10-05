@@ -15,6 +15,7 @@ local modules = {
 	"logo_splash",
 	"worse_hearts",
 	"no_more_chainsaw_wrapping",
+	"perks_trigger_hm_collapse",
 }
 
 local force_enable_state = {
