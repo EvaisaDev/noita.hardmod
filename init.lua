@@ -15,6 +15,7 @@ local modules = {
 	"logo_splash",
 	"worse_hearts",
 	"no_more_chainsaw_wrapping",
+	"no_more_max_hp_cheesing",
 }
 
 local force_enable_state = {
