@@ -1,0 +1,16 @@
+<Entity tags="perk_entity,hardmod_all_seeing_eye_entity">
+    <SpriteComponent 
+        _tags="enabled_in_hand,fog_of_war_hole"
+        alpha="1.0"
+        image_file="data/particles/torch_fog_of_war_hole.xml"
+        smooth_filtering="1"
+        fog_of_war_hole="1"
+        has_special_scale="1"
+        special_scale_x="3.0"
+        special_scale_y="3.0" >
+    </SpriteComponent>
+
+    <LuaComponent
+    	script_source_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/all_seeing_eye_update.lua"
+    />
+</Entity>
