@@ -1,0 +1,18 @@
+<Entity name="hardmod_ase_disabled">
+	<InheritTransformComponent>
+    </InheritTransformComponent>
+
+    <LifetimeComponent
+    	lifetime="1200"
+    ></LifetimeComponent>
+	
+	<UIIconComponent
+		icon_sprite_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/status_indicators/all_seeing_eye_disabled.png"
+		name="$hardmod_status_ase_disabled_name"
+		description="$hardmod_status_ase_disabled_desc"
+		is_perk="0"
+		display_above_head="0"
+		display_in_hud="1"
+		>
+	</UIIconComponent>
+</Entity>

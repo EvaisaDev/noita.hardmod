@@ -2,6 +2,7 @@
 -- Eba was here!!!
 -- UserK too!!
 -- !!!ooT enyL AgnoC
+-- D2D2
 
 dofile_once("mods/noita.hardmod/lib/utilities.lua")
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
@@ -14,6 +15,7 @@ local modules = {
 	"cheeseless_triggers",
 	"logo_splash",
 	"worse_hearts",
+	"vanilla_perk_rebalances",
 	"no_more_chainsaw_wrapping",
 	"no_more_max_hp_cheesing",
 }

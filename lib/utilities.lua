@@ -173,6 +173,7 @@ end
 ---Shorthand for quickly getting the int value of a VSC
 ---@param entity_id ID of the entity
 ---@param variable_name Name of the variable
+---@param create_if_nil If true, a new VSC of the given name will be created if it doesn't exist
 ---@return int value that matches the given VSC name
 function GetInternalInt(entity_id, variable_name, create_if_nil)
 	local value = nil
