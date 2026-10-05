@@ -22,3 +22,5 @@ As you continually take more damage, the wounded timer you have can grow up to a
   - Wall traps shotgun projectiles.
 - `worse_hearts`
   - Holy mountain hearts no longer grant health increase
+- `perks_trigger_hm_collapse`
+  - Holy Mountains no longer collapse when you leave them. Instead, they collapse when no perks remain on the perk altar.
