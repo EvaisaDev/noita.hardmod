@@ -22,6 +22,9 @@ As you continually take more damage, the wounded timer you have can grow up to a
   - Wall traps shotgun projectiles.
 - `worse_hearts`
   - Holy mountain hearts no longer grant health increase
+- `no_more_max_hp_cheesing`
+  - The heart mage's spell now temporarily causes you to lose max HP equal to 50% of the damage you take. This max HP is not restored afterwards.
+  - Changed Matosade's related_projectiles to spawn a small worm, instead of a big one.
 - `vanilla_perk_rebalances`
   - All-Seeing Eye now grants vision around the cursor only, rather than lighting up the entire screen.
   - Most Immunity perks have been reworked into Protection perks, halving damage taken by the corresponding damage type. These perks now stack up to 3 times, for a total damage reduction of up to 87.5%.

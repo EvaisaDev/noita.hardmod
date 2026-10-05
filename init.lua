@@ -17,6 +17,7 @@ local modules = {
 	"worse_hearts",
 	"vanilla_perk_rebalances",
 	"no_more_chainsaw_wrapping",
+	"no_more_max_hp_cheesing",
 }
 
 local force_enable_state = {
