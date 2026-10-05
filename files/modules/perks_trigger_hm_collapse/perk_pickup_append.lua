@@ -24,11 +24,20 @@ function item_pickup( entity_item, entity_who_picked, item_name )
 		local exit = EntityGetInRadiusWithTag( px, py, 300, "workshop_exit" )[1]
 		if exit ~= nil then
 			local ctcomp = EntityGetFirstComponentIncludingDisabled( exit, "CollisionTriggerComponent" )
+
 			if ctcomp ~= nil then
+				-- EntitySetTransform( exit, px - 30, py - 60 )
+				-- @UserK uncomment the line above + experiment with the offset for shop tunnel collapse
+
 				ComponentSetValue2( ctcomp, "width", 512 )
 				ComponentSetValue2( ctcomp, "height", 512 )
 				ComponentSetValue2( ctcomp, "radius", 512 ) -- :]
 			end
+		end
+
+		local perk_aura = EntityGetInRadiusWithTag( px, py, 300, "hardmod_perk_aura" )[1]
+		if perk_aura then
+			EntityKill( perk_aura )
 		end
 	end
 
