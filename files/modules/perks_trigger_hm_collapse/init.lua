@@ -59,8 +59,9 @@ hooks.mod_init = function()
 	ModTextFileSetContent(path, tostring(xml))
 end
 
-hooks.player_spawned = function()
-	EntitySetTransform( EntityGetWithTag("player_unit")[1], -62, 1345 )
-end
+-- hooks.player_spawned = function()
+-- 	EntitySetTransform( EntityGetWithTag("player_unit")[1], -62, 1345 )
+-- end
+-- @UserK uncomment this to immediately spawn at a perk altar on New Game
 
 return hooks --Don't forget to do this if you want your changes to apply!!!!
