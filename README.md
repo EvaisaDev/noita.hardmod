@@ -22,3 +22,6 @@ As you continually take more damage, the wounded timer you have can grow up to a
   - Wall traps shotgun projectiles.
 - `worse_hearts`
   - Holy mountain hearts no longer grant health increase
+- `no_more_max_hp_cheesing`
+  - The heart mage's spell now temporarily causes you to lose max HP equal to 50% of the damage you take. This max HP is not restored afterwards.
+  - Changed Matosade's related_projectiles to spawn a small worm, instead of a big one.
