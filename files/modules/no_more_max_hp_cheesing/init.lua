@@ -1,5 +1,8 @@
 local hooks = {}
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
+
+ModLuaFileAppend( "data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/modules/no_more_max_hp_cheesing/scripts/actions_append.lua" )
+
 hooks.mod_init = function()
 	local path = "data/entities/player_base.xml"
 	local xml = nxml.parse( ModTextFileGetContent( path ) )
