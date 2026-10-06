@@ -26,7 +26,7 @@ if ase_entity ~= nil then
             frames = EFFECT_DURATION
         })
         EntityAddChild( player_id, child_id )
-        
+
 		GamePlaySound( "data/audio/Desktop/misc.bank", "game_effect/blindness/create", px, py )
 		GamePrint( "Your All-Seeing Eye was temporarily disabled!" )
 		SetInternalInt( ase_entity, "hardmod_wizard_dark_counter", ACTIVATION_THRESHOLD + 1 )
