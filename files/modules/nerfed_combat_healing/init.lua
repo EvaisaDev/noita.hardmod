@@ -1,6 +1,8 @@
 local hooks = {}
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
+ModLuaFileAppend( "data/scripts/perks/perk_pickup.lua", "mods/noita.hardmod/files/modules/perks_trigger_hm_collapse/perk_pickup_append.lua" )
+
 hooks.mod_init = function()
 	local path = "data/entities/player_base.xml"
 	local xml = nxml.parse(ModTextFileGetContent(path))

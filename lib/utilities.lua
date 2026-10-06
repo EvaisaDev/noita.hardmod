@@ -171,9 +171,9 @@ function ShootProjectile(shooter, entity_file, x, y, vel_x, vel_y, send_message)
 end
 
 ---Shorthand for quickly getting the int value of a VSC
----@param entity_id ID of the entity
----@param variable_name Name of the variable
----@param create_if_nil If true, a new VSC of the given name will be created if it doesn't exist
+---@param entity_id int ID of the entity
+---@param variable_name string Name of the variable
+---@param create_if_nil? bool If true, a new VSC of the given name will be created if it doesn't exist
 ---@return int value that matches the given VSC name
 function GetInternalInt(entity_id, variable_name, create_if_nil)
 	local value = nil
@@ -199,9 +199,9 @@ function GetInternalInt(entity_id, variable_name, create_if_nil)
 end
 
 ---Shorthand for quickly setting a VSC's int value, or creating one if a VSC with the same name doesn't exist yet
----@param entity_id ID of the entity
----@param variable_name Name of the variable
----@param new_value New value of the variable (or initial value, if VSC did not exist)
+---@param entity_id int ID of the entity
+---@param variable_name string Name of the variable
+---@param new_value int New value of the variable (or initial value, if VSC did not exist)
 function SetInternalInt(entity_id, variable_name, new_value)
 	local variable_found = false
 	local vscomps = EntityGetComponent(entity_id, "VariableStorageComponent")	
@@ -224,9 +224,9 @@ function SetInternalInt(entity_id, variable_name, new_value)
 end
 
 ---Shorthand for quickly raising a VSC's int value, or creating one if a VSC with the same name doesn't exist yet
----@param entity_id ID of the entity
----@param variable_name Name of the variable
----@param increment How much do we add to the existing int value? (or initial value, if VSC did not exist)
+---@param entity_id int ID of the entity
+---@param variable_name string Name of the variable
+---@param increment? int How much do we add to the existing int value? (or initial value, if VSC did not exist)
 function RaiseInternalInt(entity_id, variable_name, increment)
 	increment = increment or 1
 	local variable_found = false

@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-global
+
 perk_reworks = {
 	{
 		id = "REMOVE_FOG_OF_WAR",

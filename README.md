@@ -27,3 +27,5 @@ As you continually take more damage, the wounded timer you have can grow up to a
   - Most Immunity perks have been reworked into Protection perks, halving damage taken by the corresponding damage type. These perks now stack up to 3 times, for a total damage reduction of up to 87.5%.
   - Exploding Corpses and Oil Blood now also grant explosion/fire protection, rather than immunity.
   - Stainless Armour and Permanent Shield can now be stacked a maximum of 3 times each.
+- `perks_trigger_hm_collapse`
+  - Holy Mountains no longer collapse when you leave them. Instead, they collapse when no perks remain on the perk altar.

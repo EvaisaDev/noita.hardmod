@@ -17,6 +17,7 @@ local modules = {
 	"worse_hearts",
 	"vanilla_perk_rebalances",
 	"no_more_chainsaw_wrapping",
+	"perks_trigger_hm_collapse",
 }
 
 local force_enable_state = {
