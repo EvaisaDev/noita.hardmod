@@ -183,6 +183,14 @@ perk_reworks = {
 			end
 		end,
 	},
+	{
+		id = "EDIT_WANDS_EVERYWHERE",
+		not_in_default_perk_pool = true,
+	},
+	{
+		id = "NO_WAND_EDITING",
+		not_in_default_perk_pool = true,
+	},
 }
 
 local function modify_perk( rework_data )
