@@ -1,0 +1,8 @@
+<Entity tags="perk_entity,hardmod_tinker_at_pedestals_entity">
+
+    <LuaComponent
+    	script_source_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/tinker_at_pedestals_scan.lua"
+        execute_every_n_frame="30"
+    ></LuaComponent>
+
+</Entity>
