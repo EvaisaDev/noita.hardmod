@@ -1,0 +1,91 @@
+<Entity name="felcesis_brain">
+
+    <InheritTransformComponent
+		_enabled="1" >
+    </InheritTransformComponent>
+
+	<LuaComponent
+		_enabled="1"
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/scripts/phantom_brain.lua"
+		execute_every_n_frame="1"
+		execute_times="-1"
+		>
+	</LuaComponent>
+
+	<LuaComponent
+		_enabled="1"
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/entities/misc/fx/reveal_ability_text.lua"
+		execute_every_n_frame="10"
+		execute_times="-1"
+		mLastExecutionFrame="-10"
+		>
+	</LuaComponent>
+
+	<VariableStorageComponent/>
+	<VariableStorageComponent/>
+	<VariableStorageComponent/>
+	
+	<SpriteParticleEmitterComponent
+		sprite_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/entities/misc/fx/felcesis.png"
+		delay="0"
+		lifetime="1.0"
+		additive="0"
+		sprite_centered="1"
+		color.r="0" color.g="0" color.b="0.0" color.a="1"
+		color_change.r="0" color_change.g="0" color_change.b="1" color_change.a="-1"
+		velocity.x="0" velocity.y="0"
+		gravity.x="0" gravity.y="0"
+		velocity_slowdown="0.01"
+		rotation="0"
+		angular_velocity="0"
+		use_velocity_as_rotation="0"
+		scale.x="0.5" scale.y="0.5"
+		scale_velocity.x="0" scale_velocity.y="0"
+		emission_interval_min_frames="3"
+		emission_interval_max_frames="6"
+		count_min="1" count_max="1"
+		randomize_rotation.min="0"
+		randomize_rotation.max="0"
+		randomize_velocity.min_x="-4"
+		randomize_velocity.max_x="4"
+		randomize_velocity.min_y="-4"
+		randomize_velocity.max_y="4"
+		randomize_position_inside_hitbox="1"
+		z_index="-9000"
+		>
+  </SpriteParticleEmitterComponent>
+	
+	<ParticleEmitterComponent 
+		emitted_material_name="spark_blue_dark"
+		gravity.y="0.0"
+		lifetime_min="5.5"
+		lifetime_max="15.5"
+		count_min="4"
+		count_max="12"
+		render_on_grid="1"
+		fade_based_on_lifetime="1"
+		area_circle_radius.max="256"
+		cosmetic_force_create="0"
+		airflow_force="0.5"
+		airflow_time="1.9"
+		airflow_scale="0.15"
+		emission_interval_min_frames="1"
+		emission_interval_max_frames="4"
+		emit_cosmetic_particles="1"
+		x_vel_min="-1"
+		x_vel_max="1"
+		y_vel_min="-1"
+		y_vel_max="1"
+		is_emitting="1" >
+	</ParticleEmitterComponent>
+
+	<LightComponent
+        _enabled="1" 
+        radius="60"
+        fade_out_time="1.5" 
+    	r="0"
+    	g="0"
+    	b="255" >
+	</LightComponent>
+
+</Entity>

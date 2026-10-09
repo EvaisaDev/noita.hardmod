@@ -1,0 +1,23 @@
+<Entity tags="effect_protection" >
+
+	<InheritTransformComponent 
+		_enabled="1" >
+    </InheritTransformComponent>	
+    
+    <GameEffectComponent 
+        effect="PROTECTION_ELECTRICITY"
+        frames="-1"
+    >
+	</GameEffectComponent >
+
+	<UIIconComponent
+		name="Electricity Immunity"
+		description="You take no damage from electric attacks."
+		icon_sprite_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/ui_gfx/status_indicators/protection_electricity.png"
+		is_perk="0"
+		display_above_head="1"
+		display_in_hud="1"
+		>
+	</UIIconComponent>
+
+</Entity>

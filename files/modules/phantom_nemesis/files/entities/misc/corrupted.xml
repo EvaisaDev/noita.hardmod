@@ -1,0 +1,25 @@
+<Entity >
+
+	<InheritTransformComponent 
+		_enabled="1" >
+    </InheritTransformComponent>
+
+	<LuaComponent
+		_enabled="1"
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/scripts/animals/corrupted.lua"
+		execute_every_n_frame="10"
+		execute_times="1"
+		>
+	</LuaComponent>
+
+	<UIIconComponent
+		name="Corrupted"
+		description="Your attack is randomised."
+		icon_sprite_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/ui_gfx/status_indicators/corrupted.png"
+		is_perk="0"
+		display_above_head="1"
+		display_in_hud="1"
+		>
+	</UIIconComponent>
+
+</Entity>
