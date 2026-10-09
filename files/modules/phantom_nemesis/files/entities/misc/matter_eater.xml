@@ -1,0 +1,23 @@
+<Entity>
+	<InheritTransformComponent>
+		<Transform 
+			position.x="0"
+			position.y="0" 
+		>
+		</Transform>
+	</InheritTransformComponent>
+
+	<CellEaterComponent
+		ignored_material_tag="[box2d]"
+		radius="32" 
+		eat_probability="100">
+	</CellEaterComponent>
+
+	<LuaComponent
+		_enabled="1"
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/scripts/animals/matter_eater.lua"
+		execute_every_n_frame="2"
+		execute_times="1"
+		>
+	</LuaComponent>
+</Entity>

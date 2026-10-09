@@ -1,0 +1,38 @@
+<Entity>
+
+	<SpriteComponent
+		_enabled="1"
+        _tags="enabled_in_world, enabled_in_hand, enabled_in_inventory, graham_speech_text"
+        image_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/fonts/font_felcesis.xml"
+        emissive="1"
+        is_text_sprite="1"
+        offset_x="0"
+        offset_y="0"
+        alpha="1"
+        update_transform="1"
+        update_transform_rotation="1"
+        text=""
+        has_special_scale="1"
+        special_scale_x="0.7"
+        special_scale_y="0.7"
+        z_index="-9000"
+        never_ragdollify_on_death="1"
+		>
+	</SpriteComponent>
+
+	<LightComponent
+        _enabled="1" 
+        radius="60"
+        fade_out_time="1.5" 
+    	r="0"
+    	g="0"
+    	b="255" >
+	</LightComponent>
+
+	<LifetimeComponent
+		lifetime="900"
+		fade_sprites="1"
+		>
+	</LifetimeComponent>
+
+</Entity>

@@ -1,0 +1,23 @@
+<Entity tags="effect_protection" >
+
+	<InheritTransformComponent 
+		_enabled="1" >
+    </InheritTransformComponent>	
+    
+    <GameEffectComponent 
+        effect="PROTECTION_FIRE"
+        frames="-1"
+    >
+	</GameEffectComponent >
+
+	<UIIconComponent
+		name="Fire Immunity"
+		description="You take no damage from fire."
+		icon_sprite_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/ui_gfx/status_indicators/protection_fire.png"
+		is_perk="0"
+		display_above_head="1"
+		display_in_hud="1"
+		>
+	</UIIconComponent>
+
+</Entity>

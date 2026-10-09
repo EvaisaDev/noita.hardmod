@@ -1,0 +1,40 @@
+<Entity name="apotheosis_wounded" tags="very_harmful_status">
+	<InheritTransformComponent>
+    </InheritTransformComponent>
+	
+	<VariableStorageComponent
+		_tags="effect_curse_wither_type"
+		value_string="healing"
+		>
+	</VariableStorageComponent>
+	
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/scripts/status_effects/immunity_temp_start.lua"
+		execute_every_n_frame="1"
+		remove_after_executed="1"
+		>
+	</LuaComponent>
+	
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/scripts/status_effects/noheal_end.lua"
+		execute_every_n_frame="-1"
+		execute_on_removed="1"
+		>
+	</LuaComponent>
+	
+	<GameEffectComponent
+		lifetime="1800"
+		effect="NONE"
+	>
+	</LifetimeComponent>
+	
+	<UIIconComponent
+		icon_sprite_file="mods/noita.hardmod/files/modules/phantom_nemesis/ui_gfx/status_indicators/nohealing.png"
+		name="$hardmod_status_nohealing_name"
+		description="$hardmod_status_nohealing_desc"
+		is_perk="0"
+		display_above_head="0"
+		display_in_hud="1"
+		>
+	</UIIconComponent>
+</Entity>

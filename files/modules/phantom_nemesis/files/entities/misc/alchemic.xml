@@ -1,0 +1,22 @@
+<Entity tags="effect_protection" >
+
+	<InheritTransformComponent 
+		_enabled="1" >
+    </InheritTransformComponent>	
+    
+    <GameEffectComponent 
+        effect="PROTECTION_FIRE"
+        frames="-1"
+    >
+	</GameEffectComponent >
+
+	<LuaComponent
+		_enabled="1"
+        _tags="enable_when_player_seen"
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/scripts/animals/alchemic.lua"
+		execute_every_n_frame="240"
+		execute_times="-1"
+		>
+	</LuaComponent>
+
+</Entity>

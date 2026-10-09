@@ -1,0 +1,30 @@
+<Entity tags="effect_protection" >
+
+	<InheritTransformComponent 
+		_enabled="1" >
+    </InheritTransformComponent>
+
+	<LuaComponent
+		_enabled="1"
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/scripts/animals/apply_immunity.lua"
+		execute_every_n_frame="2"
+		execute_times="1"
+		>
+	</LuaComponent>
+
+	<VariableStorageComponent
+		value_string="drill"
+		>
+	</VariableStorageComponent>
+
+	<UIIconComponent
+		name="Drill Immunity"
+		description="You take no damage from drilling attacks."
+		icon_sprite_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/ui_gfx/status_indicators/protection_radioactive.png"
+		is_perk="0"
+		display_above_head="1"
+		display_in_hud="1"
+		>
+	</UIIconComponent>
+
+</Entity>

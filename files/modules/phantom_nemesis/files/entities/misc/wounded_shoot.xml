@@ -1,0 +1,13 @@
+<Entity >
+
+	<InheritTransformComponent
+		_enabled="1" >
+    </InheritTransformComponent>	
+
+	<LuaComponent
+		script_shot="mods/noita.hardmod/files/modules/phantom_nemesis/files/scripts/projectiles/wounded_shoot.lua"
+		execute_every_n_frame="-1"
+		>
+	</LuaComponent>
+
+</Entity>
