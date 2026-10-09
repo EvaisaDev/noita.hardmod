@@ -1,3 +1,27 @@
+
+new_perks = {
+	{
+		id = "HARDMOD_TINKER_AT_PEDESTALS",
+		ui_name = "$hardmod_perk_tinker_at_pedestals_name",
+		ui_description = "$hardmod_perk_tinker_at_pedestals_desc",
+		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/tinker_at_pedestals_016.png",
+		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/tinker_at_pedestals.png",
+		stackable = STACKABLE_NO,
+		one_off_effect = false,
+		usable_by_enemies = false,
+		func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
+        	if pickup_count > 1 then return end
+            EntityAddChild( entity_who_picked, EntityLoad( "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/effect_tinker_at_pedestals.xml" ) )
+        end,
+        func_remove = function( entity_who_picked )
+        	local perk_entity = EntityGetAllChildren( entity_who_picked, "hardmod_tinker_at_pedestals_entity" )[1]
+			if perk_entity ~= nil then
+				EntityKill( perk_entity )
+			end
+        end,
+	},
+}
+
 perk_reworks = {
 	{
 		id = "REMOVE_FOG_OF_WAR",
@@ -183,6 +207,14 @@ perk_reworks = {
 			end
 		end,
 	},
+	{
+		id = "EDIT_WANDS_EVERYWHERE",
+		not_in_default_perk_pool = true,
+	},
+	{
+		id = "NO_WAND_EDITING",
+		not_in_default_perk_pool = true,
+	},
 }
 
 local function modify_perk( rework_data )
@@ -205,6 +237,10 @@ local function modify_perk( rework_data )
 end
 
 if ( perk_list ~= nil ) then
+	for k, v in pairs( new_perks ) do
+		table.insert( perk_list, v )
+	end
+
 	for k, v in pairs( perk_reworks ) do
 		modify_perk( v )
 	end

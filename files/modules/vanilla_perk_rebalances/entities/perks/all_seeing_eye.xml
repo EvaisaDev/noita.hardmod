@@ -11,6 +11,6 @@
     </SpriteComponent>
 
     <LuaComponent
-    	script_source_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/all_seeing_eye_update.lua"
+    	script_source_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/all_seeing_eye_update.lua"
     />
 </Entity>

@@ -12,7 +12,7 @@ if ase_entity ~= nil then
 	elseif GetInternalInt( ase_entity, "hardmod_wizard_dark_counter" ) < ACTIVATION_THRESHOLD + 1 then
 		EntitySetComponentsWithTagEnabled( ase_entity, "fog_of_war_hole", false )
 		EntityAddComponent2( ase_entity, "LuaComponent", {
-			script_source_file = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/all_seeing_eye_restore.lua",
+			script_source_file = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/all_seeing_eye_restore.lua",
 			execute_on_added = false,
 			execute_every_n_frame = EFFECT_DURATION,
 			remove_after_executed = true
