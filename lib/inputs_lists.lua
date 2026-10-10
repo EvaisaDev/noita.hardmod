@@ -1,4 +1,4 @@
-local mouse = {
+local mouse_codes = {
 	Mouse_left = 1,
 	Mouse_right = 2,
 	Mouse_middle = 3,
@@ -8,7 +8,7 @@ local mouse = {
 	Mouse_x2 = 7,
 }
 
-local key = {
+local key_codes = {
 	Key_a = 4,
 	Key_b = 5,
 	Key_c = 6,
@@ -252,7 +252,7 @@ local key = {
 	Key_SPECIAL_COUNT = 512,
 }
 
-local joy = {
+local joystick_codes = {
 	JOY_BUTTON_DPAD_UP = 11,
 	JOY_BUTTON_DPAD_DOWN = 12,
 	JOY_BUTTON_DPAD_LEFT = 13,
@@ -293,20 +293,20 @@ local joy = {
 	JOY_BUTTON_Y = 26,
 }
 
-local stick = {
+local thumbstick_codes = {
 	gamepad_left_stick = 0,
 	gamepad_right_stick = 1,
 }
 
-local trigger = {
+local trigger_codes = {
 	gamepad_left_trigger = 0,
 	gamepad_right_trigger = 1,
 }
 
 return {
-	mouse = mouse,
-	key = key,
-	joy = joy,
-	stick = stick,
-	trigger = trigger,
+	mouse_codes = mouse_codes,
+	key_codes = key_codes,
+	joystick_codes = joystick_codes,
+	thumbstick_codes = thumbstick_codes,
+	trigger_codes = trigger_codes,
 }

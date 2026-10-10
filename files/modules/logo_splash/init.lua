@@ -38,22 +38,22 @@ local updateSplash = function()
 
 		local function isAnyInputPressed()
 			local input_checks = {
-				{ inputs.mouse, InputIsMouseButtonJustDown },
-				{ inputs.key, InputIsKeyJustDown },
+				{ inputs.mouse_codes, InputIsMouseButtonJustDown },
+				{ inputs.key_codes, InputIsKeyJustDown },
 				{
-					inputs.joy,
+					inputs.joystick_codes,
 					function(id)
 						return InputIsJoystickButtonJustDown(0, id)
 					end,
 				},
 				{
-					inputs.stick,
+					inputs.thumbstick_codes,
 					function(id)
 						return math.abs(InputGetJoystickAnalogStick(0, id)) > 0.9
 					end,
 				},
 				{
-					inputs.trigger,
+					inputs.trigger_codes,
 					function(id)
 						return InputGetJoystickAnalogButton(0, id) > 0.9
 					end,

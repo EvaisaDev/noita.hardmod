@@ -18,6 +18,7 @@ local modules = {
 	"vanilla_perk_rebalances",
 	"no_more_chainsaw_wrapping",
 	"phantom_nemesis",
+	"alt_fire_anything",
 }
 
 local force_enable_state = {
