@@ -1,0 +1,18 @@
+<Entity>
+
+	<InheritTransformComponent 
+		_enabled="1" >
+    </InheritTransformComponent>
+
+	<VariableStorageComponent/>
+
+	<LuaComponent
+		_enabled="1"
+        _tags="enable_when_player_seen"
+		script_source_file="mods/noita.hardmod/files/modules/phantom_nemesis/files/scripts/animals/teleport_to_target.lua"
+		execute_every_n_frame="1"
+		execute_times="-1"
+		>
+	</LuaComponent>
+
+</Entity>
