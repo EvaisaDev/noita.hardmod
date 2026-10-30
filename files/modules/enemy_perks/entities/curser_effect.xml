@@ -173,4 +173,9 @@
 		icon_sprite_file="data/ui_gfx/status_indicators/curse_cloud.png"
 		is_perk="0"
 	/>
+
+	<VariableStorageComponent
+		name="last_time_incremented"
+		value_string="-1000"
+	/>
 </Entity>

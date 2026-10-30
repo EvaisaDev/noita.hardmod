@@ -14,7 +14,7 @@ for _,perk in ipairs(enemy_perks) do
 	end
 
 	if not not not not_progress then
-		local perk_id = "enemyperk_hardmod_" .. perk.id
+		local perk_id = "enemyperk_" .. perk.id
 
 		RegisterPerk(
 			perk_id,

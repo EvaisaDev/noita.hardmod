@@ -11,16 +11,17 @@ local root = EntityGetRootEntity(entity_id)
 function init(eid)
 	local self = GetUpdatedComponentID()
 	ComponentSetValue2(self, "mNextExecutionTime", GameGetFrameNum() + 1)
-
-	for _,luacomp in ipairs(EntityGetComponent(root, "LuaComponent") or {}) do
-		if ComponentGetValue2(luacomp, "script_death") == "mods/noita.hardmod/files/modules/enemy_perks/perk_holder_died.lua" then return end
-	end
-	EntityAddComponent2(root, "LuaComponent", {
-		script_death = "mods/noita.hardmod/files/modules/enemy_perks/perk_holder_died.lua"
-	})
 end
 
-if entity_id == root then return end
+if entity_id == root then
+	local x,y = EntityGetTransform(entity_id)
+	for _,potential_orphan in ipairs(EntityGetInRadiusWithTag(x, y, 50, "perk_entity")) do
+		if potential_orphan == EntityGetRootEntity(potential_orphan) then
+			EntityKill(potential_orphan) --No orphan shall be spared.
+		end
+	end
+	EntityKill(entity_id)
+end
 
 local enemy_perks_indexed = dofile_once("mods/noita.hardmod/files/modules/enemy_perks/enemy_perks_index.lua")
 

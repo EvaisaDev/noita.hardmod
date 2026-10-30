@@ -39,7 +39,7 @@ local splashes = {
 	"TANNEREYE IS DEAD.",
 	"Ira approaches",
 	"Ira? More like IRATE!!! gottem",
-	"The Divine is on the phone",
+	"The Divine is on the phone, pick up.",
 	"\"Fair mod too\"? I sure hope it is!",
 	"Enemies may bleed lava!",
 	"Crystals entwined deceive divine!",
@@ -62,6 +62,9 @@ local splashes = {
 	"noita.harmod",
 	"woag...\nnewline...",
 	"why do these splashes keep mentioning a \"fair mod\"????",
+	"We added Polymorph Immunity perk!!!! (enemies only)",
+	"Made with love, passion, and also a lot of spite!",
+	"What do you mean the deadline is nearly up?!?",
 }
 
 local cool_mods = {
