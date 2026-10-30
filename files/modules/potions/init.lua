@@ -1,4 +1,5 @@
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua")---@type nxml
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 ModLuaFileAppend("data/scripts/items/potion.lua", "mods/noita.hardmod/files/modules/potions/potion_appends.lua")
 
@@ -19,7 +20,7 @@ for file in nxml.edit_file("data/entities/items/pickup/potion_aggressive.xml") d
   end
 end
 
-modifile(
+utils.modifile(
   "data/scripts/items/potion_aggressive.lua",
   [[AddMaterialInventoryMaterial( entity_id, potion.material, 1000 )]],
   [[AddMaterialInventoryMaterial( entity_id, potion.material, 2000 )]]

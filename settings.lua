@@ -635,9 +635,16 @@ mod_settings =
     },
 }
 
+local function patch_games_init_lua()
+	local file = "data/scripts/init.lua"
+    ModLuaFileAppend(file, "mods/noita.hardmod/files/modules/biome_modifiers/init_patcher.lua")
+end
+
 function ModSettingsUpdate(init_scope)
     local old_version = mod_settings_get_version(mod_id)
     mod_settings_update(mod_id, mod_settings, init_scope)
+
+    if init_scope == 0 or init_scope == 1 then patch_games_init_lua() end
 end
 
 function ModSettingsGuiCount()

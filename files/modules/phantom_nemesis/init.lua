@@ -53,7 +53,7 @@ hooks.post_update = function ()
 
     --GamePrint(table.concat({current_frame,", ",last_felcesis_possession_attempt,", ",felcesis_summon_cooldown}))
 
-    if current_frame > felcesis_summon_lastdeath_time + felcesis_summon_death_cooldown and current_frame > last_felcesis_possession_attempt + felcesis_summon_pursuit_cooldown and current_frame + entered_new_biome_graceperiod > last_frame_entered_new_biome then
+    if current_frame > felcesis_summon_lastdeath_time + felcesis_summon_death_cooldown and current_frame > last_felcesis_possession_attempt + felcesis_summon_pursuit_cooldown and current_frame > last_frame_entered_new_biome + entered_new_biome_graceperiod then
         local found, id, targ_x, targ_y = MinibossCreator.FindPossessionTarget(biomes_visited)
         if found then
             local miniboss_stats = MinibossCreator.CalculateMinibossPower(biomes_visited)

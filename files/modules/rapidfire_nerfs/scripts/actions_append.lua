@@ -25,7 +25,7 @@ local reworked_actions = {
         mana = -15,
         action = function()
             c.fire_rate_wait = c.fire_rate_wait + 7
-            current_reload_time = current_reload_time + 7
+            current_reload_time = current_reload_time + 2
 			draw_actions(1, true)
         end
     },
@@ -43,8 +43,8 @@ local reworked_actions = {
         action = function()
             -- parity with cheeseless_triggers
             c.spread_degrees = c.spread_degrees + 12
-            c.fire_rate_wait = c.fire_rate_wait - 7
-            current_reload_time = current_reload_time - 15
+            c.fire_rate_wait = c.fire_rate_wait - 6
+            current_reload_time = current_reload_time - 10
             draw_actions(1, true)
 		end,
     },
@@ -113,8 +113,8 @@ local new_actions = {
         price = 160,
         mana = -15,
         action = function()
-            c.fire_rate_wait = c.fire_rate_wait + 7
-            current_reload_time = current_reload_time + 7
+            c.fire_rate_wait = c.fire_rate_wait + 6
+            current_reload_time = current_reload_time + 1
             HardmodActionNullMana()
             draw_actions(1, true)
         end

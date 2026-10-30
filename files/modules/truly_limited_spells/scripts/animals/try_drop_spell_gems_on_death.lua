@@ -1,4 +1,4 @@
-dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local entity_id = GetUpdatedEntityID()
 
@@ -20,7 +20,7 @@ if has_vsc( entity_id, "no_gold_drop" ) then return end
 local dmg_comp = EntityGetFirstComponent( entity_id, "DamageModelComponent" )
 if dmg_comp then
 	local max_hp = ComponentGetValue2( dmg_comp, "max_hp" )
-	local chance_to_drop = Remap( max_hp, 0, 20, 20, 50 )
+	local chance_to_drop = utils.Remap( max_hp, 0, 20, 20, 50 )
 	local rnd = Random( 1, 100 )
 	local gems_dropped = 0
 	while rnd < chance_to_drop and gems_dropped < 10 do

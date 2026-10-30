@@ -1,4 +1,4 @@
-dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local wiz = GetUpdatedEntityID()
 local x, y = EntityGetTransform( GetUpdatedEntityID() )
@@ -8,9 +8,9 @@ local EFFECT_DURATION = 1200
 
 local ase_entity = EntityGetInRadiusWithTag( x, y, 16, "hardmod_all_seeing_eye_entity" )[1]
 if ase_entity ~= nil then
-	local wizard_dark_counter = GetInternalInt( wiz, "hardmod_wizard_dark_counter" ) or 0
+	local wizard_dark_counter = utils.GetInternalInt( wiz, "hardmod_wizard_dark_counter" ) or 0
 	if wizard_dark_counter < ACTIVATION_THRESHOLD then
-		SetInternalInt( wiz, "hardmod_wizard_dark_counter", wizard_dark_counter + 1 )
+		utils.SetInternalInt( wiz, "hardmod_wizard_dark_counter", wizard_dark_counter + 1 )
 	elseif wizard_dark_counter < ACTIVATION_THRESHOLD + 1 then
 		EntitySetComponentsWithTagEnabled( ase_entity, "fog_of_war_hole", false )
 		EntityAddComponent2( ase_entity, "LuaComponent", {
@@ -31,7 +31,7 @@ if ase_entity ~= nil then
         
 		GamePlaySound( "data/audio/Desktop/misc.bank", "game_effect/blindness/create", px, py )
 		GamePrint( "Your All-Seeing Eye was temporarily disabled!" )
-		SetInternalInt( wiz, "hardmod_wizard_dark_counter", ACTIVATION_THRESHOLD + 1 )
+		utils.SetInternalInt( wiz, "hardmod_wizard_dark_counter", ACTIVATION_THRESHOLD + 1 )
 
         -- tag the wiz so their counter can be remotely reset after 20 sec
         if not EntityHasTag( wiz, "hardmod_master_of_blinding" ) then
@@ -40,7 +40,7 @@ if ase_entity ~= nil then
 	end
 else
 	ase_entity = EntityGetWithTag( "hardmod_all_seeing_eye_entity" )[1]
-	if ase_entity ~= nil and GetInternalInt( wiz, "hardmod_wizard_dark_counter", true ) < ACTIVATION_THRESHOLD + 1 then
-		SetInternalInt( wiz, "hardmod_wizard_dark_counter", 0 )
+	if ase_entity ~= nil and utils.GetInternalInt( wiz, "hardmod_wizard_dark_counter", true ) < ACTIVATION_THRESHOLD + 1 then
+		utils.SetInternalInt( wiz, "hardmod_wizard_dark_counter", 0 )
 	end
 end

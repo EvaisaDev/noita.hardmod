@@ -59,6 +59,7 @@
 ---@field pick_chance_at_least_one boolean? Ensures `pick_chance` or `pick_chance_all` picks at least a single random item (if no chances matched, pick an entirely random item)
 ---@field pick_random BaseLootItem[]? Run a random item from a list
 ---@field entity string? Entity file to spawn
+---@field entity_func fun(eid: entity_id)? This will be called after `entity` is summoned
 ---@field offset_x LootNumber? X offest to add to the spawned entity
 ---@field offset_y LootNumber? Y offest to add to the spawned entity
 ---@field spawn_random_cards LootNumber? Spawn [n] random cards
@@ -84,7 +85,7 @@
 
 ---[[
 ---@class LootContext
----@field entities { file: string, x: number, y: number, is_gold?: boolean }[] List of entities and their positions to spawn
+---@field entities { file: string, x: number, y: number, callback?: fun(eid: entity_id), is_gold?: boolean }[] List of entities and their positions to spawn
 ---@field entity_id entity_id? Chest's entity ID
 ---@field greed_curse boolean Whether the greed curse is active
 ---@field gold_is_forever boolean Whether the player has the Gold is Forever perk
@@ -231,6 +232,10 @@ function lootlib.spawn_loot(ctx)
 
       EntityAddTag(eid, "lootlib_chest_gold")
     end
+
+	if entity.callback then
+		entity.callback(eid)
+	end
   end
 end
 
@@ -462,6 +467,7 @@ function lootlib.handlers.entity(ctx, entity, item)
 
   table.insert(ctx.entities, {
     file = entity,
+	callback = item.entity_func,
     x = x, y = y
   })
 end

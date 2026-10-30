@@ -1,10 +1,10 @@
 dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
 
 --- Shorthand for removing all children and components that match a given tag
----@param entity_id The entity id of the entity whose children and components are to be removed
----@param tag The tag to filter by
+---@param entity_id entity_id The entity id of the entity whose children and components are to be removed
+---@param tag string The tag to filter by
 function EntityRemoveAllByTag(entity_id, tag)
-	for i,child_id in ipairs(EntityGetAllChildren(entity_id, tag)) do
+	for i,child_id in ipairs(EntityGetAllChildren(entity_id, tag) or {}) do
 		if EntityHasTag(child_id, tag) then
 			EntityKill(child_id)
 		end
@@ -17,9 +17,9 @@ function EntityRemoveAllByTag(entity_id, tag)
 end
 
 --- Swaps a perk's default icon with that of the spent perk
----@param player_id The player's entity_id
----@param perk_name The... name of the perk
----@param use_passed_icon If enabled, x_passed.png becomes the new icon (instead of x_spent.png)
+---@param player_id entity_id The player's entity_id
+---@param perk_name string The... name of the perk
+---@param use_passed_icon boolean If enabled, x_passed.png becomes the new icon (instead of x_spent.png)
 function SwapPerkIconForSpent( player_id, perk_name, use_passed_icon )
     for i,child_id in ipairs( EntityGetAllChildren( player_id ) or {} ) do
         if EntityHasTag( child_id, "perk_entity" ) then

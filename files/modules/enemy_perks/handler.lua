@@ -46,6 +46,10 @@ local function update_icons()
 		enemy_perks[#enemy_perks+1] = enemy_perks_indexed[perk_id]
 	end
 
+	table.sort(enemy_perks, function(a, b)
+		return a.priority > b.priority
+	end)
+
 	local num_icons = math.min(#enemy_perks, max_icons_displayed)
 	for i=1,num_icons do
 		local sprite = (i == max_icons_displayed and #enemy_perks > max_icons_displayed) and "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/expand.png" or enemy_perks[i].icon

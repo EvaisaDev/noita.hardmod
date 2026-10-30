@@ -1,4 +1,4 @@
-dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local _collision_trigger = collision_trigger
 function collision_trigger()
@@ -20,8 +20,8 @@ function collision_trigger()
 	local nearby_players = EntityGetWithTag( "player_unit" )
 	if nearby_players ~= nil then
 		for i,player in ipairs( nearby_players ) do
-			SetInternalInt( player, "hardmod_return_portal_dest_x", sx )
-			SetInternalInt( player, "hardmod_return_portal_dest_y", sy )
+			utils.SetInternalInt( player, "hardmod_return_portal_dest_x", sx )
+			utils.SetInternalInt( player, "hardmod_return_portal_dest_y", sy )
 		end
 	end
 end

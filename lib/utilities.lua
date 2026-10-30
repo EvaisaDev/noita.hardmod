@@ -1,33 +1,31 @@
----@diagnostic disable: lowercase-global
---Useful scripts.
-
+--Useful functions.
+---@class utils
 local utils = {}
 
 -- de-patterning function for dealing with string.gsub() and other pattern-utilising Lua functions.
 ---@param str string
 ---@return string
 ---@return integer
-function escape(str) return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1") end
+function utils.escape(str) return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1") end
 
 -- Convenient function to simplify modifying files, gsub \r\n to \n to edit multiple lines at a time.
 ---@param file string filepath
 ---@param target string target you wish to replace
 ---@param sub string what you wish to replace it with
-function modifile(file, target, sub)
-	ModTextFileSetContent(file, ModTextFileGetContent(file):gsub("\r\n", "\n"):gsub(escape(target), sub))
+function utils.modifile(file, target, sub)
+	ModTextFileSetContent(file, ModTextFileGetContent(file):gsub("\r\n", "\n"):gsub(utils.escape(target), sub))
 end
 
 
 ---handy func i stole that converts an entire table to string, grabbed from [here](https://stackoverflow.com/questions/9168058/how-to-dump-a-table-to-console)
 ---@param o table
 ---@return string
----@diagnostic disable-next-line: lowercase-global
-function dump(o)
+function utils.dump(o)
 	if type(o) == 'table' then
 		local s = '{ '
 		for k,v in pairs(o) do
 			if type(k) ~= 'number' then k = '"'..k..'"' end
-			s = s .. '['..k..'] = ' .. dump(v) .. ','
+			s = s .. '['..k..'] = ' .. utils.dump(v) .. ','
 		end
 		return s .. '} '
 	else
@@ -39,8 +37,7 @@ end
 ---@param o table
 ---@param q bool? should keys be in quotes
 ---@return string
----@diagnostic disable-next-line: lowercase-global
-function dumpf(o, q, r)
+function utils.dumpf(o, q, r)
 	r = r or 0
 	local _t = ('    '):rep(r)
 	local t = type(o)
@@ -54,7 +51,7 @@ function dumpf(o, q, r)
 			elseif q then
 				k = '["'..k..'"]'
 			end
-			s = s .. _t .. '    '..k..' = ' .. dumpf(v,q,r+1) .. ',\n'
+			s = s .. _t .. '    '..k..' = ' .. utils.dumpf(v,q,r+1) .. ',\n'
 		end
 		if table_is_empty then
 			return s:sub(1, -2) .. '}'
@@ -70,7 +67,7 @@ end
 
 
 
-function MatchDateLocal(check_date)
+function utils.MatchDateLocal(check_date)
 	local current = {}
 	current.year, current.month, current.day, current.hour, current.minute, current.second, current.jussi, current.mammi = GameGetDateAndTimeLocal()
 	for unit,value in pairs(check_date) do
@@ -91,7 +88,7 @@ end
 ---@param t T[]
 ---@return T
 ---Function for picking a random table entry on `weight` as weight
-function RandomFromTable(t)
+function utils.RandomFromTable(t)
 	local total_weight = 0
 	for _, entry in ipairs(t) do
 		total_weight = total_weight + entry.weight
@@ -112,7 +109,7 @@ end
 ---@param seed Seed|nil If a seed is passed, it will use `ProceduralRandomFromTable` instead of `RandomFromTable`.
 ---@return T|nil
 ---Compiles entries from `t` into a new table based on optional `condition` value in the entry and passes it through `RandomFromTable`. `context` is passed into the function as a parameter.
-function ConditionalRandomFromTable(t, context, seed)
+function utils.ConditionalRandomFromTable(t, context, seed)
 	local temp = {}
 	for _, entry in ipairs(t) do
 		if entry.condition and not entry:condition(context) then goto continue end
@@ -129,7 +126,7 @@ end
 ---@param seed Seed
 ---@return T
 ---Function for picking a procedurally random table entry on `weight` as weight based on `seed`
-function ProceduralRandomFromTable(t, seed)
+function utils.ProceduralRandomFromTable(t, seed)
 	local total_weight = 0
 	for _, entry in ipairs(t) do
 		total_weight = total_weight + entry.weight
@@ -148,7 +145,7 @@ end
 ---simple func to get herd id, mostly for other funcs in this file to utilise
 ---@param entity_id entity_id
 ---@return int
-function GetHerdID(entity_id)
+function utils.GetHerdID(entity_id)
 	local genome_comp = EntityGetFirstComponent(entity_id, "GenomeDataComponent")
 	if genome_comp then return ComponentGetValue2(genome_comp, "herd_id")
 	else return 0 end
@@ -163,7 +160,7 @@ end
 ---@param vel_y number?
 ---@param send_message bool?
 ---@return entity_id
-function ShootProjectile(shooter, entity_file, x, y, vel_x, vel_y, send_message)
+function utils.ShootProjectile(shooter, entity_file, x, y, vel_x, vel_y, send_message)
 	---@type entity_id
 	---@diagnostic disable-next-line: assign-type-mismatch
 	shooter = shooter or 0
@@ -172,7 +169,7 @@ function ShootProjectile(shooter, entity_file, x, y, vel_x, vel_y, send_message)
 	vel_y = vel_y or 0
 	send_message =  send_message or true
 
-	local herd_id = GetHerdID(shooter)
+	local herd_id = utils.GetHerdID(shooter)
 
 	GameShootProjectile(shooter, x, y, x+vel_x, y+vel_y, entity_id, send_message)
 
@@ -193,7 +190,7 @@ end
 ---@param variable_name string Name of the variable
 ---@param create_if_nil? boolean If true, a new VSC of the given name will be created if it doesn't exist
 ---@return int value that matches the given VSC name
-function GetInternalInt(entity_id, variable_name, create_if_nil)
+function utils.GetInternalInt(entity_id, variable_name, create_if_nil)
 	local value = nil
 	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
 	if vscomps ~= nil then
@@ -220,7 +217,7 @@ end
 ---@param entity_id entity_id ID of the entity
 ---@param variable_name string Name of the variable
 ---@param new_value int New value of the variable (or initial value, if VSC did not exist)
-function SetInternalInt(entity_id, variable_name, new_value)
+function utils.SetInternalInt(entity_id, variable_name, new_value)
 	local variable_found = false
 	local vscomps = EntityGetComponent(entity_id, "VariableStorageComponent")
 	if vscomps ~= nil then
@@ -246,7 +243,7 @@ end
 ---@param y number?
 ---@param distance number?
 ---@returns entity_id?
-function GetPlayerEntity(x, y, distance)
+function utils.GetPlayerEntity(x, y, distance)
   local tags = {"player_unit", "polymorphed_player", "polymorphed_cessation"}
 	for _,tag in pairs(tags) do
 		local player
@@ -272,7 +269,7 @@ end
 ---@param outMin int Lower end of the output range
 ---@param outMax int Higher end of the output range
 ---@return int result The mapped value
-function Remap( value, inMin, inMax, outMin, outMax )
+function utils.Remap( value, inMin, inMax, outMin, outMax )
 	if inMax == inMin then
 		error("Input range cannot have zero length")
 	end
@@ -286,7 +283,7 @@ end
 --- Returns the pickup count of a specific perk
 ---@param perk_id string The perk's ID, i.e. "REMOVE_FOG_OF_WAR"
 ---@return number count The amount of times this perk was taken by the player.
-function GetPerkPickupCount( perk_id )
+function utils.GetPerkPickupCount( perk_id )
 	dofile_once("data/scripts/perks/perk_list.lua")
 
 	---@diagnostic disable-next-line: undefined-global
@@ -300,7 +297,7 @@ end
 ---@param entity_id entity_id The entity that will hold the LuaComponent
 ---@param script_path string Path to the script to be executed
 ---@param delay int? Delay before script execution in frames (default 30)
-function TriggerScriptDelayed(entity_id, script_path, delay)
+function utils.TriggerScriptDelayed(entity_id, script_path, delay)
 	delay = delay or 30
 	EntityAddComponent2(entity_id, "LuaComponent", {
 		script_source_file = script_path,
@@ -310,21 +307,41 @@ function TriggerScriptDelayed(entity_id, script_path, delay)
 	})
 end
 
-utils = {
-	escape = escape,
-	modifile = modifile,
-	dump = dump,
-	dumpf = dumpf,
-	MatchDateLocal = MatchDateLocal,
-	RandomFromTable = RandomFromTable,
-	ConditionalRandomFromTable = ConditionalRandomFromTable,
-	ProceduralRandomFromTable = ProceduralRandomFromTable,
-	GetHerdID = GetHerdID,
-	ShootProjectile = ShootProjectile,
-	GetInternalInt = GetInternalInt,
-	SetInternalInt = SetInternalInt,
-	GetPlayerEntity = GetPlayerEntity,
-	Remap = Remap,
-	GetPerkPickupCount = GetPerkPickupCount,
-}
+---Changes an entity's HP/max HP in DamageModelComponent. Values are 1/25
+---@param eid entity_id Entity's ID
+---@param hp integer? New HP (if nil and max_hp is present, will keep the entity's old HP but cap it)
+---@param max_hp integer? New max HP (omit to not change it)
+function utils.EntitySetHp(eid, hp, max_hp)
+	local dmc = EntityGetFirstComponent(eid, "DamageModelComponent")
+	if not dmc then return end
+
+	if not hp and max_hp then
+		hp = math.min(tonumber(ComponentGetValue2(dmc, "hp")) or max_hp, max_hp)
+	end
+
+	if max_hp then ComponentSetValue2(dmc, "max_hp", max_hp) end
+	if hp then ComponentSetValue2(dmc, "hp", hp) end
+end
+
+---Returns an entity's HP and max HP from DamageModelComponent
+---@param eid entity_id Entity's ID
+---@return { hp: integer, max_hp: int }? hp Entity's health; values are 1/25
+function utils.EntityGetHp(eid)
+	local dmc = EntityGetFirstComponent(eid, "DamageModelComponent")
+	if not dmc then return end
+	return {
+		hp = tonumber(ComponentGetValue2(dmc, "hp")),
+		max_hp = tonumber(ComponentGetValue2(dmc, "max_hp")),
+	}
+end
+
+---Adds `increment` to the entity's HP in DamageModelComponent
+---@param eid entity_id Entity's ID
+---@param increment integer Value to add (pass negative to reduce HP instead); value is 1/25
+function utils.EntityAddHp(eid, increment)
+	local hp = utils.EntityGetHp(eid)
+	if not hp then return end
+	utils.EntitySetHp(eid, hp.hp + increment)
+end
+
 return utils

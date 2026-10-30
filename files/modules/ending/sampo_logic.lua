@@ -1,13 +1,12 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
 local orbs_required = 10
 local eid = GetUpdatedEntityID()
 
 current_orb_count = -1
 
 local function update_orb_glyphs(orb_count)
-  dofile_once("mods/noita.hardmod/lib/utilities.lua")
-
-  if (GetInternalInt(eid, "hardmod_sampo_orb_glyphs_were_spawned") or 0) == 0 then
-    SetInternalInt(eid, "hardmod_sampo_orb_glyphs_were_spawned", 1)
+  if (utils.GetInternalInt(eid, "hardmod_sampo_orb_glyphs_were_spawned") or 0) == 0 then
+    utils.SetInternalInt(eid, "hardmod_sampo_orb_glyphs_were_spawned", 1)
 
     local rot_step = (math.pi * 2) / orbs_required
     local center_x, center_y = EntityGetTransform(eid)
@@ -15,8 +14,8 @@ local function update_orb_glyphs(orb_count)
       local sx = center_x - (32 * math.cos(rot_step * i)) - 6
       local sy = center_y - (32 * math.sin(rot_step * i))
       local glyph = EntityLoad("mods/noita.hardmod/files/modules/ending/entities/orb_glyph.xml", sx, sy)
-      SetInternalInt(glyph, "hardmod_sampo_orb_glyph_index", i+1)
-      EntityAddChild(eid, glyph, true)
+      utils.SetInternalInt(glyph, "hardmod_sampo_orb_glyph_index", i+1)
+      EntityAddChild(eid, glyph)
     end
   end
 end
@@ -49,15 +48,22 @@ local function reenable_sampo()
     ComponentSetValue2(sprite, "image_file", "mods/noita.hardmod/files/modules/ending/gfx/sampo_sprite.xml")
   end
 
-  local item = EntityGetFirstComponentIncludingDisabled(eid, "ItemComponent")
-  if item then
-    ComponentSetValue2(item, "is_pickable", true)
-  end
-
   local interactable = EntityGetFirstComponentIncludingDisabled(eid, "InteractableComponent")
   if interactable then
     EntityRemoveComponent(eid, interactable)
   end
+
+  EntityAddComponent2(eid, "ItemComponent", {
+		_tags = "enabled_in_world",
+		item_name = "$item_mcguffin_10",
+		is_pickable = true,
+		ui_sprite = "data/ui_gfx/items/sampo.png",
+		ui_description = "$itemdesc_mcguffin_10",
+		preferred_inventory = "FULL",
+		uses_remaining = -1,
+		play_spinning_animation = false,
+		play_hover_animation = true
+  })
 
   EntityRemoveTag(eid, "sampo_locked")
 end

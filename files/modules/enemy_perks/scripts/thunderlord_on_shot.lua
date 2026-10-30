@@ -1,12 +1,11 @@
-
 function shot( entity_id )
-    local proj_comp = EntityGetFirstComponentIncludingDisabled(entity, "ProjectileComponent")
+    local proj_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "ProjectileComponent")
     if proj_comp ~= nil then
     	ComponentObjectSetValue2(proj_comp, "damage_by_type", "electricity", 0.4)
     end
+    local x, y = EntityGetTransform( entity_id )
     EntityAddChild(entity_id, EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/thunderlord_hitfx.xml", x, y))
 
-    local x, y = EntityGetTransform( entity_id )
     EntityAddComponent2(entity_id, "LuaComponent", {
         script_source_file = "mods/noita.hardmod/files/modules/enemy_perks/scripts/thunderlord_try_electrify.lua",
         execute_times = 1,

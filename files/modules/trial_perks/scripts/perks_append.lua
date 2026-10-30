@@ -1,4 +1,5 @@
 dofile_once( "mods/noita.hardmod/files/modules/trial_perks/scripts/trial_perk_utils.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 new_perks = {
 	{
@@ -7,7 +8,7 @@ new_perks = {
 		ui_description = "$hardmod_perk_time_trial_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/perks/time_trial_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/perks/time_trial.png",
-		stackable = STACKABLE_YES,
+		stackable = true,
 		one_off_effect = true,
 		usable_by_enemies = false,
 		func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
@@ -16,7 +17,7 @@ new_perks = {
 
 			-- register the current y position to disqualify nearby hearts
 			local x, y = EntityGetTransform( entity_who_picked )
-        	SetInternalInt( entity_who_picked, "hardmod_time_trial_start_y", y )
+        	utils.SetInternalInt( entity_who_picked, "hardmod_time_trial_start_y", y )
 
 			-- add GameEffect, if it doesn't exist already
 			local game_effect = EntityGetAllChildren( entity_who_picked, "hardmod_time_trial_game_effect" )[1]
@@ -34,7 +35,7 @@ new_perks = {
 		ui_description = "$hardmod_perk_glass_heart_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/perks/glass_heart_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/perks/glass_heart.png",
-		stackable = STACKABLE_YES,
+		stackable = true,
 		one_off_effect = true,
 		usable_by_enemies = false,
 		func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
@@ -43,7 +44,7 @@ new_perks = {
 
 			-- register the current y position to disqualify nearby hearts
 			local x, y = EntityGetTransform( entity_who_picked )
-        	SetInternalInt( entity_who_picked, "hardmod_glass_heart_start_y", y )
+        	utils.SetInternalInt( entity_who_picked, "hardmod_glass_heart_start_y", y )
 
 	        -- add a damage_received script
 	        EntityAddComponent( entity_who_picked, "LuaComponent",

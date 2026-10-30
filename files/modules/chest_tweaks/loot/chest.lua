@@ -1,4 +1,5 @@
 local lootlib = dofile_once("mods/noita.hardmod/lib/lootlib.lua")---@type lootlib
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
 local chest = lootlib.get_loot_table("chest_random")
 
 local bomb = lootlib.get_label(chest, "bomb")
@@ -7,7 +8,37 @@ if bomb then
   bomb.pick_weighted = {
     { weight = 20, entity = "data/entities/projectiles/bomb_small.xml" },
     { weight = 16, entity = "data/entities/projectiles/deck/tentacle_portal.xml" },
-    { weight = 2, entity = "data/entities/animals/thundermage.xml" },
+	{
+		weight = 3,
+		var = "rolls", add = 1,
+		func = function(ctx)
+			local count = Random(2, 10)
+			for _=1,count do lootlib.handlers.entity(ctx, "data/entities/animals/rat.xml", {}) end
+		end
+	},
+    {
+		weight = 3,
+		var = "rolls", add = 2,
+		entity = "data/entities/animals/skullrat.xml",
+		entity_func = function (eid) utils.EntitySetHp(eid, 1, 1) end
+	},
+    {
+		weight = 2,
+		var = "rolls", add = 3,
+		pick_random = {
+			{ entity = "data/entities/animals/wizard_dark.xml" },
+			{ entity = "data/entities/animals/wizard_dark.xml" },
+			{ entity = "data/entities/animals/wizard_neutral.xml" },
+			{ entity = "data/entities/animals/wizard_hearty.xml" },
+			{ entity = "data/entities/animals/wizard_twitchy.xml" },
+		},
+	},
+	{
+		weight = 0.5,
+		var = "rolls", add = 5,
+		entity = "data/entities/animals/thundermage.xml",
+		entity_func = function (eid) utils.EntitySetHp(eid, 1, 1) end
+	}
   }
 
   bomb.var = "rolls"

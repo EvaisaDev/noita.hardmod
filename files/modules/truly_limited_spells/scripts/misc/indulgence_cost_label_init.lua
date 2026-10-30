@@ -1,6 +1,6 @@
-dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
-local cast_price = GetInternalInt( GetUpdatedEntityID(), "hardmod_indulgence_cast_price" )
+local cast_price = utils.GetInternalInt( GetUpdatedEntityID(), "hardmod_indulgence_cast_price" )
 
 local offsetx = 6
 local text = tostring( cast_price )

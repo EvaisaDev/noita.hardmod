@@ -9,7 +9,7 @@ ModLuaFileAppend("data/scripts/perks/perk_reflect.lua", curr_path.."add_perks_to
 local logging = false
 
 
-local base_perk_chance = .2
+local base_perk_chance = .15
 
 
 local biome_levels = {
@@ -19,11 +19,13 @@ local biome_levels = {
 		--range = {0, 0},
 		--custom_func = function(self, entity_id) end --return perk num
 	},
+	["$biome_coalmine"] = 1, --mines
 	["$hardmod_biomename_infested_mines"] = 1, --infested mines
 	["$biome_coalmine_alt"] = 2,
 	["$biome_excavationsite"] = 2, --coal pits
-	["$biome_fun"] = 3, --fungal caverns
+	["$biome_fungicave"] = 3, --fungal caverns
 	["$biome_snowcave"] = 3, --snowy depths
+	["$biome_wandcave"] = 4, --snowy depths
 	["$biome_snowcastle"] = 4, --hiisi base
 	["$biome_rainforest"] = 5, --jungle
 	["$biome_rainforest_dark"] = 6, --lukki lair
@@ -31,6 +33,15 @@ local biome_levels = {
 	["$biome_crypt"] = 7,
 
 	["$biome_liquidcave"] = 4,
+	["$biome_desert"] = 7,
+	["$biome_wizardcave"] = 8,
+	["$biome_sandcave"] = 8,
+	["$biome_fun"] = 9,
+	["$biome_robobase"] = {
+		level = 6,
+		range = {1, 2} --guaranteed 1-2 perks base
+	},
+	["$biome_meat"] = 10
 }
 
 
@@ -116,14 +127,18 @@ local function give_enemy_perks(entity_id, num)
 
 	end
 
+	local biome = BiomeMapGetName(x, y)
 	local data = {
+		x = x, y = y,
+		biome = biome,
+		level = (biome_levels[biome] or biome_levels.default_biome_data).level,
 		target_enemy = entity_id,
 		already_held_perks = already_held_perks,
 		how_many_of_each_perk = how_many_of_each_perk,
 		player = _g.player,
 		player_poly_identity = _g.player_poly_identity,
 	}
-	for i = 1, num do
+	for i=1, num do
 		local perk = utils.ConditionalRandomFromTable(enemy_perks, data)
 		if not perk then return end
 		data = perk:func(entity_id, data) or data
@@ -163,6 +178,7 @@ hooks.new_eid = function(entity_id)
 			num = num + Random(biome_data.range[1], biome_data.range[2])
 		end
 		--if not biome_levels[biome] then print(biome) end --use to find biomes not yet assigned levels
+		--num = Random(0, 10)
 		give_enemy_perks(entity_id, num)
 	end
 end
@@ -236,6 +252,10 @@ function hooks.post_update(frame)
 	for perk_id in ComponentGetValue2(enemy_perk_data, "value_string"):gmatch("([^,]+)") do
 		target_perks[#target_perks+1] = enemy_perks_indexed[perk_id]
 	end
+
+	table.sort(target_perks, function(a, b)
+		return a.priority > b.priority
+	end)
 
 	local function render_perk(perk, x, y)
 		if perk.locked then GuiColorSetForNextWidget(gui, 0.3, 0.3, 0.3, 1) end

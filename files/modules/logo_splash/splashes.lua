@@ -1,7 +1,7 @@
 local y,m,d = GameGetDateAndTimeUTC()
 local evil_level = (y * 31469 + m * 929 + d * 541) % 100 + 1
 
-return {
+local splashes = {
 	-- TODO: update this before release
 	-- (you can use `tokei`, or just ping me on discord @.qtyui)
 	"15,000 Lines Of Code",
@@ -50,14 +50,28 @@ return {
 	"Beat this to unlock Epilogue 3!",
 	"Lamia was drunk",
 	"qtyui_ was here",
-	"Also try Fair Mod!",
 	"Hämis :+1:",
 	"NT Sadge",
 	"Sponsored by CEO Hiisilius IV",
 	"No Fun Allowed",
 	"0% cheese!",
 	"Fair Mod 2: This Time It's Actually Fair",
-	"Fixes NB-13, NB-25, NB-55, NB-103 and NB-121",
+	"Fixes NB-13, NB-25 and NB-103",
 	"Restored 5wand!",
 	"exploding u :3",
+	"noita.harmod",
+	"woag...\nnewline...",
+	"why do these splashes keep mentioning a \"fair mod\"????",
 }
+
+local cool_mods = {
+	"Fairmod",
+	"Perkageddon",
+	"Apotheosis",
+	"D2D Content Pack",
+}
+for _,coolmod in ipairs(cool_mods) do
+	splashes[#splashes+1] = "Also try "..coolmod.."!"
+end
+
+return splashes

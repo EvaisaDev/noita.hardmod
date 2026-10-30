@@ -1,6 +1,6 @@
-dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local ring = GetUpdatedEntityID()
 local x, y = EntityGetTransform( ring )
-SetInternalInt( ring, "hardmod_spawn_x", x )
-SetInternalInt( ring, "hardmod_spawn_y", y )
+utils.SetInternalInt( ring, "hardmod_spawn_x", x )
+utils.SetInternalInt( ring, "hardmod_spawn_y", y )

@@ -217,4 +217,58 @@ Update scripts/build.js
 Enemy perks are... GOOD ENOUGH. I DONT HAVE TIME FOR FEATURE CREEP, MAKE DO.
 forgor about TLs
 FIXED CRITICAL DEVASTATING BUG THAT KILLED EVERYTHING!!!!!!!!!!
-Update commit_log.txt
+nerf conc spells
+nerf damage from chainsaw, mini chainsaw and digging bolt
+format
+move to a separate module nerf_vanilla_damage
+vanilla boss nerfs
+fix Ring of Returning infinite tele loop
+fix D2D paths
+update cheese biome
+forgot some files
+(and some more still)
+fix extra modifier stacking :)
+update indulgence and infinity sprites
+add 3 enemy perks
+:)
+Make HM hearts and spell refreshes paid
+Reduce percentage
+Add Null Mana
+fix add mana desc
+require 10 orbs to pickup the sampo
+change alchemist flask's name to make it clearer that its large
+adjust enemy spawns
+fix fungal longleg ragdolls
+forgot to remove this
+swappem
+fixed some enemy perk issues
+replaced PRF with Apoth Big Shield
+fixed formatting in evil file
+make Extra Item in HM work in hougrlass chamber; allow Amplified Items to spawn early for fun
+add guaranteed cheese item in cheese room
+adjust positions
+finished stealing from apotheosis
+fix missing hte
+add 5 more enemy perks
+forgot icon
+:>
+slightly buff Impervious shield (for the player)
+Merge remote-tracking branch 'origin/main' into d2d-content
+Merge remote-tracking branch 'fork/d2d-content'
+change force-casts to copies
+nerf Vigour enemy perk
+disable the Impervious perk... for now.....
+fixed apoth incompat
+nerf some spells
+some spell relbalances
+Ira Balance Changes
+added projectile resistance perk
+make blink spell have 30 charges and can be unlimited
+change lifetime
+on second thought, keep the old cd reduction
+get frozen nerd
+fixed a few things with eperks
+added mini-icons for eperks
+added more eperk biomes, added eperk priority order
+guiding powder hint
+added 8 new eperks (mostly untested), as well as some other minor maintenance

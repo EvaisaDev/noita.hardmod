@@ -211,9 +211,10 @@
 	output_cell1="[grows_mushrooms]"    output_cell2="blood_fungi" 
 	direction="top">
   </Reaction>
+  <!--
   <Reaction probability="5"
 	input_cell1="[grows_mushrooms]" 	input_cell2="air"
 	output_cell1="[grows_mushrooms]"    output_cell2="pus" 
 	direction="top">
-  </Reaction>  
+  </Reaction> this is just really annoying -->
 </Materials>

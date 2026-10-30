@@ -1,3 +1,4 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua")---@type nxml
 
 local custom_biomes = {
@@ -17,7 +18,7 @@ for file in nxml.edit_file("data/biome/_biomes_all.xml") do
 end
 
 ModMagicNumbersFileAdd("mods/noita.hardmod/files/modules/biome_map/magic_numbers.xml")
-modifile(
+utils.modifile(
   "data/scripts/biomes/snowcastle_cavern.lua",
   [[local is_right = ]],
   [[local is_right = true --]]

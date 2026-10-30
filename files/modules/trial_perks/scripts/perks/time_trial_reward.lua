@@ -1,3 +1,4 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 dofile_once( "mods/noita.hardmod/files/modules/trial_perks/scripts/trial_perk_utils.lua" )
 
 local function spawn_staff( x, y, frames_left )
@@ -47,4 +48,4 @@ end
 
 EntityRemoveAllByTag( player, "hardmod_time_trial" )
 SwapPerkIconForSpent( player, "$hardmod_perk_time_trial_name", true )
-SetInternalInt( player, "hardmod_time_trial_start_y", 0 )
+utils.SetInternalInt( player, "hardmod_time_trial_start_y", 0 )

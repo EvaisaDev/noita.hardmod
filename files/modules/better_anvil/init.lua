@@ -1,14 +1,15 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua")---@type nxml
 local root = "mods/noita.hardmod/files/modules/better_anvil"
 
 local function patch_broken_wand()
-  modifile(
+  utils.modifile(
     "data/scripts/items/broken_wand_throw.lua",
     [[spell_amount = 18]], [[spell_amount = 27]]
   )
 
   local search = "shoot_projectile( entity_id, spell, pos_x, pos_y, vel_x, vel_y)"
-  modifile(
+  utils.modifile(
     "data/scripts/items/broken_wand_spells.lua",
     search,
     "local thrown_projectile = " .. search .. [[
@@ -25,7 +26,7 @@ end
 
 local forge_item_convert = "data/scripts/buildings/forge_item_convert.lua"
 local function patch_forge_convert()
-  modifile(
+  utils.modifile(
     forge_item_convert,
     [[data/entities/items/wand_level_05_better.xml]],
     [[data/entities/items/wand_unshuffle_05.xml]]
@@ -33,7 +34,7 @@ local function patch_forge_convert()
 end
 
 local function patch_broken_spell()
-  modifile(
+  utils.modifile(
     forge_item_convert,
     [[CreateItemActionEntity( "SUMMON_PORTAL", x, y)]],
     [[dofile("mods/noita.hardmod/files/modules/better_anvil/forge/repaired_spell.lua")(x, y)]]

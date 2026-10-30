@@ -1,17 +1,19 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
 for file in nxml.edit_file("data/entities/animals/boss_centipede/sampo.xml") do
   local item = file:first_of("ItemComponent")
-  if item then
-    item:set("is_pickable", false)
-  end
+  if item then file:remove_child(item) end
 
-  -- for emitter in file:each_of("ParticleEmitterComponent") do
-  --   if emitter:get("emitted_material_name") == "spark_blue" then
-  --     emitter:set("emitted_material_name", "spark_white_bright")
-  --     break
-  --   end
-  -- end
+  local phys = file:first_of("SimplePhysicsComponent")
+  if phys then file:remove_child(phys) end
+
+  for emitter in file:each_of("ParticleEmitterComponent") do
+    if emitter:get("emitted_material_name") == "spark_blue" then
+      emitter:set("emitted_material_name", "spark_white_bright")
+      break
+    end
+  end
 
   local area_checker = file:first_of("MaterialAreaCheckerComponent")
   if area_checker then
@@ -39,6 +41,40 @@ for file in nxml.edit_file("data/entities/animals/boss_centipede/sampo.xml") do
   })
 end
 
--- ModLuaFileAppend("data/entities/animals/boss_centipede/sampo_init.lua", "mods/noita.hardmod/files/modules/ending/appends/sampo_init.lua")
+utils.modifile(
+  "data/scripts/biomes/boss_arena.lua",
+  [[sampo.xml", x, y + 80 )]],
+  [[sampo.xml", x, y + 90); EntityLoad("mods/noita.hardmod/files/modules/ending/entities/book_hint.xml", x - 145, y - 40)]]
+)
+
+-- I fucking hate this shit why does it not work???????????????
+-- local function patch_material_hint()
+--   for file in nxml.edit_file("data/biome/_pixel_scenes.xml") do
+--     local root = "mods/noita.hardmod/files/modules/ending/gfx/"
+
+--     local scenes = file:first_of("mBufferedPixelScenes")
+--     if not scenes then return end
+    
+--     scenes:create_child("PixelScene", {
+--       DEBUG_RELOAD_ME = false, clean_area_before = true,
+--       skip_biome_checks = true, skip_edge_textures = false,
+--       material_filename = root.."ending_materials_hint.png",
+--       background_filename = "",
+--       colors_filename = "",
+--       pos_x = 3430, pos_y = 13103,
+--     })
+
+--     scenes:create_child("PixelScene", {
+--       DEBUG_RELOAD_ME = false, clean_area_before = true,
+--       skip_biome_checks = true, skip_edge_textures = false,
+--       material_filename = root.."ending_materials_hint_right.png",
+--       background_filename = "",
+--       colors_filename = "",
+--       pos_x = 3430 + 160, pos_y = 13103,
+--     })
+--   end
+-- end
+
+-- patch_material_hint()
 
 return {}

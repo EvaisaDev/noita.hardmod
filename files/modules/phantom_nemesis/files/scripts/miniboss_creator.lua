@@ -5,11 +5,11 @@ local abilities_list = {
     },
     {
         tier = 2,
-        abilities = {{id="ghastly",cost=200},{id="immune_explosion",cost=200},{id="immune_electricity",cost=200},{id="immune_melee",cost=200},{id="immune_fire",cost=200},{id="immune_ice",cost=200},{id="immune_radioactive",cost=200},{id="immune_drill",cost=200},{id="immune_curse",cost=200},{id="immune_holy",cost=200},{id="shield_big",cost=150},{id="barrage_shoot",cost=200},{id="necrobot",cost=300},{id="poison_blood",cost=100},{id="immune_stun",cost=200},{id="matter_eater",cost=200}}
+        abilities = {{id="ghastly",cost=200},{id="immune_explosion",cost=200},{id="immune_electricity",cost=200},{id="immune_melee",cost=200},{id="immune_fire",cost=200},{id="immune_ice",cost=200},{id="immune_radioactive",cost=200},{id="immune_drill",cost=200},{id="immune_curse",cost=200},{id="immune_holy",cost=200},{id="shield_big",cost=150},{id="barrage_shoot",cost=200},{id="necrobot",cost=300},{id="poison_blood",cost=100},{id="immune_stun",cost=200}}
     },
     {
         tier = 3,
-        abilities = {{id="shield_reactive",cost=200},{id="rapid_regeneration",cost=200},{id="anti_ambrosia_field",cost=300},{id="flight",cost=50},{id="teleport_to_target",cost=500}}
+        abilities = {{id="shield_reactive",cost=200},{id="rapid_regeneration",cost=200},{id="anti_ambrosia_field",cost=300},{id="flight",cost=50},{id="teleport_to_target",cost=500},{id="matter_eater",cost=300}}
     },
     {
         tier = 4,

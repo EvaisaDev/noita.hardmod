@@ -1,4 +1,5 @@
 dofile_once( "mods/noita.hardmod/files/modules/trial_perks/scripts/trial_perk_utils.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local _spawn_hp = spawn_hp
 function spawn_hp( x, y )
@@ -9,9 +10,9 @@ function spawn_hp( x, y )
 	if nearby_players then
 		for i,player in ipairs( nearby_players ) do
 
-			local start_y = GetInternalInt( player, "hardmod_glass_heart_start_y" ) or 0
+			local start_y = utils.GetInternalInt( player, "hardmod_glass_heart_start_y" ) or 0
 			if start_y ~= 0 and ( y - start_y ) > 600 then
-				SetInternalInt( player, "hardmod_glass_heart_start_y", 0 )
+				utils.SetInternalInt( player, "hardmod_glass_heart_start_y", 0 )
 
 				EntityRemoveAllByTag( player, "hardmod_glass_heart" )
 				local dmg_comp = EntityGetFirstComponentIncludingDisabled( player, "DamageModelComponent" )
@@ -20,16 +21,16 @@ function spawn_hp( x, y )
 					local p_max_hp = ComponentGetValue2( dmg_comp, "max_hp" )
 					ComponentSetValue2( dmg_comp, "max_hp", p_max_hp * 2 )
 
-					TriggerScriptDelayed( player, "mods/noita.hardmod/files/modules/trial_perks/scripts/perks/glass_heart_reward.lua", 45 )
+					utils.TriggerScriptDelayed( player, "mods/noita.hardmod/files/modules/trial_perks/scripts/perks/glass_heart_reward.lua", 45 )
 					spawn_return_portal = true
 				end
 			end
 
-			start_y = GetInternalInt( player, "hardmod_time_trial_start_y" ) or 0
+			start_y = utils.GetInternalInt( player, "hardmod_time_trial_start_y" ) or 0
 			if start_y ~= 0 and ( y - start_y ) > 600 then
-				SetInternalInt( player, "hardmod_time_trial_start_y", 0 )
+				utils.SetInternalInt( player, "hardmod_time_trial_start_y", 0 )
 
-				TriggerScriptDelayed( player, "mods/noita.hardmod/files/modules/trial_perks/scripts/perks/time_trial_reward.lua", 45 )
+				utils.TriggerScriptDelayed( player, "mods/noita.hardmod/files/modules/trial_perks/scripts/perks/time_trial_reward.lua", 45 )
 				spawn_return_portal = true
 			end
 		end
@@ -45,8 +46,8 @@ function spawn_hp( x, y )
 				local players = EntityGetWithTag( "player_unit" )
 				if players ~= nil then
 					for i,player in ipairs( players ) do
-						local stored_x = GetInternalInt( player, "hardmod_return_portal_dest_x" )
-						local stored_y = GetInternalInt( player, "hardmod_return_portal_dest_y" )
+						local stored_x = utils.GetInternalInt( player, "hardmod_return_portal_dest_x" )
+						local stored_y = utils.GetInternalInt( player, "hardmod_return_portal_dest_y" )
 						if stored_x ~= nil and stored_y ~= nil then
 							tx = stored_x
 							ty = stored_y

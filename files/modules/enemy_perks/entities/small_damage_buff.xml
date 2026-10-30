@@ -1,0 +1,23 @@
+<Entity>
+
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/damage_buff.lua"
+		execute_every_n_frame="10"
+	/>
+
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/damage_buff_remove.lua"
+		execute_every_n_frame="-1"
+		execute_on_removed="1"
+	/>
+
+	<UIIconComponent
+		name="$status_damage_plus_small"
+		description="$statusdesc_damage_plus_small"
+		icon_sprite_file="data/ui_gfx/status_indicators/damage_plus_small.png"
+		is_perk="0"
+		display_above_head="1"
+		display_in_hud="1"
+	/>
+
+</Entity>

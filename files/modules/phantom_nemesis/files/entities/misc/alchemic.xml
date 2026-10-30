@@ -2,13 +2,7 @@
 
 	<InheritTransformComponent 
 		_enabled="1" >
-    </InheritTransformComponent>	
-    
-    <GameEffectComponent 
-        effect="PROTECTION_FIRE"
-        frames="-1"
-    >
-	</GameEffectComponent >
+    </InheritTransformComponent>
 
 	<LuaComponent
 		_enabled="1"

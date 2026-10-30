@@ -1,7 +1,14 @@
 local hooks = {}
--- local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
+local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
 ModMaterialsFileAdd( "mods/noita.hardmod/files/modules/truly_limited_spells/materials.xml")
+
+for file in nxml.edit_file("data/entities/items/pickup/spell_refresh.xml") do
+	local item = file:first_of("ItemComponent")
+	if item then
+		item:set("auto_pickup", false)
+	end
+end
 
 hooks.mod_post_init = function()
 	ModLuaFileAppend( "data/scripts/perks/perk_list.lua", "mods/noita.hardmod/files/modules/truly_limited_spells/scripts/perks_append.lua" )

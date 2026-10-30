@@ -1,10 +1,12 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
+
 function damage_received( damage, desc, entity_who_caused, is_fatal )
     local entity_id = GetUpdatedEntityID()
     local comp_id = GetUpdatedComponentID()
 
     -- if heartbreak is active, lose max HP equal to 50% of damage taken
     dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
-    local heartbreak_state = GetInternalInt( entity_id, "hardmod_heartbreak_enabled" )
+    local heartbreak_state = utils.GetInternalInt( entity_id, "hardmod_heartbreak_enabled" )
     if heartbreak_state ~= nil and heartbreak_state == 1 then
         local dmg_comp = EntityGetFirstComponentIncludingDisabled( entity_id, "DamageModelComponent" )
         if dmg_comp ~= nil then

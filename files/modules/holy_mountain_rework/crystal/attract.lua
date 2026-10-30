@@ -1,7 +1,7 @@
 local entity_id = GetUpdatedEntityID()
 local x,y = EntityGetTransform(entity_id)
 
-local strength = 8
+local strength = 3
 local radius = 65
 
 for i,crystal in ipairs(EntityGetInRadiusWithTag(x, y, radius, "hm_crystal") or {}) do

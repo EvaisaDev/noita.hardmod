@@ -1,4 +1,4 @@
-dofile_once("mods/noita.hardmod/lib/utilities.lua")
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local hooks = {}
 local directory = "mods/noita.hardmod/files/modules/nerf_vanilla_cheeses/"
@@ -30,7 +30,7 @@ end
 function hooks.edit_material(elem)
     local mat_name = elem.attr.name
     if mat_name == "rock_hard_border" or mat_name == "rock_hard" then
-        elem.attr.tags = elem.attr.tags:gsub(escape(",[earth]"), "")
+        elem.attr.tags = elem.attr.tags:gsub(utils.escape(",[earth]"), "")
     end
 end
 

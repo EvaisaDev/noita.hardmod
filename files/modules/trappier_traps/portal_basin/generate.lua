@@ -1,4 +1,4 @@
-dofile_once("mods/noita.hardmod/lib/utilities.lua")
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local basin_mats = {
 	{
@@ -54,7 +54,7 @@ local function get_material(x, y)
 	end
 
 	SetRandomSeed(x, y)
-	return RandomFromTable(basin_mats).material
+	return utils.RandomFromTable(basin_mats).material
 end
 
 function spawn_altar_top(x, y, is_solid)

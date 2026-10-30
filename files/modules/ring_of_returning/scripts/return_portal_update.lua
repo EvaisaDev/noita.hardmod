@@ -1,12 +1,12 @@
-dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local portal_id = GetUpdatedEntityID()
 local x, y = EntityGetTransform( portal_id )
 
 local player = EntityGetInRadiusWithTag( x, y, 15, "player_unit" )[1]
 if player ~= nil then
-	local tx = GetInternalInt( player, "hardmod_return_portal_dest_x" )
-	local ty = GetInternalInt( player, "hardmod_return_portal_dest_y" )
+	local tx = utils.GetInternalInt( player, "hardmod_return_portal_dest_x" )
+	local ty = utils.GetInternalInt( player, "hardmod_return_portal_dest_y" )
 	if tx == nil or tx == 0 then return end
 
 	-- "teleport"

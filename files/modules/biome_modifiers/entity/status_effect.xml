@@ -1,0 +1,9 @@
+<Entity tags="hardmod_biomemodifier_status">
+  <InheritTransformComponent></InheritTransformComponent>
+
+  <GameEffectComponent
+    effect="CUSTOM"
+    custom_effect_id="HARDMOD_BIOMEMODIFIER_STATUS"
+    frames="-1"
+  ></GameEffectComponent>
+</Entity>

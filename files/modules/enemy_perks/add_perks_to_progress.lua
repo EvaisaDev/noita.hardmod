@@ -16,9 +16,6 @@ for _,perk in ipairs(enemy_perks) do
 	if not not not not_progress then
 		local perk_id = "enemyperk_hardmod_" .. perk.id
 
-		--local description = GameTextGetTranslatedOrNot(perk.description or "")
-		--if #description ~= 0 then description = description.."\n" end
-		--description = description..
 		RegisterPerk(
 			perk_id,
 			perk.name,

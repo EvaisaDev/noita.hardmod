@@ -40,6 +40,7 @@ local modules = {
 	"rapidfire_nerfs",
 	"trial_perks",
 	"biome_map",
+	"biome_modifiers",
 	"stronger_enemies",
 	"potions",
 	"alternate_biomes",
