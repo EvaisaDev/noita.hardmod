@@ -191,7 +191,7 @@ local perks = {
 		weight = 1,
 		priority = 15,
 		max = 1,
-		condition = function(self, data) return not data.vigour end,
+		condition = function(self, data) return not data.kamikaze end,
 		func = function(self, entity_id, data)
 			-- make the enemy explode on death
 			EntityAddComponent2(entity_id, "LuaComponent", {
