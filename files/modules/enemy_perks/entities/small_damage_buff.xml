@@ -1,8 +1,8 @@
-<Entity>
+<Entity name="hardmod.damage_buff">
 
 	<LuaComponent
 		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/damage_buff.lua"
-		execute_every_n_frame="10"
+		execute_every_n_frame="20"
 	/>
 
 	<LuaComponent

@@ -1,16 +1,25 @@
 local entity_id = GetUpdatedEntityID()
 local root = EntityGetRootEntity(entity_id)
 
+local cooldown = 60
+local amount_add_frames = 600 --can be nerfed to 300f (5s), but then nerf cd to 30f
+
 for _,child in ipairs(EntityGetAllChildren(root) or {}) do
 	local name = EntityGetName(child)
-	print(name)
 	if name == "hardmod.curse_cloud_thunder" or name == "hardmod.curse_cloud_acid" then
-		return
-		-- local gec = EntityGetFirstComponent(child, "GameEffectComponent")
-		-- if not gec then return end
-		-- print("adding to lifetime...")
-		-- ComponentSetValue2(gec, "frames", ComponentGetValue2(gec, "frames") + 600)
-		-- EntityKill(entity_id) return
+		local gec = EntityGetFirstComponent(child, "GameEffectComponent")
+		for _, varcomp in ipairs(EntityGetComponent(child, "VariableStorageComponent") or {}) do
+			if ComponentGetValue2(varcomp, "name") == "last_time_incremented" then
+				local frame = GameGetFrameNum()
+				if ComponentGetValue2(varcomp, "value_int") > frame then return
+				else
+					ComponentSetValue2(varcomp, "value_int", frame+cooldown)
+				end
+			end
+		end
+		if not gec then return end
+		ComponentSetValue2(gec, "frames", ComponentGetValue2(gec, "frames") + amount_add_frames)
+		EntityKill(entity_id) return
 	end
 end
 

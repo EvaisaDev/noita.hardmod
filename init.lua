@@ -169,7 +169,7 @@ end
 function OnPlayerSpawned(p)
 	gd.player = p
 	gd.player_does_not_exist = false
-	local is_run_start = GameHasFlagRun("noita.hardmod.on_player_spawned_flag")
+	local is_run_start = not GameHasFlagRun("noita.hardmod.on_player_spawned_flag")
 	for _,func in ipairs(hooks.player_spawned) do
 		func(p, is_run_start)
 	end

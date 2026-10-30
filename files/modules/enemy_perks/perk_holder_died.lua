@@ -6,7 +6,7 @@ function death(damage_type_bit_field, damage_message, entity_thats_responsible, 
 					if ComponentGetValue2(varcomp, "name") == "enemy_perk_data" then
 						local new_perk_discovered
 						for perk_id in ComponentGetValue2(varcomp, "value_string"):gmatch("([^,]+)") do
-							local persistent_flag_name = "perk_picked_enemyperk_hardmod_"..perk_id:lower()
+							local persistent_flag_name = "perk_picked_enemyperk_"..perk_id:lower()
 							if not HasFlagPersistent(persistent_flag_name) then
 								new_perk_discovered = true
 								AddFlagPersistent(persistent_flag_name)
@@ -14,8 +14,10 @@ function death(damage_type_bit_field, damage_message, entity_thats_responsible, 
 							end
 						end
 						if new_perk_discovered then GameAddFlagRun("hardmod_new_enemy_perk_discovered") end
+						break
 					end
 				end
+				break
 			end
 		end
 	end
