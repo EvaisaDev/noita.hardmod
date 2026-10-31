@@ -40,7 +40,7 @@ end
 
 local player = GetUpdatedEntityID()
 
-GamePrintImportant( "Your max health has been doubled!" )
+GamePrintImportant( "$hardmod_perk_glass_heart_msg_pass" )
 local px, py = EntityGetTransform( player )
 -- EntityLoad( "data/entities/particles/image_emitters/perk_effect.xml", px, py - 8 )
 -- GamePlaySound( "data/audio/Desktop/event_cues.bank", "event_cues/chest/create", px, py - 8 )

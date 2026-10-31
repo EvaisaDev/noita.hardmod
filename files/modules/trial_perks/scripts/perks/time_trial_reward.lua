@@ -35,7 +35,7 @@ local player = GetUpdatedEntityID()
 local px, py = EntityGetTransform( player )
 AddFlagPersistent( "hardmod_time_trial_passed" )
 
-GamePrintImportant( "You passed the Time Trial!" )
+GamePrintImportant( "$hardmod_perk_time_trial_msg_pass" )
 EntityLoad( "data/entities/particles/image_emitters/perk_effect.xml", px, py - 8 )
 GamePlaySound( "data/audio/Desktop/event_cues.bank", "event_cues/chest/create", px, py - 8 )
 

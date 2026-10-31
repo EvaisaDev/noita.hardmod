@@ -481,15 +481,15 @@ end
 
 for _,perk in pairs(perk_list) do
 	if perk_reworks[perk.id] then
-		for k,v in pairs(perk_reworks[perk.id]) do
-			perk[k] = v
-		end
-
 		if perk_reworks[perk.id].clear_original_game_effect then
 			perk.game_effect = ""
 		end
 		if perk_reworks[perk.id].clear_original_game_effect2 then
 			perk.game_effect2 = ""
+		end
+
+		for k,v in pairs(perk_reworks[perk.id]) do
+			perk[k] = v
 		end
 	end
 	--AddFlagPersistent("perk_picked_"..perk.id:lower())
