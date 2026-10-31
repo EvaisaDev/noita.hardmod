@@ -1,0 +1,51 @@
+<Materials>
+	<CellDataChild
+		_parent="gold"
+		_inherit_reactions="1"
+		name="hardmod.greedy_gold"
+		tags="[sand_metal],[corrodible],[alchemy],[gold],[solid],[earth],[hardmod.gold],[wallet_money]"
+		wang_color="ffebc802"
+	/>
+
+	<CellDataChild
+		_parent="hardmod.greedy_gold"
+		_inherit_reactions="1"
+		name="hardmod.greedy_gold.10"
+		wang_color="ffebc803"
+	/>
+
+	<CellDataChild
+		_parent="hardmod.greedy_gold"
+		_inherit_reactions="1"
+		name="hardmod.greedy_gold.100"
+		wang_color="ffebc804"
+	/>
+
+
+	<CellDataChild
+		_parent="hardmod.greedy_gold"
+		_inherit_reactions="1"
+		name="hardmod.bloody_gold"
+		wang_color="fff73a36"
+		ui_name="$hardmod_bloody_gold.material"
+	>
+		<Graphics
+			texture_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/materials/bloody_gold.png"
+			color="fff73a36"
+		/>
+	</CellDataChild>
+
+	<CellDataChild
+		_parent="hardmod.bloody_gold"
+		_inherit_reactions="1"
+		name="hardmod.bloody_gold.10"
+		wang_color="fff73a37"
+	/>
+
+	<CellDataChild
+		_parent="hardmod.bloody_gold"
+		_inherit_reactions="1"
+		name="hardmod.bloody_gold.100"
+		wang_color="fff73a38"
+	/>
+</Materials>
