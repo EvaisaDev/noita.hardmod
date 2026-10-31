@@ -452,7 +452,7 @@ local perks = {
 
 			ComponentSetValue2(worming_it_flight_style, "gravity", 0)
 		end
-	}
+	},
 }
 
 for _,perk in ipairs(perks) do

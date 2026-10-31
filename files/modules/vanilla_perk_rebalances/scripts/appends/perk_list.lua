@@ -344,9 +344,18 @@ local perk_reworks = {
 		end,
 	},
 	["EDIT_WANDS_EVERYWHERE"] = { not_in_default_perk_pool = true },
-	["NO_WAND_EDITING"] = { not_in_default_perk_pool = true },
-	["EXTRA_MONEY"] = { not_in_default_perk_pool = true },
-	["PROJECTILE_REPULSION"] = { not_in_default_perk_pool = true },
+}
+
+local removed_perks = {
+	"NO_WAND_EDITING",
+	"EXTRA_MONEY",
+	"PROJECTILE_REPULSION",
+	"REVENGE_RATS",
+	"VOMIT_RATS",
+	"CORDYCEPS",
+	"MOLD",
+	"FUNGAL_DISEASE",
+	"GENOME_MORE_LOVE",
 }
 
 for _,perk in pairs(perk_list) do

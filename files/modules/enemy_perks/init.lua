@@ -184,7 +184,7 @@ hooks.new_eid = function(entity_id)
 			num = num + Random(biome_data.range[1], biome_data.range[2])
 		end
 		--if not biome_levels[biome] then print(biome) end --use to find biomes not yet assigned levels
-		--num = 1
+		num = 1
 		local data = {
 			x = x, y = y,
 			biome = biome,
