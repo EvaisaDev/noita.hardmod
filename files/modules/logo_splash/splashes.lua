@@ -12,7 +12,7 @@ local splashes = {
 	"I hope you like dying!",
 	"Eba was here",
 	"Insert splash text here",
-	"Dani was here",
+	"Dani2D was here",
 	"Every pixel is stimulated",
 	"UserK",
 	"Brought to you by Team Fairmod",
@@ -65,6 +65,8 @@ local splashes = {
 	"We added Polymorph Immunity perk!!!! (enemies only)",
 	"Made with love, passion, and also a lot of spite!",
 	"What do you mean the deadline is nearly up?!?",
+	"Now +50% more vegan friendly",
+	"Flummoxium stocks on the rise!",
 }
 
 local cool_mods = {
