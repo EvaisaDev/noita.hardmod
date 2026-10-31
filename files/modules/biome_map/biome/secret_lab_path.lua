@@ -21,8 +21,7 @@ function spawn_potions(x, y) end
 function spawn_wands(x, y) end
 
 function spawn_book(x, y)
-  -- TODO: i might add a lore book or something
-  -- EntityLoad("", x, y)
+  EntityLoad("mods/noita.hardmod/files/modules/biome_map/entity/book_secret_lab_path.xml", x, y)
 end
 
 function init(x, y)

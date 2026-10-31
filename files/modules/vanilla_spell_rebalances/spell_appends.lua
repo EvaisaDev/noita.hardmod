@@ -18,6 +18,11 @@ local function apply_freeze()
 end
 
 local reworked_actions = {
+  ["BOMB"] = { max_uses = 5 },
+  ["MINE"] = { max_uses = 20 },
+  ["GRENADE"] = { max_uses = 30 },
+  ["TELEPORT_PROJECTILE"] = { mana = 20 },
+  ["TELEPORT_PROJECTILE_SHORT"] = { mana = 30 },
   ["FREEZE"] = {
     mana = 20,
     action = function()
@@ -53,6 +58,12 @@ local reworked_actions = {
   }
 }
 
+local reduce_dmg = {
+	HOMING = 0.3,
+	HOMING_SHORT = 0.2,
+	HOMING_ROTATE = 0.2,
+}
+
 for _,action in pairs(actions) do
   if reworked_actions[action.id] then
     for k,v in pairs(reworked_actions[action.id]) do
@@ -60,5 +71,16 @@ for _,action in pairs(actions) do
     end
 
     action["hardmod_reworked"] = true
+  end
+
+  if reduce_dmg[action.id] then
+	local orig_action = action.action
+	local amount = reduce_dmg[action.id]
+	action.action = function(...)
+		c.damage_projectile_add = c.damage_projectile_add - amount
+		orig_action(...)
+	end
+
+	action["hardmod_reworked"] = true
   end
 end

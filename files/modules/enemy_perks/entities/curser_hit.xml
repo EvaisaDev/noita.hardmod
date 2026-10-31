@@ -3,4 +3,8 @@
 		effect_hit="LOAD_CHILD_ENTITY"
 		value_string="mods/noita.hardmod/files/modules/enemy_perks/entities/curser_apply.xml">
 	</HitEffectComponent >
+
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/curser_apply_explode_script.lua"
+	/>
 </Entity>

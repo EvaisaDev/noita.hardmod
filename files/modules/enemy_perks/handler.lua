@@ -7,13 +7,15 @@ local half_icon_buffer = icon_buffer*.5
 
 local entity_id = GetUpdatedEntityID()
 local root = EntityGetRootEntity(entity_id)
+local self = GetUpdatedComponentID()
 
 function init(eid)
-	local self = GetUpdatedComponentID()
 	ComponentSetValue2(self, "mNextExecutionTime", GameGetFrameNum() + 1)
+	ComponentSetValue2(self, "limit_all_callbacks", true)
 end
 
 if entity_id == root then
+	if not ComponentGetValue2(self, "limit_all_callbacks") then return end
 	local x,y = EntityGetTransform(entity_id)
 	for _,potential_orphan in ipairs(EntityGetInRadiusWithTag(x, y, 50, "perk_entity")) do
 		if potential_orphan == EntityGetRootEntity(potential_orphan) then

@@ -436,6 +436,23 @@ local perks = {
 			data.blood_perk = blood_material --do this for condition func so multiple blood perks aren't rolled
 		end,
 	},
+	{
+		id = "WORM_FLIGHT",
+		name = "$hardmod_eperk_worm_flight_name",
+		description = "$hardmod_eperk_worm_flight_desc",
+		weight = 10,
+		priority = 5,
+		max = 1,
+		condition = function(self, data)
+			return EntityGetFirstComponent(data.target_enemy, "WormComponent")
+		end,
+		func = function(self, entity_id, data)
+			local worming_it_flight_style = EntityGetFirstComponent(entity_id, "WormComponent")
+			if not worming_it_flight_style then return --[[ :( ]] end
+
+			ComponentSetValue2(worming_it_flight_style, "gravity", 0)
+		end
+	},
 }
 
 for _,perk in ipairs(perks) do

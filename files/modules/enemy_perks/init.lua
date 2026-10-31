@@ -1,12 +1,10 @@
 local hooks = {}
-local _g = GLOBAL_DATA
-local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")
+local _g = HARDMOD_GLOBAL_DATA
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local curr_path = "mods/noita.hardmod/files/modules/enemy_perks/"
 
 ModLuaFileAppend("data/scripts/perks/perk_reflect.lua", curr_path.."add_perks_to_progress.lua")
-
-local logging = false
 
 
 local base_perk_chance = .15
@@ -88,10 +86,6 @@ hooks.mod_post_init = function() --run later in case of appends
 	end
 
 	update_perk_unlock_states()
-end
-
-hooks.world_init = function()
-	SetRandomSeed(1337, -6967)
 end
 
 local function give_enemy_perks(entity_id, num, data)
@@ -190,7 +184,7 @@ hooks.new_eid = function(entity_id)
 			num = num + Random(biome_data.range[1], biome_data.range[2])
 		end
 		--if not biome_levels[biome] then print(biome) end --use to find biomes not yet assigned levels
-		--num = 10
+		--num = 1
 		local data = {
 			x = x, y = y,
 			biome = biome,

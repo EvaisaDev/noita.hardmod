@@ -16,6 +16,30 @@ function utils.modifile(file, target, sub)
 	ModTextFileSetContent(file, ModTextFileGetContent(file):gsub("\r\n", "\n"):gsub(utils.escape(target), sub))
 end
 
+---@class ModifileReplacement
+---@field from string Search string
+---@field to string? String to replace to (defaults to `from` if you use `insert_before`/`insert_after`)
+---@field insert_before string? String to insert before the result
+---@field insert_after string? String to insert after the result
+---@field pattern boolean? Use `from` as a pattern instead of escaping it
+
+---More advanced version of `modifile`
+---@param file string filepath
+---@param replacements ModifileReplacement[] Array of replacements to apply to the file
+function utils.patchifile(file, replacements)
+	local content = ModTextFileGetContent(file):gsub("\r\n", "\n")
+	for _,replacement in pairs(replacements) do
+		local from = replacement.pattern and replacement.from or utils.escape(replacement.from)
+		local to = replacement.to or replacement.from
+
+		if replacement.insert_before then to = replacement.insert_before..to end
+		if replacement.insert_after then to = to..replacement.insert_after end
+
+		content = content:gsub(from, to)
+	end
+
+	ModTextFileSetContent(file, content)
+end
 
 ---handy func i stole that converts an entire table to string, grabbed from [here](https://stackoverflow.com/questions/9168058/how-to-dump-a-table-to-console)
 ---@param o table

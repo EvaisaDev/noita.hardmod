@@ -1,4 +1,4 @@
-dofile_once("mods/noita.hardmod/lib/utilities.lua")
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local entity_id = GetUpdatedEntityID()
 

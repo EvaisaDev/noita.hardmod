@@ -14,9 +14,7 @@ hooks.mod_post_init = function()
 end
 
 hooks.player_spawned = function( player, is_run_start )
-	if not GameHasFlagRun( "hardmod_trial_perks_initialized" ) then
-		GameAddFlagRun( "hardmod_trial_perks_initialized" )
-
+	if is_run_start then
 	    EntityAddComponent2( player, "LuaComponent", {
 	    	script_source_file = "mods/noita.hardmod/files/modules/trial_perks/scripts/player/trial_perk_scan.lua",
 	    	execute_every_n_frame = 60,

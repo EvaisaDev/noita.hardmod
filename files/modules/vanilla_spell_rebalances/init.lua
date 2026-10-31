@@ -37,8 +37,9 @@ end
 for file in nxml.edit_file("data/entities/misc/homing.xml") do
 	local comp = file:first_of("HomingComponent")
 	if comp then
-		comp:set("homing_targeting_coeff", 80)
+		comp:set("homing_targeting_coeff", 200)
 		comp:set("homing_velocity_multiplier", 0.7)
+		comp:set("detect_distance", 120)
 	end
 end
 

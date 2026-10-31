@@ -1,15 +1,24 @@
 ---@diagnostic disable: undefined-global
 
 MaxBiomeModifierCount = { default = 5 }
-BiomeModifierChances = { default = 0.3 }
+BiomeModifierChances = {
+	default = 0.3,
+	coalmine = 0.2,
+	excavationsite = 0.15,
+	fungiforest = 0.4,
+}
 
 PatchModifiers({
+	SHIELDED = { probability = 0.08 },
+	PERFORATED = { probability = 0.1 },
+	HOT = { probability = 0.5 },
+	FREEZING = { probability = 0.4 },
+	MOIST = {
+		remove_from_biomes = { "excavationsite" },
+	},
 	CONDUCTIVE = {
 		probability = 0.08,
 		remove_from_biomes = { "coalmine", "snowcastle", "wizardcave" },
-	},
-	FREEZING = {
-		probability = 0.4
 	},
 	FOG_OF_WAR_REAPPEARS = {
 		ui_name = "$hardmod_biomemodifier_darkness",

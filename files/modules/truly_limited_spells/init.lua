@@ -18,9 +18,7 @@ hooks.mod_post_init = function()
 end
 
 hooks.player_spawned = function( player, is_run_start )
-	if not GameHasFlagRun( "hardmod_truly_limited_spells_initialized" ) then
-		GameAddFlagRun( "hardmod_truly_limited_spells_initialized" )
-
+	if is_run_start then
 		if ModSettingGet( "noita.hardmod.spawn_truly_unlimited_spells_test_package" ) then
 			EntitySetTransform( player, -672, 1415 )
 			local px, py = EntityGetTransform( player )

@@ -204,15 +204,16 @@ function get_modifier_mappings()
 		local biome = biome_names[1]
 		local chance = BiomeModifierChances[biome] or BiomeModifierChances.default
 		local max = MaxBiomeModifierCount[biome] or MaxBiomeModifierCount.default
-		if max == 0 then goto continue end
+		if max == 0 or Randomf() > chance then goto continue end
 
-		local count = 0
-		for _=1,max do
-			if Randomf() <= chance then
-				count = count + 1
+		local count = 1
+		if max > 1 then
+			for _=1,max-1 do
+				if Randomf() <= chance then
+					count = count + 1
+				end
 			end
 		end
-		if count == 0 then goto continue end
 
 		local list = pick_modifiers_for(biome, count)
 		total_count = total_count + #list
@@ -233,6 +234,10 @@ function get_modifier_mappings()
 	end
 
 	return result
+end
+
+local function string_starts(str, start)
+  return string.sub(str, 1, #start) == start
 end
 
 -- called from init_biome_modifiers

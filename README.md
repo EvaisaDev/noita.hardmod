@@ -6,6 +6,9 @@ A Noita Community Mod Collaboration! Following the Noita Fair Mod, this mod inte
 <ins>Development has officially begun as of October 1st</ins> and the mod will be released midnight after Halloween, or Novermber 1st 00:00 (you can still further develop/work on the mod post-release).
 
 # Implemented Features
+
+Note: This list is not complete. Also, its best to experience the mod yourself first without spoilers :)
+
 - `nerfed_combat_healing`
   - On taking damage, you gain a healblock status effect
   - For every 1% of max health you take as damage, you gain 2 seconds of wounded up to a maximum of 10 seconds from a single instance of damage
@@ -17,6 +20,7 @@ A Noita Community Mod Collaboration! Following the Noita Fair Mod, this mod inte
   - Ira can be banished instantly by charming their host with pheromones but this will anger Ira greatly and you may have a harder time fending them off in future encounters.
 - `truly_limited_spells`
   - The Unlimited Spells perk has been removed.
+  - Spell Refresh is no longer automatically picked up (quality of life change)
   - A new perk gives enemies a chance to drop "spell gems", which restore a few spell charges on pickup.
   - Greek spells are now (by default) limited to 30 uses.
   - Two new late-game spells allow you to cast limited spells with 0 remaining charges.
@@ -80,6 +84,7 @@ A Noita Community Mod Collaboration! Following the Noita Fair Mod, this mod inte
 - `vanilla_bosses`
   - Tweaks to some vanilla bosses
   - Bridge boss is no longer shreddable
+  - Changed resistances and immunities of some bosses
 - `rapidfire_nerfs`
   - Chainsaw now appears much later, and costs 12 mana to cast. It now also reduces much less recharge time.
   - Add Mana now restores only 15 mana, and appears later & rarer
@@ -96,7 +101,9 @@ A Noita Community Mod Collaboration! Following the Noita Fair Mod, this mod inte
   - Steve and Scott are now 95% resistant to physics damage
   - The cursed rock entity has been fixed, you can no longer stand inbetween chunk borders to not get damaged
 - `nerf_vanilla_damage`
-  - Changes to vanilla damage values
+  - Changes to some vanilla damage values
+- `vanilla_spell_rebalances`
+  - Changes to some vanilla spells
 - `no_more_max_hp_cheesing`
   - The heart mage's spell now temporarily causes you to lose max HP equal to 50% of the damage you take. This max HP is not restored afterwards.
   - Changed Matosade's related_projectiles to spawn a small worm, instead of a big one.
@@ -104,6 +111,12 @@ A Noita Community Mod Collaboration! Following the Noita Fair Mod, this mod inte
   - The [Alt Fire Anything](https://noita.wiki.gg/wiki/Mod:Alt_Fire_Anything) spell has been ported into this mod.
 - `trial_perks`
   - Adds a set of new perks that reward the player for challenging themselves.
+- `unshuffle`
+  - Removes shuffle wands (1st area can still spawn them as they're pre-made)
+- `starter_wands`
+  - The first starter wand can have between 3 and 4 capacity, and can no longer generate with bouncing burst
+  - The bomb starter wand is no longer shuffle, and has 2 capacity
+  - All possible spells on starter wands now have an equal chance of being chosen
 - `holy_mountain_rework`
   - [readme.md](files/modules/holy_mountain_rework/readme.md)
 - `holy_mountain_items`

@@ -47,7 +47,7 @@ if current_state == "hardmod.curse_cloud_thunder" and remaining_lifetime >= 2700
 		ComponentSetValue2(ui_icon, "description", "$statusdesc_curse_cloud_02")
 	end
 elseif current_state == "hardmod.curse_cloud_acid" and remaining_lifetime < 2700 then
-	EntitySetName(entity_id, "curse_cloud_thunder")
+	EntitySetName(entity_id, "hardmod.curse_cloud_thunder")
 
 	local materials_to_thunder = {}
 	for key, value in pairs(materials_to_acid) do

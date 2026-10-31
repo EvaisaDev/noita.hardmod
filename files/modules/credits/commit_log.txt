@@ -258,6 +258,7 @@ Merge remote-tracking branch 'fork/d2d-content'
 change force-casts to copies
 nerf Vigour enemy perk
 disable the Impervious perk... for now.....
+biome modifier patcher (ty lamia-zamia)
 fixed apoth incompat
 nerf some spells
 some spell relbalances
@@ -267,8 +268,69 @@ make blink spell have 30 charges and can be unlimited
 change lifetime
 on second thought, keep the old cd reduction
 get frozen nerd
+prevent minions from having perks
 fixed a few things with eperks
 added mini-icons for eperks
 added more eperk biomes, added eperk priority order
+sampo orb glyphs (wip)
+add Aerolord enemy perk
+fix vsc-related error
+make Dry Spell create smoke
+add untracked files
+disable orb glyphs for now
+update standard.csv
+one more file
 guiding powder hint
+a
 added 8 new eperks (mostly untested), as well as some other minor maintenance
+WET AURA ENEMY PERK IS NOT SUPPOSED TO HAVE A WEIGHT OF 500
+refactor: utils globals begone
+biome modifier system!
+Update enemy_perks_list.lua
+Ira changes
+gahhh
+fix some warnings
+fix sampo
+tweak cd/rt of manas
+fix oversized shield icon
+better biome modifier system
+Add some DamageModelComponent utils to utilities.lua
+Add entity_func to lootlib
+tweak chest loot
+Update .editorconfig (this was annoying me, and its a very minor thing too)
+enemy perk rebalances
+nerf perk chance too?
+modify biome modifier list
+tweak biome modifier probabilities
+nerf confusion spirit
+qol: disable spell refresh autopickup
+Nerf EP
+reduce EP's cost
+fix this time for real
+make lukki lair able to have modifiers too
+more spell nerfs
+make null mana restore 20 mana
+added 3 more perks, did lots of tweaking
+fixed perks not being unlocked when killing enemies
+fixed small bug with orphaned perk entities
+some nerfs to bosses
+make PWs spawn all enemies from ng+
+fix buried eye teleport location
+some basic fixes
+Add utils.patchifile
+change starter bomb spell uses & swap tele and short tele mana cost
+change biome modifier chances
+increase biome modifier chance for wandmart
+unshuffle: Remove shuffle wands, and change starter wands
+separate module starter_wands
+add a book hint
+some perks for altar sacrifices
+update readmE
+update electric stun immunity sprite and name
+added polymorph gui and vanilla bugfixes modules, added wormy flight eperk
+oops, forgor to remove debug stuff
+forgor about a few debug prints
+forgot to remove test item
+grrr
+Add a custom .yaml locale system
+fix broken translation file

@@ -1,0 +1,11 @@
+<Materials>
+
+	<CellData
+		name="hardmod_worm_flight_helper"
+		wang_color="19734394"
+		cell_type="liquid"
+		liquid_sand="1"
+		liquid_static="1"
+		lifetime="5"
+	/>
+</Materials>
