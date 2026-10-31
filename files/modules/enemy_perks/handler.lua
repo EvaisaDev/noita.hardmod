@@ -1,6 +1,7 @@
 local max_icons_displayed = 4
 local y_offset_amount = 14
 local icon_buffer = 10
+local z_index = -.3
 
 local half_icon_buffer = icon_buffer*.5
 
@@ -55,11 +56,14 @@ local function update_icons()
 
 	local num_icons = math.min(#enemy_perks, max_icons_displayed)
 	for i=1,num_icons do
-		local sprite = (i == max_icons_displayed and #enemy_perks > max_icons_displayed) and "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/expand.png" or enemy_perks[i].icon
+		local sprite = (i == max_icons_displayed and #enemy_perks > max_icons_displayed)
+			and "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/expand.png"
+			or enemy_perks[i].icon
 		EntityAddComponent2(entity_id, "SpriteComponent", {
 			offset_x = -((i-1)*icon_buffer-num_icons*half_icon_buffer),
 			offset_y = offset_y,
 			image_file = sprite,
+			z_index = z_index,
 		})
 	end
 end--]]
