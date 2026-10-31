@@ -30,7 +30,7 @@
 		ui_name="$hardmod_bloody_gold.material"
 	>
 		<Graphics
-			texture_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/materials/bloody_gold.png"
+			texture_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/gold_is_dust/bloody_gold.png"
 			color="fff73a36"
 		/>
 	</CellDataChild>
