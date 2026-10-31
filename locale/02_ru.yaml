@@ -164,7 +164,7 @@ hardmod_spell_null_mana_name: Нейтральная мана
 hardmod_spell_null_mana_desc: Восстанавливает 20 маны, но обнуляет весь урон снаряда
 hardmod_material_oil_vapour: Пары нефти
 hardmod_biomename_infested_mines: Зараженные шахты
-hardmod_perk_protection_electric_stun_name: Иммунитет к стану электричеством
+hardmod_perk_protection_electric_stun_name: Иммунитет к оглушению электричеством
 hardmod_perk_protection_electric_stun_desc: Вас нельзя оглушить электричеством, но вы все равно получаете от него урон
 hardmod_biomemodifier_multiple_active: $0 модификаторов биомов активно
 hardmod_biomemodifier_status: (Модификатор биома)
