@@ -183,7 +183,7 @@ hardmod_eperk_pyrelord_desc,"This enemy's projectiles ignite everything they tou
 hardmod_eperk_vigour_name,"Vigour",,,,,,,,,,,,,
 hardmod_eperk_vigour_desc,"On death, this enemy creates a brief healing aura.",,,,,,,,,,,,,
 hardmod_eperk_magic_resistance_name,"Magic Resistance",,,,,,,,,,,,,
-hardmod_eperk_magic_resistance_desc,"This enemy is less vulnerable to projectiles.",,,,,,,,,,,,,
+hardmod_eperk_magic_resistance_desc,"This enemy is more resistant to projectiles.",,,,,,,,,,,,,
 hardmod_eperk_progress_description,"$0\nThis is an enemy-exclusive perk, and cannot be obtained.",,,,,,,,,,,,,
 hardmod_eperk_aerolord_name,"Aerolord",,,,,,,,,,,,,
 hardmod_eperk_aerolord_desc,"This enemy's projectiles create shockwaves with heavy knockback.",,,,,,,,,,,,,
