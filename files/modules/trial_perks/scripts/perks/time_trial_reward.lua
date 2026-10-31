@@ -1,6 +1,8 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 dofile_once( "mods/noita.hardmod/files/modules/trial_perks/scripts/trial_perk_utils.lua" )
 
+utils.SetInternalInt( player, "hardmod_time_trial_start_y", 0 )
+
 local function spawn_staff( x, y, frames_left )
     local hm_visits = tonumber( GlobalsGetValue( "HOLY_MOUNTAIN_VISITS", "0" ) )
     local wand_lvl = hm_visits
@@ -48,4 +50,3 @@ end
 
 EntityRemoveAllByTag( player, "hardmod_time_trial" )
 SwapPerkIconForSpent( player, "$hardmod_perk_time_trial_name", true )
-utils.SetInternalInt( player, "hardmod_time_trial_start_y", 0 )
