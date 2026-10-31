@@ -180,7 +180,7 @@ function patchLocale() {
 		idx++;
 	}
 
-	const locale = Object.entries(keys).map((x) => `${x[0]},${x[1].join(",")}`);
+	const locale = Object.entries(keys).map((x) => `${x[0]},${x[1].join(",")},,,`);
 
 	const missing = [];
 	for (const line of existing) {

@@ -236,6 +236,10 @@ function get_modifier_mappings()
 	return result
 end
 
+local function string_starts(str, start)
+  return string.sub(str, 1, #start) == start
+end
+
 -- called from init_biome_modifiers
 function apply_modifier_from_data(name, list)
 	local filename = name

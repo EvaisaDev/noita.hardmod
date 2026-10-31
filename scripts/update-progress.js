@@ -9,6 +9,9 @@ const DEFAULT_LOCALE = "01_en.yaml";
 const en = YAML.load(readFileSync(`locale/${DEFAULT_LOCALE}`));
 const comment = "# --- Missing Translations ---";
 
+const total = Object.keys(en).length;
+const progress = [];
+
 for (const file of readdirSync("locale")) {
 	if (file == DEFAULT_LOCALE || !file.endsWith("yaml")) continue;
 
@@ -32,7 +35,6 @@ for (const file of readdirSync("locale")) {
 	if (!lines.at(-1).trim()) lines.pop();
 	
 	if (count) {
-		console.log(path, "missing", count, "keys");
 		lines.push(
 			"", comment,
 			"#",
@@ -47,5 +49,11 @@ for (const file of readdirSync("locale")) {
 		}));
 	}
 
+	progress.push([file.replace(".yaml", ""), total-count]);
 	writeFileSync(path, lines.join("\n"));
 }
+
+console.log(
+	"Translation progress:",
+	progress.map((x) => `${x[0]} (${(x[1]/total*100).toFixed(2)}%)`).join(", ")
+);
