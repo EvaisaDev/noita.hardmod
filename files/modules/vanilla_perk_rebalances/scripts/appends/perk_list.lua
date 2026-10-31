@@ -427,7 +427,29 @@ local perk_reworks = {
 		end
 	},
 	["EDIT_WANDS_EVERYWHERE"] = { not_in_default_perk_pool = true },
-	["TELEPORTITIS"] = { not_in_default_perk_pool = true },
+	["TELEPORTITIS"] = {
+		clear_original_game_effect = true,
+		ui_description = "$hardmod_perk_teleportitis_desc",
+		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/teleportitis_016.png",
+		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/teleportitis.png",
+		stackable = STACKABLE_NO,
+		usable_by_enemies = false,
+		func = function( entity_perk_item, entity_who_picked, item_name )
+			EntityAddComponent2( entity_who_picked, "LuaComponent", {
+				_tags = "perk_component,hardmod_teleportitis",
+				script_source_file = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/teleportitis_update.lua",
+				execute_every_n_frame = 1,
+			} )
+			EntityAddComponent2( entity_who_picked, "LuaComponent", {
+				_tags = "perk_component,hardmod_teleportitis",
+				script_damage_received = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/teleportitis_on_damage.lua",
+				execute_every_n_frame = -1,
+			} )
+		end,
+		func_remove = function( entity_who_picked )
+			EntityRemoveAllByTag( entity_who_picked, "hardmod_teleportitis" )
+		end,
+	},
 }
 
 local remove_perks = {
@@ -460,6 +482,13 @@ for _,perk in pairs(perk_list) do
 	if perk_reworks[perk.id] then
 		for k,v in pairs(perk_reworks[perk.id]) do
 			perk[k] = v
+		end
+
+		if perk_reworks[perk.id].clear_original_game_effect then
+			perk.game_effect = ""
+		end
+		if perk_reworks[perk.id].clear_original_game_effect2 then
+			perk.game_effect2 = ""
 		end
 	end
 	--AddFlagPersistent("perk_picked_"..perk.id:lower())
