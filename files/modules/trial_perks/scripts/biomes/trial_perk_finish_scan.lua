@@ -37,7 +37,7 @@ if nearby_players then
 end
 
 if spawn_return_portal then
-	local portal = EntityLoad( "mods/noita.hardmod/files/modules/ring_of_returning/entities/return_portal.xml", x - 70, y + 20 )
+	local portal = EntityLoad( "mods/noita.hardmod/files/modules/ring_of_returning/entities/return_portal.xml", x - 70, y - 20 )
 	if portal ~= nil then
 		local tele_comp = EntityGetFirstComponentIncludingDisabled( portal, "TeleportComponent" )
 		if tele_comp ~= nil then

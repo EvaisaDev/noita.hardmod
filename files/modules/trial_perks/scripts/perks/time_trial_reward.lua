@@ -22,7 +22,7 @@ local function spawn_staff( x, y, frames_left )
 	wand.rechargeTime = 40
 	wand.manaMax = 240 + ( wand_lvl * 120 )
 	wand.manaChargeSpeed = 90 + ( wand_lvl * 30 )
-	wand.capacity = 2 + ( wand_lvl * 3 )
+	wand.capacity = 5 + ( wand_lvl * 3 )
 	wand.spread = 0
 	wand:AddSpells( "TELEPORT_PROJECTILE_SHORT", "HARDMOD_ALT_FIRE_ANYTHING", { "HARDMOD_BLINK", tier } )
 	wand:SetSprite( "mods/noita.hardmod/files/modules/trial_perks/gfx/items/wand_aika.png", 8, 4, 19, 0 )
