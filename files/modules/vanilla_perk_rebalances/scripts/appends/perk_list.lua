@@ -201,15 +201,15 @@ local perk_reworks = {
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_fire_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_fire.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_YES,
-		stackable_maximum = 3,
+		stackable = STACKABLE_NO,
+		stackable_maximum = 1,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
 				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 0.5 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 0.5 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 0.25 )
+				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 0.25 )
 			end
 		end,
 		func_remove = function( entity_who_picked )
@@ -217,8 +217,8 @@ local perk_reworks = {
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
 				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 2 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 2 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 4 )
+				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 4 )
 			end
 		end,
 	},
@@ -231,8 +231,8 @@ local perk_reworks = {
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
 				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 0.5 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 0.5 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 0.25 )
+				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 0.25 )
 
 				ComponentSetValue2( dmg_comp, "blood_material", "oil" )
 				ComponentSetValue2( dmg_comp, "blood_spray_material", "oil" )
@@ -246,8 +246,8 @@ local perk_reworks = {
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
 				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 2 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 2 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 4 )
+				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 4 )
 
 				ComponentSetValue2( dmg_comp, "blood_material", "blood" )
 				ComponentSetValue2( dmg_comp, "blood_spray_material", "blood" )
@@ -263,20 +263,20 @@ local perk_reworks = {
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_YES,
-		stackable_maximum = 3,
+		stackable = STACKABLE_NO,
+		stackable_maximum = 1,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.5 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.25 )
 			end
 		end,
 		func_remove = function( entity_who_picked )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 2 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 4 )
 			end
 		end,
 	},
@@ -288,14 +288,14 @@ local perk_reworks = {
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.5 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.25 )
 			end
 		end,
 		func_remove = function( entity_who_picked )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 2 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 4 )
 			end
 		end,
 	},
@@ -305,20 +305,20 @@ local perk_reworks = {
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_YES,
-		stackable_maximum = 3,
+		stackable = STACKABLE_NO,
+		stackable_maximum = 1,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "electricity" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 0.5 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 0.25 )
 			end
 		end,
 		func_remove = function( entity_who_picked )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "electricity" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 2 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 4 )
 			end
 		end,
 	},
@@ -328,20 +328,20 @@ local perk_reworks = {
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_YES,
-		stackable_maximum = 3,
+		stackable = STACKABLE_NO,
+		stackable_maximum = 1,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "melee" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 0.5 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 0.25 )
 			end
 		end,
 		func_remove = function( entity_who_picked )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
 			if dmg_comp ~= nil then
 				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "melee" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 2 )
+				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 4 )
 			end
 		end,
 	},
