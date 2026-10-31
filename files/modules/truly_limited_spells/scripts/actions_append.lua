@@ -28,33 +28,6 @@ local function find_action_entity_by_id( action_id )
 	return nil
 end
 
-local function trigger_action_ungreeked( data, hand, rec )
-	if ( data.uses_remaining ~= 0 ) then
-		data.action( rec )
-		data.uses_remaining = data.uses_remaining - 1
-	-- if the cast contains HARDMOD_SPELL_INFINITY, cast the spell even with 0 uses remaining
-	elseif ( data.uses_remaining == 0 ) and hand_contains( hand, "HARDMOD_SPELL_INFINITY" ) then
-		data.action( rec )
-	end
-
-	local action_eid = find_action_entity_by_id( data.id )
-	if action_eid ~= nil then
-		local icomp = EntityGetFirstComponentIncludingDisabled( action_eid, "ItemComponent" )
-		if icomp ~= nil then
-		    uses_remaining = ComponentGetValue2( icomp, "uses_remaining" )
-			if uses_remaining > 0 then
-				data.action( rec )
-				ComponentSetValue2( icomp, "uses_remaining", uses_remaining - 1 )
-
-				if uses_remaining == 1 then
-					local x, y = EntityGetTransform( GetUpdatedEntityID() )
-					GamePlaySound( "data/audio/Desktop/items.bank", "magic_wand/action_consumed", x, y )
-				end
-			end
-		end
-	end
-end
-
 local function EntityIsWand( entity_id )
 	local acomp = EntityGetFirstComponentIncludingDisabled( entity_id, "AbilityComponent" )
   	if not acomp then return false end
@@ -103,7 +76,7 @@ local new_actions = {
         spawn_probability	= "0",
         spawn_requires_flag = "hardmod_cannot_spawn",
         price				= 1000,
-        mana				= 1,
+        mana				= 20,
         action = function()
             if reflecting then return end
 
@@ -190,7 +163,7 @@ local new_actions = {
         spawn_probability	= "0",
         spawn_requires_flag = "hardmod_cannot_spawn",
         price				= 800,
-        mana				= 99,
+        mana				= 80,
         action = function()
             if reflecting then return end
 
@@ -213,6 +186,57 @@ local new_actions = {
                 draw_actions( 1, true )
             end
         end,
+    },
+    -- following spells are defined here since they are too powerful to be used without this module's nerfs
+    {
+        id                  = "HARDMOD_SPELL_DAMAGE_DOUBLE",
+        name                = "$hardmod_spell_damage_double_name",
+        description         = "$hardmod_spell_damage_double_desc",
+        sprite              = "mods/noita.hardmod/files/modules/truly_limited_spells/gfx/ui_gfx/spells/damage_double.png",
+        type                = ACTION_TYPE_MODIFIER,
+        spawn_level         = "1,2,3,4,5,6,10", -- 2/3 of DAMAGE
+        spawn_probability   = "0.4,0.4,0.6,0.4,0.4,0.6,0.6", -- 2/3 of DAMAGE
+        price               = 160,
+        mana                = 20,
+        max_uses            = 10,
+        custom_xml_file     = "mods/noita.hardmod/files/modules/truly_limited_spells/entities/custom_cards/card_damage_double.xml",
+        action              = function()
+                                c.fire_rate_wait = c.fire_rate_wait + 10
+                                shot_effects.recoil_knockback = shot_effects.recoil_knockback + 50.0
+
+                                c.extra_entities = c.extra_entities .. "mods/noita.hardmod/files/modules/truly_limited_spells/entities/spells/damage_double.xml,"
+                                c.extra_entities = c.extra_entities .. "data/entities/particles/tinyspark_yellow.xml,"
+                                draw_actions( 1, true )
+
+                                if reflecting then return end
+                                local x, y = EntityGetTransform( GetUpdatedEntityID() )
+                                GamePlaySound( "data/audio/Desktop/projectiles.bank", "player_projectiles/black_hole/create", x, y )
+                            end,
+    },
+    {
+        id                  = "HARDMOD_SPELL_OVERKILL",
+        name                = "$hardmod_spell_overkill_name",
+        description         = "$hardmod_spell_overkill_desc",
+        sprite              = "mods/noita.hardmod/files/modules/truly_limited_spells/gfx/ui_gfx/spells/overkill.png",
+        type                = ACTION_TYPE_MODIFIER,
+        spawn_level         = "5,6,10",
+        spawn_probability   = "0.1,0.2,0.5",
+        price               = 320,
+        mana                = 50,
+        max_uses            = 10,
+        custom_xml_file     = "mods/noita.hardmod/files/modules/truly_limited_spells/entities/custom_cards/card_damage_double.xml",
+        action              = function()
+                                c.fire_rate_wait = c.fire_rate_wait + 25
+                                shot_effects.recoil_knockback = shot_effects.recoil_knockback + 100.0
+
+                                c.extra_entities = c.extra_entities .. "mods/noita.hardmod/files/modules/truly_limited_spells/entities/spells/overkill.xml,"
+                                c.extra_entities = c.extra_entities .. "data/entities/particles/tinyspark_red.xml,"
+                                draw_actions( 1, true )
+
+                                if reflecting then return end
+                                local x, y = EntityGetTransform( GetUpdatedEntityID() )
+                                GamePlaySound( "data/audio/Desktop/projectiles.bank", "player_projectiles/black_hole_big/create", x, y )
+                            end,
     },
 }
 
@@ -274,7 +298,6 @@ local reworked_actions = {
             move_hand_to_discarded()
             
             for i,v in ipairs( deck ) do
-                -- print( "removed " .. v.id .. " from deck" )
                 table.insert( discarded, v )
             end
             

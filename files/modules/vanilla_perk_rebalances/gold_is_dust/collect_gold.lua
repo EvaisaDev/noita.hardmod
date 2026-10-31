@@ -21,17 +21,27 @@ local persistent_data = {
 	material_inventory = material_inventory,
 	stored_gold = stored_gold,
 }
-for i, amount in ipairs(stored_gold) do
+
+HardmodCustomGoldMaterials = {
+	"hardmod.greedy_gold",
+	"hardmod.greedy_gold.10",
+	"hardmod.greedy_gold.100",
+	"hardmod.bloody_gold",
+	"hardmod.bloody_gold.10",
+	"hardmod.bloody_gold.100",
+}
+
+for _,mat_name in ipairs(HardmodCustomGoldMaterials) do
+	local amount = stored_gold[CellFactory_GetType(mat_name)+1]
 	if amount ~= 0 then
-		local material_name = CellFactory_GetName(i - 1)
-		if GoldFunctions[material_name] then
+		if GoldFunctions[mat_name] then
 			local data = {
 				pdata = persistent_data,
 				amount = amount,
-				material_name = material_name,
+				material_name = mat_name,
 				worth = 1,
 			}
-			for key, value in pairs(GoldFunctions[material_name]) do
+			for key, value in pairs(GoldFunctions[mat_name]) do
 				data[key] = value
 			end
 			if data.func then data:func() else GoldFunctions.default(data) end
