@@ -52,8 +52,12 @@ Note: This list is not complete. Also, its best to experience the mod yourself f
   - Adds an uncommon Healthy Extra HP dropped from chests, which increases your max HP by 25 and heals you by the same amount
 - `stronger_enemies`
   - Changes which enemies spawn where
-  - Some enemies that spawn in NG+1 now spawn in regular New Game
+  - Some enemies that spawn in NG+1 now spawn in regular New Game, along with some custom spawn rules
+  - Parallel Worlds have *all* possible spawns from all NG+ levels (no scaling is applied)
   - The blinding effect has a bigger visible area, and now only lasts 11 seconds (this is to compensate the fact that blinding mages now spawn in collapsed mines and coal pits)
+  - The confusion spirit has much less HP and is much easier to kill
+  - The weak spirit now disables all your protection perks (instead of increasing the damage you take), and spawns in much more areas
+  - Fixed swapper bypass
 - `better_anvil`
   - Hiisi Anvil has been moved! You now have to explore the Hiisi Base a bit to find it.
   - In the old place in the bottom right there is a book hinting at the general location of the anvil, so you don't have to search everything
