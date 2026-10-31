@@ -1,4 +1,4 @@
-dofile_once("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/custom_spell_behaviour.lua")
+dofile_once("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/spell_behaviour.lua")
 
 function shot(projectile)
 	if EntityGetName(projectile) ~= "hardmod.empty" then return end --so sick of this nonsense script_shot bs.
