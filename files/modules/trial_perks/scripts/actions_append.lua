@@ -10,11 +10,21 @@ local new_actions = {
         spawn_requires_flag = "hardmod_time_trial_passed",
         price               = 400,
         mana                = 200,
-        max_uses            = 30,
         never_unlimited     = false,
         action = function()
             c.fire_rate_wait = c.fire_rate_wait + 60
+            if reflecting then return end
+
             add_projectile( "mods/noita.hardmod/files/modules/trial_perks/entities/spells/blink.xml" )
+
+            local player = GetUpdatedEntityID()
+            local x, y = EntityGetTransform( player )
+            local dmg_comp = EntityGetFirstComponentIncludingDisabled( player, "DamageModelComponent" )
+            if dmg_comp ~= nil then
+                local p_hp = ComponentGetValue2( dmg_comp, "hp" )
+                local p_max_hp = ComponentGetValue2( dmg_comp, "max_hp" )
+                EntityInflictDamage( player, math.min( p_max_hp * 0.05, p_hp - 0.04 ), "DAMAGE_SLICE", "blink", "NONE", 0, 0, player, x, y, 0)
+            end
         end,
     },
     {
