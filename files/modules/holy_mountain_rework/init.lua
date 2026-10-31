@@ -47,12 +47,6 @@ utils.modifile("data/scripts/perks/perk.lua",
 )
 ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", path.."append_altar.lua")
 
-hooks.edit_material = function(elem)
-	if elem.attr.name == "templebrick_static_soft" then
-		elem.attr.durability = 9 --weaken the HM false-walls to be more breakable by starter-bomb spells
-	end
-end
-
 for _,ent in ipairs({"data/entities/buildings/physics_worm_deflector_crystal.xml", "data/entities/misc/greed_curse/greed_crystal.xml"}) do
 	for xml in nxml.edit_file(ent) do
 		if #xml.attr.tags == 0 then xml.attr.tags = "hm_crystal"
@@ -72,5 +66,45 @@ utils.modifile(
 	[[local teleport_back_x = 190]],
 	[[local teleport_back_x = 150]]
 )
+
+utils.modifile( --medicube
+	"data/scripts/buildings/teleport_snowcave_buried_eye_return.lua",
+	[[local teleport_back_x = 190]],
+	[[local teleport_back_x = 150]]
+)
+
+
+-- Make HM not dug out by Lukki or Worms
+local hm_diggers = {
+	"data/entities/animals/worm.xml",
+	"data/entities/animals/worm_big.xml",
+	"data/entities/animals/worm_end.xml",
+	"data/entities/animals/lukki/lukki.xml",
+	"data/entities/animals/lukki/lukki_tiny.xml",
+}
+
+for _,xml_path in ipairs(hm_diggers) do
+	for xml in nxml.edit_file(xml_path) do
+		local cell_eater = xml:first_of("CellEaterComponent")
+		if cell_eater then
+			cell_eater.attr.ignored_material_tag = "[worms_lukki_ignore]"
+		end
+	end
+end
+
+
+hooks.edit_material = function(elem)
+	local name = elem.attr.name
+	if name == "templebrick_static" or name == "templebrick_noedge_static" then
+		local tags = elem.attr.tags
+		if #(tags or "") == 0 then
+			elem.attr.tags = "[worms_lukki_ignore]"
+		else
+			elem.attr.tags = tags..",[worms_lukki_ignore]"
+		end
+	elseif elem.attr.name == "templebrick_static_soft" then
+		elem.attr.durability = 9 --weaken the HM false-walls to be more breakable by starter-bomb spells
+	end
+end
 
 return hooks

@@ -1,5 +1,7 @@
 ---@diagnostic disable: undefined-global
 
+local modid = "Noita.Hardmod"
+
 local new_perks = {
 	{
 		id = "HARDMOD_TINKER_AT_PEDESTALS",
@@ -343,11 +345,116 @@ local perk_reworks = {
 			end
 		end,
 	},
+	["GOLD_IS_FOREVER"] = { --makes gold decay into special gold dust
+		id = "HARDMOD_GOLD_IS_DUST",
+		ui_name = "$hardmod_gold_is_dust_perkname",
+		ui_description = "$hardmod_gold_is_dust_perkdesc",
+		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/gold_is_dust/perk.png",
+		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/gold_is_dust/icon.png",
+		origin = modid,
+		stackable = false,
+		func = function()
+			GameAddFlagRun("hardmod.gold_is_dust_perk")
+		end,
+		func_remove = function()
+			GameRemoveFlagRun("hardmod.gold_is_dust_perk")
+		end,
+	},
+	["ABILITY_ACTIONS_MATERIALIZED"] = { --works with most spells now, not just a specific selection of bomb spells
+		ui_name = "$hardmod_spells_materialised_perkname",
+		ui_description = "$hardmod_spells_materialised_perkdesc",
+		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/perk.png",
+		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/icon.png",
+	},
+	["EXTRA_MANA"] = { --buff mana slightly, change 50% decrease in capacity to flat decrease 1-3 plus 10% of current capacity rounded down
+		ui_description = "$hardmod_extra_mana_perkdesc",
+		func = function(perk, taker, perk_name)
+			local wand = GetHeldWand(taker)
+			if not wand then return end
+			local x,y = EntityGetTransform(wand)
+
+			local ability_comp = EntityGetFirstComponentIncludingDisabled(wand, "AbilityComponent")
+			if not ability_comp then return end
+
+			local mana_max = ComponentGetValue2(ability_comp, "mana_max")
+			local mana_charge = ComponentGetValue2(ability_comp, "mana_charge_speed")
+			local full_capacity = ComponentObjectGetValue2(ability_comp, "gun_config", "deck_capacity") --include ACs
+			local capacity = EntityGetWandCapacity(wand) --do not include ACs
+			local always_cast_count = math.max(0, full_capacity - capacity)
+
+			local perk_x,perk_y =  EntityGetTransform(perk)
+			SetRandomSeed(perk_x, perk_y)
+
+			--lesser of (multiply by 1.3-1.5 OR add 100-500), plus random 100-500
+			mana_max = math.min(mana_max * Randomf(1.3, 1.5), mana_max + Random(100, 500))   + Random(100, 200)
+			mana_max = math.floor(math.min(mana_max, 50000)) --max of 50k
+
+			--lesser of (multiply by 2-3.5 OR add 80-400), plus random 30-60
+			mana_charge = math.min(mana_charge * Randomf(2, 3.5), mana_charge + Random(80, 400))   + Random(30, 60)
+			mana_charge = math.floor(math.min(mana_charge, 20000)) --max of 20k
+
+			capacity = math.max(capacity - Random(1, 3) - math.floor(capacity*.1), 1) --remove 1-3 AND one more for every 10 slots it has
+			-- (66 slot wand loses 7-9 slots lmao)
+
+			ComponentSetValue2(ability_comp, "mana_max", mana_max)
+			ComponentSetValue2(ability_comp, "mana_charge_speed", mana_charge)
+			ComponentObjectSetValue2(ability_comp, "gun_config", "deck_capacity", capacity + always_cast_count)
+
+
+			--nonsense to de-child overflowing spells from capacity decrease
+			local c = EntityGetAllChildren(wand)
+			if (c ~= nil) and (#c > capacity + always_cast_count) then
+				for i=always_cast_count+1,#c do
+					local spell = c[i]
+					local comp2 = EntityGetFirstComponentIncludingDisabled(spell, "ItemActionComponent")
+
+					if (comp2 ~= nil) and (i > capacity + always_cast_count) then
+
+						EntityRemoveFromParent(spell)
+						EntitySetTransform(spell, x, y, 0)
+
+						--fixed tag stuff to properly enabled/disable correct tags (rather than just hard enable all components)
+						for _,component in ipairs(EntityGetAllComponents(spell)) do
+							if ComponentHasTag(component, "enabled_in_world") then
+								EntitySetComponentIsEnabled(spell, component, true)
+							else
+								EntitySetComponentIsEnabled(spell, component, false)
+							end
+						end
+					end
+				end
+			end
+		end
+	},
 	["EDIT_WANDS_EVERYWHERE"] = { not_in_default_perk_pool = true },
-	["NO_WAND_EDITING"] = { not_in_default_perk_pool = true },
-	["EXTRA_MONEY"] = { not_in_default_perk_pool = true },
-	["PROJECTILE_REPULSION"] = { not_in_default_perk_pool = true },
+	["TELEPORTITIS"] = { not_in_default_perk_pool = true },
 }
+
+local remove_perks = {
+	"NO_WAND_EDITING",
+	"EXTRA_MONEY",
+	"PROJECTILE_REPULSION",
+	"REVENGE_RATS",
+	"VOMIT_RATS",
+	"CORDYCEPS",
+	"MOLD",
+	"FUNGAL_DISEASE",
+	"GENOME_MORE_LOVE",
+	"LUKKI_MINION",
+	"GLOBAL_GORE",
+	"PERSONAL_LASER",
+	"WORM_ATTRACTOR",
+	"WORM_SMALLER_HOLES",
+	"DUPLICATE_PROJECTILE",
+}
+
+--bomb materialised, lukki mutation, no wand tinkering, more blood, personal plasma beam, low recoil, phasing, pinpointer, proj dupe, levitation trail, worm perks
+
+
+
+for _,perk in ipairs(remove_perks) do
+	perk_reworks[perk] = { not_in_default_perk_pool = true, not_progress = true }
+end
 
 for _,perk in pairs(perk_list) do
 	if perk_reworks[perk.id] then
@@ -355,8 +462,10 @@ for _,perk in pairs(perk_list) do
 			perk[k] = v
 		end
 	end
+	--AddFlagPersistent("perk_picked_"..perk.id:lower())
 end
 
 for _,perk in pairs(new_perks) do
+	--AddFlagPersistent("perk_picked_"..perk.id:lower())
 	table.insert(perk_list, perk)
 end
