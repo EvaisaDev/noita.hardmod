@@ -23,6 +23,13 @@ local enemy_is_ranged = function(self, data)
 	end
 end
 
+local enemy_is_melee = function(self, data)
+	local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy,"AnimalAIComponent")
+	if animal_ai_comp and ComponentGetValue2(animal_ai_comp,"attack_melee_enabled") then
+		return true
+	end
+end
+
 -- The `data` table provides `target_enemy` (eid), `already_held_perks` (perk_id[]), `player` (eid) and `player_poly_identity` (table)
 
 ---@type enemy_perk[]
@@ -76,7 +83,9 @@ local perks = {
 		weight = 2,
 		priority = 20,
 		max = 1,
-		condition = enemy_is_ranged,
+		condition = function(self, data)
+			return enemy_is_melee(self, data) and not data.vigour
+		end,
 		func = function(self, entity_id, data)
 			-- show nuke particles on the enemy
 			local x, y = EntityGetTransform(entity_id)
@@ -93,6 +102,9 @@ local perks = {
 				script_source_file = "mods/noita.hardmod/files/modules/enemy_perks/scripts/kamikaze_update.lua",
 				execute_every_n_frame = 1,
 			})
+
+			-- make sure Vigour can't spawn
+			data.kamikaze = true
 		end
 	},
 	{
@@ -165,12 +177,7 @@ local perks = {
 		description = "$hardmod_eperk_pyrelord_desc",
 		weight = 8,
 		max = 1,
-		condition = function(self, data)
-			local comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-			if comp and ComponentGetValue2(comp, "attack_ranged_enabled") then
-				return true
-			end
-		end,
+		condition = enemy_is_ranged,
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "PROTECTION_FIRE", true)
 			EntityAddComponent2(entity_id, "LuaComponent", {
@@ -186,16 +193,16 @@ local perks = {
 		weight = 2,
 		priority = 15,
 		max = 1,
-		-- condition = function(self, data)
-		-- -- @UserK how does this workkk
-		-- 	if data.how_many_of_each_perk["HARDMOD_KAMIKAZE"] == 0 then return true end
-		-- end,
+		condition = function(self, data) return not data.vigour end,
 		func = function(self, entity_id, data)
 			-- make the enemy explode on death
 			EntityAddComponent2(entity_id, "LuaComponent", {
 				script_death = "mods/noita.hardmod/files/modules/enemy_perks/scripts/vigour_on_death.lua",
 				execute_every_n_frame = -1,
 			})
+
+			-- make sure Kamikaze can't spawn
+			data.vigour = true
 		end
 	},
 	{
@@ -218,14 +225,7 @@ local perks = {
 		description = "$hardmod_eperk_aerolord_desc",
 		weight = 0.5,
 		max = 1,
-		condition = function(self, data)
-			if data.level < 5 then return false end
-
-			local comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-            if comp and ComponentGetValue2(comp, "attack_ranged_enabled") then
-            	return true
-            end
-		end,
+		condition = enemy_is_ranged,
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "KNOCKBACK_IMMUNITY", true)
 			EntityAddComponent2(entity_id, "LuaComponent", {
