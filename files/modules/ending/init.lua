@@ -11,7 +11,6 @@ for file in nxml.edit_file("data/entities/animals/boss_centipede/sampo.xml") do
   for emitter in file:each_of("ParticleEmitterComponent") do
     if emitter:get("emitted_material_name") == "spark_blue" then
       emitter:set("emitted_material_name", "spark_white_bright")
-      break
     end
   end
 
@@ -37,7 +36,6 @@ for file in nxml.edit_file("data/entities/animals/boss_centipede/sampo.xml") do
     script_interacting = "mods/noita.hardmod/files/modules/ending/sampo_logic.lua",
     script_source_file = "mods/noita.hardmod/files/modules/ending/sampo_logic.lua",
     execute_every_n_frame = 120,
-    execute_on_added = true,
   })
 end
 

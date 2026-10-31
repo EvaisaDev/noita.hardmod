@@ -3,6 +3,8 @@ POTENTIAL SPOILER WARNING
 FOR QUESTS AND SECRETS!!!
 -------------------------
 
+A small note on if you're translating the phantom's (Ira) ability names to a language which uses non-english characters: the font the phantom uses in-game currently doesn't support non-english characters and I don't know how to allow it to support them
+
 `hardmod_anvil_dir_*` are directions used in `hardmod_anvil_book_moved_desc`
 
 Book names like "Obseratum" and "Restitutio in Integrum" are latin
