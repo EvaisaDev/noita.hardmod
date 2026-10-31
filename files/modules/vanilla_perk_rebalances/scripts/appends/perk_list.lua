@@ -462,10 +462,10 @@ for _,perk in pairs(perk_list) do
 			perk[k] = v
 		end
 	end
-	AddFlagPersistent("perk_picked_"..perk.id:lower())
+	--AddFlagPersistent("perk_picked_"..perk.id:lower())
 end
 
 for _,perk in pairs(new_perks) do
-	AddFlagPersistent("perk_picked_"..perk.id:lower())
+	--AddFlagPersistent("perk_picked_"..perk.id:lower())
 	table.insert(perk_list, perk)
 end
