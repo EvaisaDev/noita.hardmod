@@ -7,6 +7,10 @@ local reworked_actions = {
 	},
 }
 
+for _,action in pairs(new_actions) do
+    table.insert(actions, action)
+end
+
 for _,action in pairs(actions) do
 	if reworked_actions[action.id] then
 		for k,v in pairs(reworked_actions[action.id]) do
