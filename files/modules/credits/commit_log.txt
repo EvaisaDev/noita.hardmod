@@ -309,7 +309,28 @@ reduce EP's cost
 fix this time for real
 make lukki lair able to have modifiers too
 more spell nerfs
+make null mana restore 20 mana
 added 3 more perks, did lots of tweaking
 fixed perks not being unlocked when killing enemies
 fixed small bug with orphaned perk entities
+some nerfs to bosses
+make PWs spawn all enemies from ng+
+fix buried eye teleport location
 some basic fixes
+Add utils.patchifile
+change starter bomb spell uses & swap tele and short tele mana cost
+change biome modifier chances
+increase biome modifier chance for wandmart
+unshuffle: Remove shuffle wands, and change starter wands
+separate module starter_wands
+add a book hint
+some perks for altar sacrifices
+update readmE
+update electric stun immunity sprite and name
+added polymorph gui and vanilla bugfixes modules, added wormy flight eperk
+oops, forgor to remove debug stuff
+forgor about a few debug prints
+forgot to remove test item
+grrr
+Add a custom .yaml locale system
+fix broken translation file

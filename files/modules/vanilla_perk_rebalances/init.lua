@@ -166,8 +166,4 @@ hooks.mod_post_init = function()
 	-- ModLuaFileAppend("data/scripts/magic/altar_tablet_magic.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/altar_tablet_magic.lua")
 end
 
-hooks.player_spawned = function()
-	EntityLoad("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/cheese.xml", 0, 0)
-end
-
 return hooks

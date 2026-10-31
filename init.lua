@@ -16,7 +16,7 @@ local modules = {
 	"trappier_traps",
 	"cheeseless_triggers",
 	"logo_splash",
-	"starter_wand",
+	"starter_wands",
 	"unshuffle",
 	"vanilla_perk_rebalances",
 	"vanilla_spell_rebalances",
