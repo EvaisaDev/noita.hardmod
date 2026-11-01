@@ -475,7 +475,7 @@ local perk_reworks = {
 
 local remove_perks = {
 	"NO_WAND_EDITING",
-	"EXTRA_MONEY",
+	"EXTRA_MONEY", -- replaced by Treasure Hunter
 	"PROJECTILE_REPULSION",
 	"REVENGE_RATS",
 	"VOMIT_RATS",
@@ -489,7 +489,10 @@ local remove_perks = {
 	"WORM_ATTRACTOR",
 	"WORM_SMALLER_HOLES",
 	"DUPLICATE_PROJECTILE",
-	"LASER_AIM",
+	"LASER_AIM", -- replaced by Pinpointer spell
+	"EXTRA_MANA", -- replaced by Summon Toolbox
+	"EXTRA_SLOTS", -- replaced by Summon Toolbox
+	"FASTER_WANDS", -- replaced by Summon Toolbox
 }
 
 --bomb materialised, lukki mutation, no wand tinkering, more blood, personal plasma beam, low recoil, phasing, pinpointer, proj dupe, levitation trail, worm perks
