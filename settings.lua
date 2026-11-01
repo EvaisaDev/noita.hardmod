@@ -74,6 +74,11 @@ local module_data = {
         ui_desc = "Temple hearts no longer increase your max health.",
     },
     {
+        id      = "less_explosive",
+        ui_name = "Less Explosive Barrels",
+        ui_desc = "Barrels spawn a flood of material, rather than exploding.",
+    },
+    {
         id      = "trappier_traps",
         ui_name = "Trappier Traps",
         ui_desc = "Makes traps more dangerous.",

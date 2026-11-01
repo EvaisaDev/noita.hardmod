@@ -213,7 +213,7 @@ end
 ---@param entity_id entity_id ID of the entity
 ---@param variable_name string Name of the variable
 ---@param create_if_nil? boolean If true, a new VSC of the given name will be created if it doesn't exist
----@return int value that matches the given VSC name
+---@return int Value that matches the given VSC name
 function utils.GetInternalInt(entity_id, variable_name, create_if_nil)
 	local value = nil
 	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
@@ -258,6 +258,59 @@ function utils.SetInternalInt(entity_id, variable_name, new_value)
 		EntityAddComponent2(entity_id, "VariableStorageComponent", {
 			name = variable_name,
 			value_int = new_value
+		})
+	end
+end
+
+---Shorthand for quickly getting the string value of a VSC
+---@param entity_id entity_id ID of the entity
+---@param variable_name string Name of the variable
+---@param create_if_nil? boolean If true, a new VSC of the given name will be created if it doesn't exist
+---@return string Value that matches the given VSC name
+function utils.GetInternalString(entity_id, variable_name, create_if_nil)
+	local value = nil
+	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
+	if vscomps ~= nil then
+		for key,comp_id in pairs(vscomps) do
+			local var_name = ComponentGetValue2(comp_id, "name")
+			if var_name == variable_name then
+				value = ComponentGetValue2(comp_id, "value_string")
+			end
+		end
+	end
+
+	if value == nil and create_if_nil then
+		EntityAddComponent2(entity_id, "VariableStorageComponent", {
+			name = variable_name,
+			value_string = ""
+		})
+		value = ""
+	end
+
+	return value
+end
+
+---Shorthand for quickly setting a VSC's string value, or creating one if a VSC with the same name doesn't exist yet
+---@param entity_id entity_id ID of the entity
+---@param variable_name string Name of the variable
+---@param new_value string New value of the variable (or initial value, if VSC did not exist)
+function utils.SetInternalString(entity_id, variable_name, new_value)
+	local variable_found = false
+	local vscomps = EntityGetComponent(entity_id, "VariableStorageComponent")
+	if vscomps ~= nil then
+		for key,comp_id in pairs(vscomps) do
+			local var_name = ComponentGetValue2(comp_id, "name")
+			if var_name == variable_name then
+				ComponentSetValue2(comp_id, "value_string", new_value)
+				variable_found = true
+			end
+		end
+	end
+
+	if not variable_found then
+		EntityAddComponent2(entity_id, "VariableStorageComponent", {
+			name = variable_name,
+			value_string = new_value
 		})
 	end
 end
