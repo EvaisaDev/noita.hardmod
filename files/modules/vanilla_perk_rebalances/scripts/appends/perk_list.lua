@@ -164,94 +164,94 @@ local perk_reworks = {
 		end,
 	},
 	["SHIELD"] = { stackable_maximum = 3 },
-	["PROTECTION_EXPLOSION"] = {
-		ui_name = "$hardmod_perk_protection_explosion_name",
-		ui_description = "$hardmod_perk_protection_explosion_desc",
-		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion_016.png",
-		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion.png",
-		clear_original_game_effect = true,
-		stackable = false,
-		stackable_maximum = 1,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.25 )
-			end
-		end,
-		func_remove = function( entity_who_picked )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 4 )
-			end
-		end,
-	},
-	["EXPLODING_CORPSES"] = {
-		ui_description = "$hardmod_perk_exploding_corpses_desc",
-		clear_original_game_effect2 = true,
-		remove_other_perks = nil,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.25 )
-			end
-		end,
-		func_remove = function( entity_who_picked )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 4 )
-			end
-		end,
-	},
-	["PROTECTION_ELECTRICITY"] = {
-		ui_name = "$hardmod_perk_protection_electricity_name",
-		ui_description = "$hardmod_perk_protection_electricity_desc",
-		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity_016.png",
-		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity.png",
-		clear_original_game_effect = true,
-		stackable = false,
-		stackable_maximum = 1,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "electricity" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 0.25 )
-			end
-		end,
-		func_remove = function( entity_who_picked )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "electricity" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 4 )
-			end
-		end,
-	},
-	["PROTECTION_MELEE"] = {
-		ui_name = "$hardmod_perk_protection_melee_name",
-		ui_description = "$hardmod_perk_protection_melee_desc",
-		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee_016.png",
-		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee.png",
-		clear_original_game_effect = true,
-		stackable = false,
-		stackable_maximum = 1,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "melee" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 0.25 )
-			end
-		end,
-		func_remove = function( entity_who_picked )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "melee" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 4 )
-			end
-		end,
-	},
+	-- ["PROTECTION_EXPLOSION"] = {
+	-- 	ui_name = "$hardmod_perk_protection_explosion_name",
+	-- 	ui_description = "$hardmod_perk_protection_explosion_desc",
+	-- 	ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion_016.png",
+	-- 	perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion.png",
+	-- 	clear_original_game_effect = true,
+	-- 	stackable = false,
+	-- 	stackable_maximum = 1,
+	-- 	func = function( entity_perk_item, entity_who_picked, item_name )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.25 )
+	-- 		end
+	-- 	end,
+	-- 	func_remove = function( entity_who_picked )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 4 )
+	-- 		end
+	-- 	end,
+	-- },
+	-- ["EXPLODING_CORPSES"] = {
+	-- 	ui_description = "$hardmod_perk_exploding_corpses_desc",
+	-- 	clear_original_game_effect2 = true,
+	-- 	remove_other_perks = nil,
+	-- 	func = function( entity_perk_item, entity_who_picked, item_name )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 0.25 )
+	-- 		end
+	-- 	end,
+	-- 	func_remove = function( entity_who_picked )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "explosion" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "explosion", current_mtp * 4 )
+	-- 		end
+	-- 	end,
+	-- },
+	-- ["PROTECTION_ELECTRICITY"] = {
+	-- 	ui_name = "$hardmod_perk_protection_electricity_name",
+	-- 	ui_description = "$hardmod_perk_protection_electricity_desc",
+	-- 	ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity_016.png",
+	-- 	perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity.png",
+	-- 	clear_original_game_effect = true,
+	-- 	stackable = false,
+	-- 	stackable_maximum = 1,
+	-- 	func = function( entity_perk_item, entity_who_picked, item_name )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "electricity" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 0.25 )
+	-- 		end
+	-- 	end,
+	-- 	func_remove = function( entity_who_picked )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "electricity" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "electricity", current_mtp * 4 )
+	-- 		end
+	-- 	end,
+	-- },
+	-- ["PROTECTION_MELEE"] = {
+	-- 	ui_name = "$hardmod_perk_protection_melee_name",
+	-- 	ui_description = "$hardmod_perk_protection_melee_desc",
+	-- 	ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee_016.png",
+	-- 	perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee.png",
+	-- 	clear_original_game_effect = true,
+	-- 	stackable = false,
+	-- 	stackable_maximum = 1,
+	-- 	func = function( entity_perk_item, entity_who_picked, item_name )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "melee" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 0.25 )
+	-- 		end
+	-- 	end,
+	-- 	func_remove = function( entity_who_picked )
+	-- 		local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
+	-- 		if dmg_comp ~= nil then
+	-- 			local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "melee" )
+	-- 			ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "melee", current_mtp * 4 )
+	-- 		end
+	-- 	end,
+	-- },
 	["GOLD_IS_FOREVER"] = { --makes gold decay into special gold dust
 		id = "HARDMOD_GOLD_IS_DUST",
 		ui_name = "$hardmod_gold_is_dust_perkname",
