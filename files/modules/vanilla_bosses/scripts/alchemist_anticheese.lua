@@ -6,3 +6,4 @@ function damage_about_to_be_received(damage, x, y, dealt_by, crit)
 
 	return damage, crit
 end
+
