@@ -169,8 +169,29 @@ local new_perks = {
 		func_remove = function( entity_who_picked )
 			local shield_num = 0
 			GlobalsSetValue( "PERK_SHIELD_OVERSIZED_COUNT", tostring( shield_num ) )
-	end,
-	}
+		end,
+	},
+	{
+		id = "HARDMOD_SUMMON_TOOLBOX",
+		ui_name = "$hardmod_perk_summon_toolbox_name",
+		ui_description = "$hardmod_perk_summon_toolbox_desc",
+		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/summon_toolbox_016.png",
+		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/summon_toolbox.png",
+		stackable = STACKABLE_NO,
+		one_off_effect = true,
+		usable_by_enemies = false,
+        func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
+        	if pickup_count > 1 then return end
+
+        	local x, y = EntityGetTransform( entity_who_picked )
+        	local toolbox_id = EntityLoad( "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/toolbox.xml", x, y - 8 )
+        	EntityAddComponent2( toolbox_id, "LuaComponent", {
+        		_tags = "enabled_in_hand,enabled_in_inventory",
+		        script_source_file = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/toolbox_scan.lua",
+		        execute_every_n_frame = 60,
+        	})
+        end,
+	},
 }
 
 local perk_reworks = {
