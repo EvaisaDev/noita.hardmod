@@ -4,6 +4,8 @@ local root = "mods/noita.hardmod/files/modules/vanilla_bosses/"
 
 ModLuaFileAppend("data/entities/animals/boss_pit/boss_pit_damage.lua", root.."appends/boss_pit_damage.lua")
 
+ModMaterialsFileAdd(root.."materials.xml")
+
 local edit = {
 	["boss_centipede/boss_centipede"] = {
 		damagecomp = { materials_damage = false },
@@ -17,7 +19,10 @@ local edit = {
 	},
 	["boss_alchemist/boss_alchemist"] = {
 		from_base = true,
-		damagemult = { explosion = 0.6 }
+		damagemult = {
+			explosion = 0.5,
+			projectile = 0.2,
+		}
 	},
 	["boss_meat/boss_meat"] = {
 		effects = { "STUN_PROTECTION_FREEZE" },
@@ -65,6 +70,75 @@ for enemy,data in pairs(edit) do
 			})
 		end
 	end
+end
+
+-- door boss
+for file in nxml.edit_file("data/entities/animals/boss_gate/gate_monster_a.xml") do
+	file:create_child("BossHealthBarComponent", { gui = false, in_world = true })
+
+	file:create_child("SpriteComponent", {
+		_tags = "health_bar_back,ui,no_hitbox",
+		image_file = "data/ui_gfx/health_slider_back_meat.png",
+		offset_x = 12, offset_y = 43, emissive = 1, never_ragdollify_on_death="1",
+		update_transform_rotation = false,
+		has_special_scale = true,
+		z_index = -9000,
+	})
+
+	file:create_child("SpriteComponent", {
+		_tags = "health_bar,ui,no_hitbox",
+		image_file = "data/ui_gfx/health_slider_front.png",
+		offset_x = 11, offset_y = 42, emissive = 1, never_ragdollify_on_death = "1",
+		update_transform_rotation = false,
+		has_special_scale = true,
+		z_index = -9000,
+	})
+
+	file:first_of("PhysicsImageShapeComponent"):set("material", "hardmod_gate_boss_material")
+	file:first_of("CellEaterComponent"):set("ignored_material", "hardmod_gate_boss_material")
+
+	local dmc = file:first_of("Base"):first_of("DamageModelComponent")
+	if dmc then
+		dmc:set("hp", 130)
+
+		local mult = dmc:first_of("damage_multipliers")
+		if mult then
+			mult:set("projectile", 0.3)
+			mult:set("explosion", 0.3)
+		end
+	end
+
+	file:create_child("MagicConvertMaterialComponent", {
+		-- from_any_material = true,
+		from_material_array = "rock_hard,rock_hard_border,templerock_static,templebrick_static,templebrick_noedge_static,templebrick_thick_static,templebrickdark_static",
+        to_material_array = "rock_static_cursed,rock_static_cursed,rock_static_cursed,rock_static_cursed,rock_static_cursed,rock_static_cursed,rock_static_cursed",
+		-- to_material = "rock_static_cursed",
+        loop = false, is_circle = true,
+		kill_when_finished = false,
+        steps_per_frame = 30,
+        radius = 90,
+    })
+end
+
+local gates = { "a", "b", "c", "d" }
+for _,gate in pairs(gates) do
+	for file in nxml.edit_file("data/entities/animals/boss_gate/gate_monster_"..gate..".xml") do
+		file:create_child("Entity", {}, {
+			nxml.new_element("Base", {
+				file = "mods/noita.hardmod/files/modules/vanilla_bosses/entity/gate_boss_shield.xml"
+			})
+		})
+
+		file:create_child("Entity", {}, {
+			nxml.new_element("Base", {
+				file = "mods/noita.hardmod/files/modules/vanilla_bosses/entity/gate_boss_shield_inner.xml"
+			})
+		})
+	end
+end
+
+for file in nxml.edit_file("data/entities/buildings/wizardcave_gate_monster_spawner.xml") do
+	file:first_of("CellEaterComponent"):set("ignored_material", "hardmod_gate_boss_material")
 end
 
 -- TODO: the boss needs rebalancing, fix cheeses, make it much harder to kill
