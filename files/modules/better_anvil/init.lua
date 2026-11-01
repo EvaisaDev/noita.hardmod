@@ -41,7 +41,6 @@ local function patch_broken_spell()
   )
 
   ModLuaFileAppend("data/scripts/item_spawnlists.lua", root.."/appends/item_spawnlists.lua")
-  ModLuaFileAppend("data/scripts/gun/gun_actions.lua", root.."/appends/gun_actions.lua")
 
   for broken_spell in nxml.edit_file("data/entities/items/pickup/summon_portal_broken.xml") do
     local icomp = broken_spell:first_of("ItemComponent")

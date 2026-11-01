@@ -7,23 +7,6 @@ lootlib.add_patch_script("mods/noita.hardmod/files/modules/vanilla_perk_rebalanc
 
 ModMaterialsFileAdd("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/materials.xml")
 
--- remove perks with not_progress from progress menu
-utils.modifile("data/scripts/perks/perk_reflect.lua", 
-[[	RegisterPerk( 
-		perk.id,
-		perk.ui_name,
-		perk.ui_description,
-		perk.ui_icon,
-		perk.perk_icon
-		)]],
-[[	if not perk.not_progress then RegisterPerk( 
-		perk.id,
-		perk.ui_name,
-		perk.ui_description,
-		perk.ui_icon,
-		perk.perk_icon
-		) end]])
-
 
 -- xml modifications as separate functions for better readability
 local function modify_master_of_blinding()
@@ -83,35 +66,6 @@ local spell_card_append_targets = {
 	["data/entities/base_custom_card.xml"] = true,
 }
 
-dofile_once("data/scripts/gun/gun_actions.lua")
----@diagnostic disable-next-line:undefined-global
-for _,action in pairs(actions) do
-	if action.custom_xml_file then
-		spell_card_append_targets[action.custom_xml_file] = true
-	end
-end
-
-for path,_ in pairs(spell_card_append_targets) do
-	for xml in nxml.edit_file(path) do
-		if xml:first_of("AbilityComponent") then break end
-
-		xml:add_child(nxml.new_element("LuaComponent", {
-			_tags = "enabled_in_world,enabled_in_inventory,enabled_in_world",
-			script_source_file = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/spell_append.lua",
-			remove_after_executed = "1"
-		}))
-	end
-end
-
-for xml in nxml.edit_file("data/entities/player_base.xml") do
-	for child in xml:each_of("Entity") do
-		if child.attr.name == "arm_r" then
-			child:add_child(nxml.new_element("LuaComponent", {
-				script_shot = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/shoot_spell.lua"
-			}))
-		end
-	end
-end
 
 
 --[[ Gold Is Dust ]]
@@ -172,14 +126,42 @@ hooks.mod_init = function()
 end
 
 hooks.mod_post_init = function()
-	ModLuaFileAppend("data/scripts/perks/perk_list.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/perk_list.lua")
-	ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/actions.lua")
 	ModLuaFileAppend("data/scripts/gun/gun_extra_modifiers.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/gun_extra_modifiers.lua")
 	ModLuaFileAppend("data/scripts/item_spawnlists.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/item_spawnlists.lua")
 	ModLuaFileAppend("data/scripts/biomes/snowcastle_hourglass_chamber.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/hourglass_chamber.lua")
 
 	-- ModLuaFileAppend("data/scripts/perks/perk.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/perk.lua")
 	-- ModLuaFileAppend("data/scripts/magic/altar_tablet_magic.lua", "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/appends/altar_tablet_magic.lua")
+
+	dofile_once("data/scripts/gun/gun_actions.lua")
+	---@diagnostic disable-next-line:undefined-global
+	for _,action in pairs(actions) do
+		if action.custom_xml_file then
+			spell_card_append_targets[action.custom_xml_file] = true
+		end
+	end
+
+	for path,_ in pairs(spell_card_append_targets) do
+		for xml in nxml.edit_file(path) do
+			if xml:first_of("AbilityComponent") then break end
+
+			xml:add_child(nxml.new_element("LuaComponent", {
+				_tags = "enabled_in_world,enabled_in_inventory,enabled_in_world",
+				script_source_file = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/spell_append.lua",
+				remove_after_executed = "1"
+			}))
+		end
+	end
+
+	for xml in nxml.edit_file("data/entities/player_base.xml") do
+		for child in xml:each_of("Entity") do
+			if child.attr.name == "arm_r" then
+				child:add_child(nxml.new_element("LuaComponent", {
+					script_shot = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/spells_materialised/shoot_spell.lua"
+				}))
+			end
+		end
+	end
 end
 
 return hooks
