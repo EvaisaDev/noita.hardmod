@@ -1,8 +1,17 @@
+--- Credits to Boss Reworks by GrahamBurger for some of the nerfs
+
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 local root = "mods/noita.hardmod/files/modules/vanilla_bosses/"
 
 ModLuaFileAppend("data/entities/animals/boss_pit/boss_pit_damage.lua", root.."appends/boss_pit_damage.lua")
+
+ModMaterialsFileAdd(root.."materials.xml")
+
+local patches = {
+	"alchemist",
+	"door_boss",
+}
 
 local edit = {
 	["boss_centipede/boss_centipede"] = {
@@ -17,7 +26,24 @@ local edit = {
 	},
 	["boss_alchemist/boss_alchemist"] = {
 		from_base = true,
-		damagemult = { explosion = 0.6 }
+		effects = { "KNOCKBACK_IMMUNITY" },
+		damagecomp = {
+			blood_multiplier = 0.1,
+			minimum_knockback_force = 99999,
+		},
+		damagemult = {
+			slice = 0.4,
+			explosion = 0.5,
+			projectile = 0.5,
+		}
+	},
+	["boss_gate/gate_monster_a"] = {
+		from_base = true,
+		damagecomp = { hp = 130 },
+		damagemult = {
+			projectile = 0.3,
+			explosion = 0.3,
+		}
 	},
 	["boss_meat/boss_meat"] = {
 		effects = { "STUN_PROTECTION_FREEZE" },
@@ -67,22 +93,8 @@ for enemy,data in pairs(edit) do
 	end
 end
 
--- TODO: the boss needs rebalancing, fix cheeses, make it much harder to kill
-utils.modifile(
-	"data/entities/animals/boss_wizard/death.lua",
-	[[EntityLoad( "data/entities/items/pickup/wandstone.xml"]],
-	[[--]]
-)
-
-utils.patchifile("data/entities/animals/boss_gate/gate_monster_death.lua", {{
-	from = [[AddFlagPersistent( "miniboss_gate_monsters" )]],
-	insert_after = [[
-		EntityLoad("data/entities/items/pickup/wandstone.xml", pos_x, pos_y)
-		EntityLoad("mods/noita.hardmod/files/modules/vanilla_bosses/entity/wandstone_emitter.xml", pos_x, pos_y)
-		GamePlaySound("data/audio/Desktop/projectiles.snd", "player_projectiles/crumbling_earth/create", pos_x, pos_y)	
-
-		for _,flag in pairs({"a","b","c","d"}) do GameRemoveFlagRun("$animal_gate_monster_"..flag.."_killed") end
-	]]
-}})
+for _,patch in pairs(patches) do
+	dofile_once(root.."patches/"..patch..".lua")
+end
 
 return {}
