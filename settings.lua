@@ -28,13 +28,6 @@ local module_data = {
                   "and giving them buffs that adapt to your strengths.",
     },
     {
-        id      = "truly_limited_spells",
-        ui_name = "Truly Limited Spells",
-        ui_desc = "A variety of changes that make it harder (but not impossible!) to\n" ..
-                  "\"unlimit\" limited-use spells. This includes a limit of 30 uses for\n" ..
-                  "all Greek spells, along with various new ways to restore spell charges.",
-    },
-    {
         id      = "vanilla_perk_rebalances",
         ui_name = "Vanilla Perk Rebalances",
         ui_desc = "Makes certain vanilla perks - most notably the immunity perks,\n" ..

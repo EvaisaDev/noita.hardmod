@@ -1,3 +1,4 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 local root = "mods/noita.hardmod/files/modules/vanilla_bosses/"
 
@@ -65,5 +66,23 @@ for enemy,data in pairs(edit) do
 		end
 	end
 end
+
+-- TODO: the boss needs rebalancing, fix cheeses, make it much harder to kill
+utils.modifile(
+	"data/entities/animals/boss_wizard/death.lua",
+	[[EntityLoad( "data/entities/items/pickup/wandstone.xml"]],
+	[[--]]
+)
+
+utils.patchifile("data/entities/animals/boss_gate/gate_monster_death.lua", {{
+	from = [[AddFlagPersistent( "miniboss_gate_monsters" )]],
+	insert_after = [[
+		EntityLoad("data/entities/items/pickup/wandstone.xml", pos_x, pos_y)
+		EntityLoad("mods/noita.hardmod/files/modules/vanilla_bosses/entity/wandstone_emitter.xml", pos_x, pos_y)
+		GamePlaySound("data/audio/Desktop/projectiles.snd", "player_projectiles/crumbling_earth/create", pos_x, pos_y)	
+
+		for _,flag in pairs({"a","b","c","d"}) do GameRemoveFlagRun("$animal_gate_monster_"..flag.."_killed") end
+	]]
+}})
 
 return {}

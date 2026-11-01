@@ -70,6 +70,7 @@ hardmod_perk_spell_gems_desc,"Enemies may drop gems that recharge limited-use sp
 hardmod_item_spell_gem,"Spell Gem","Кристалл заклинаний",,,,,,,,,,,,
 hardmod_spell_indulgence_name,"Indulgence",,,,,,,,,,,,,
 hardmod_spell_indulgence_desc,"Copies the next empty spell, at the cost of gold",,,,,,,,,,,,,
+hardmod_spell_indulgence_not_enough,"You don't have enough gold to force-cast $0 (need $1)",,,,,,,,,,,,,
 hardmod_spell_infinity_name,"Aleph",,,,,,,,,,,,,
 hardmod_spell_infinity_desc,"Copies the next empty spell",,,,,,,,,,,,,
 hardmod_spell_alt_fire_anything_name,"Alt Fire Anything",,,,,,,,,,,,,

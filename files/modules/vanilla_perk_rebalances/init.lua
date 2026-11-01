@@ -5,8 +5,6 @@ local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local lootlib = dofile_once("mods/noita.hardmod/lib/lootlib.lua") ---@type lootlib
 lootlib.add_patch_script("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/lootlib_patch.lua")
 
-
-
 ModMaterialsFileAdd("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/materials.xml")
 
 -- remove perks with not_progress from progress menu
@@ -32,7 +30,7 @@ local function modify_master_of_blinding()
 	for xml in nxml.edit_file("data/entities/animals/wizard_dark.xml") do
 		xml:add_child(nxml.new_element("LuaComponent", {
 			script_source_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/wizard_dark_ase_scan.lua",
-        	execute_every_n_frame="2",
+			execute_every_n_frame="2",
 		}))
 	end
 end
@@ -42,7 +40,7 @@ local function modify_wandstone()
 		local tags = xml.attr.tags
 		if #tags == 0 then xml.attr.tags = "hardmod_wandstone"
 		else xml.attr.tags = tags .. ",hardmod_wandstone" end
-    end
+	end
 end
 
 local function modify_mountain_altar()

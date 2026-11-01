@@ -7,11 +7,15 @@ local function patch_spawn_rules()
 		"crypt",
 		"excavationsite",
 		"fungicave",
+		"fungiforest",
+		"rainforest_dark",
 		"rainforest",
 		"snowcastle",
 		"snowcave",
 		"the_end",
 		"vault",
+		"wandcave",
+		"wizardcave",
 	}
 
 	for _,biome in pairs(patch_biomes) do
@@ -22,6 +26,19 @@ local function patch_spawn_rules()
 	end
 
 	ModLuaFileAppend("data/scripts/director_helpers.lua", "mods/noita.hardmod/files/modules/stronger_enemies/appends/director_helpers.lua")
+end
+
+local function patch_enemy_changes()
+	utils.patchifile("data/scripts/animals/spirit_aura_weak.lua", {
+		{
+			from = [["GameEffectComponent", "spirit_weakness"]],
+			to = [["VariableStorageComponent", "hardmod_spirit_weaken"]]
+		},
+		{
+			from = [[data/entities/misc/effect_spirit_weakness.xml]],
+			to = [[mods/noita.hardmod/files/modules/stronger_enemies/entity/effect_spirit_weaken.xml]]
+		},
+	})
 end
 
 local function patch_less_annoyances()
@@ -66,5 +83,6 @@ end
 patch_spawn_rules()
 patch_less_annoyances()
 patch_fixes()
+patch_enemy_changes()
 
 return {}

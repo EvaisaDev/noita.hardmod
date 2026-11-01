@@ -1,5 +1,9 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
+
 local y,m,d = GameGetDateAndTimeUTC()
 local evil_level = (y * 31469 + m * 929 + d * 541) % 100 + 1
+
+local months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
 
 local splashes = {
 	-- TODO: update this before release
@@ -7,6 +11,9 @@ local splashes = {
 	"15,000 Lines Of Code",
 
 	"Evil Level Today: " .. evil_level .. "%",
+	"Today is "..months[m].." "..utils.EnglishOrd(d)..", "..y,
+	"2K"..(y % 100),
+	"(c) Hämis Corp "..(y + 10),
 	"Dunk is bald",
 	"Now atleast 1% harder!",
 	"I hope you like dying!",
@@ -77,6 +84,19 @@ local cool_mods = {
 }
 for _,coolmod in ipairs(cool_mods) do
 	splashes[#splashes+1] = "Also try "..coolmod.."!"
+end
+
+local win_splashes = {
+	"I Won Hard Mod and All I Got Was This Lousy Splash Text",
+	"God Gamer?",
+	"If you won Hard Mod, surely you can win Fair Mod too!",
+	"Impressive!!!",
+	"Enjoy your golden starter wands",
+	"There's more to explore here",
+}
+
+if HasFlagPersistent("hardmod_game_completed") then
+	for _,splash in pairs(win_splashes) do table.insert(splashes, splash) end
 end
 
 return splashes
