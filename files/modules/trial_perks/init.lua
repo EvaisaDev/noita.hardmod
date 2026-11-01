@@ -3,9 +3,6 @@ local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
 hooks.mod_post_init = function()
 	ModLuaFileAppend(
-		"data/scripts/perks/perk_list.lua",
-		"mods/noita.hardmod/files/modules/trial_perks/scripts/perks_append.lua")
-	ModLuaFileAppend(
 		"data/scripts/biomes/temple_altar.lua",
 		"mods/noita.hardmod/files/modules/trial_perks/scripts/biomes/temple_altar_append.lua" )
 end
