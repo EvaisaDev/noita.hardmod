@@ -1,6 +1,8 @@
 ---@diagnostic disable: undefined-global
 
-local new_perks = {
+local hooks = {}
+
+hooks.new_perks = {
 	{
 		id = "HARDMOD_PERK_SPELL_GEMS",
 		ui_name = "$hardmod_perk_spell_gems_name",
@@ -164,7 +166,7 @@ local new_perks = {
 	},
 }
 
-local perk_reworks = {
+hooks.perk_patches = {
 	["REMOVE_FOG_OF_WAR"] = {
 		ui_name = "$hardmod_perk_all_seeing_eye_name",
 		ui_description = "$hardmod_perk_all_seeing_eye_desc",
@@ -406,20 +408,7 @@ local remove_perks = {
 
 
 for _,perk in ipairs(remove_perks) do
-	perk_reworks[perk] = { not_in_default_perk_pool = true, not_progress = true }
+	hooks.perk_patches[perk] = { not_in_default_perk_pool = true, not_progress = true }
 end
 
-for _,perk in pairs(perk_list) do
-	if perk_reworks[perk.id] then
-		local edit = perk_reworks[perk.id]
-
-		if edit.clear_original_game_effect then perk.game_effect = "" end
-		if edit.clear_original_game_effect2 then perk.game_effect2 = "" end
-
-		for k,v in pairs(edit) do perk[k] = v end
-	end
-end
-
-for _,perk in pairs(new_perks) do
-	table.insert(perk_list, perk)
-end
+return hooks

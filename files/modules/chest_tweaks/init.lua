@@ -6,7 +6,6 @@ lootlib.add_patch_script("mods/noita.hardmod/files/modules/chest_tweaks/loot/che
 lootlib.add_patch_script("mods/noita.hardmod/files/modules/chest_tweaks/loot/great_chest.lua")
 lootlib.add_patch_script("mods/noita.hardmod/files/modules/chest_tweaks/loot/perk_modifications.lua")
 
-ModLuaFileAppend("data/scripts/perks/perk_list.lua", "mods/noita.hardmod/files/modules/chest_tweaks/appends/perk_list.lua")
 ModLuaFileAppend("data/scripts/items/gold_pickup.lua", "mods/noita.hardmod/files/modules/chest_tweaks/appends/gold_pickup.lua")
 
 return {}

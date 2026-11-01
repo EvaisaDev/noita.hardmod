@@ -44,7 +44,6 @@ local type_handler = {
 
 if spell and type_handler[spell.type+1] then
 	type_handler[spell.type+1]()
-else
 end
 
 local item_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "ItemComponent")

@@ -433,4 +433,30 @@ function utils.EntityAddHp(eid, increment)
 	utils.EntitySetHp(eid, hp.hp + increment)
 end
 
+
+---Clones a table
+---@param orig table
+---@param copies nil
+---@return table
+function utils.deepcopy(orig, copies)
+    copies = copies or {}
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        if copies[orig] then
+            copy = copies[orig]
+        else
+            copy = {}
+            copies[orig] = copy
+            for orig_key, orig_value in next, orig, nil do
+                copy[utils.deepcopy(orig_key, copies)] = utils.deepcopy(orig_value, copies)
+            end
+            setmetatable(copy, utils.deepcopy(getmetatable(orig), copies))
+        end
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
 return utils

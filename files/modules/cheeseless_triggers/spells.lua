@@ -71,16 +71,18 @@ local function pay_add_card_costs()
 	return true
 end
 
-for _, card in ipairs(actions) do
-	if ADD_CARD_IDS[card.id] then
-		local run_card = card.action
-		card.action = function()
-			if not pay_add_card_costs() then
-				OnNotEnoughManaForAction()
-				return
-			end
+return {
+	edit_spell = function(card)
+		if ADD_CARD_IDS[card.id] then
+			local run_card = card.action
+			card.action = function()
+				if not pay_add_card_costs() then
+					OnNotEnoughManaForAction()
+					return
+				end
 
-			run_card()
+				run_card()
+			end
 		end
 	end
-end
+}

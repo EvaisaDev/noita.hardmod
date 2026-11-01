@@ -2,7 +2,7 @@ local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 ---@class enemy_perk
 ---@field id string string ID
----@field name string string name (viewable in progress)
+---@field name string? string name (viewable in progress)
 ---@field description string? description of the perk (viewable in progress)
 ---@field sprite string? path to the perk's sprite
 ---@field icon string? path to the perk's icon
@@ -11,8 +11,11 @@ local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 ---@field priority number? priority for the order its shown above enemies' heads or in the inspect window, default 10
 ---@field max integer? max number of this perk an enemy can have
 ---@field condition function? if added, this function must return true, is passed the `data` table
----@field func function function that actually does the stuff, is passed the `data` table
+---@field func function? function that actually does the stuff, is passed the `data` table
+---@field func_handler function? function that runs on the perk handler every 80f, is passed sprite components of in-world perk icons
+---@field func_inspector function? function that runs every frame in the eperk inspector, is passed a table of all the perks held by the enemy
 
+local mpath = "mods/noita.hardmod/files/modules/enemy_perks/"
 local sprites_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_sprites/"
 local icons_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/"
 
@@ -403,7 +406,9 @@ local perks = {
 		weight = 5,
 		priority = 3,
 		max = 1,
-		condition = function(self, data) return GameGetGameEffectCount(data.target_enemy, "PROTECTION_POLYMORPH") == 0 end,
+		condition = function(self, data)
+			return GameGetGameEffectCount(data.target_enemy, "PROTECTION_POLYMORPH") == 0 and not EntityHasTag(data.target_enemy, "polymorphable_NOT")
+		end,
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "PROTECTION_POLYMORPH", false)
 		end,
@@ -453,6 +458,33 @@ local perks = {
 			ComponentSetValue2(worming_it_flight_style, "gravity", 0)
 		end
 	},
+	{
+		id = "OBFUSCATION",
+		name = "$hardmod_eperk_obfuscation_name",
+		description = "$hardmod_eperk_obfuscation_desc",
+		weight = 2,
+		max = 1,
+		condition = function(self, data)
+			return #data.already_held_perks > 0 and data.level >= 5
+		end,
+		func_handler = function(self, entity_id, root, spr_comps)
+			for _,spr_comp in ipairs(spr_comps) do
+				local exceptions = {
+					["mods/noita.hardmod/files/modules/enemy_perks/perk_icons/expand.png"] = true,
+					["mods/noita.hardmod/files/modules/enemy_perks/perk_icons/obfuscation.png"] = true,
+				}
+				if not exceptions[ComponentGetValue2(spr_comp, "image_file")] then
+					ComponentSetValue2(spr_comp, "image_file", "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/missing.png")
+					EntityRefreshSprite(entity_id, spr_comp)
+				end
+			end
+		end,
+		func_inspector = function(self, perks)
+			for _,perk in ipairs(perks) do
+				if perk ~= self then perk.sprite = "mods/noita.hardmod/files/modules/enemy_perks/perk_sprites/missing.png" end
+			end
+		end
+	},
 }
 
 for _,perk in ipairs(perks) do
@@ -474,6 +506,8 @@ for _,perk in ipairs(perks) do
 			return cond(self, data, ...) and (data.how_many_of_each_perk[self.id] or 0) < self.max
 		end
 	end
+
+	perk.func = perk.func or function(...) end
 end
 
 return perks
