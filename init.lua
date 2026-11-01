@@ -103,17 +103,52 @@ HARDMOD_GLOBAL_DATA = {
 local gd = HARDMOD_GLOBAL_DATA
 
 for _,module in ipairs(enabled_modules) do
-	for hook_name,hook in pairs(dofile("mods/noita.hardmod/files/modules/"..module.."/init.lua") or {}) do
+	local module_path = table.concat({"mods/noita.hardmod/files/modules/",module,"/"})
+	local module_hooks = dofile(module_path.."init.lua") or {}
+	for hook_name,hook in pairs(module_hooks) do
 		if hooks[hook_name] ~= nil then --Throw that shit away, let me stuff random shit in the hooks table >:(
 			hooks[hook_name][#hooks[hook_name]+1] = hook
 		end
 	end
+
+	local spell_append_path = module_path..(module_hooks.spells_path or "spells.lua")
+	if ModDoesFileExist(spell_append_path) then
+		ModLuaFileAppend("mods/noita.hardmod/files/spells.lua", spell_append_path)
+	end
+
+	local perk_append_path = module_path..(module_hooks.perks_path or "perks.lua")
+	if ModDoesFileExist(perk_append_path) then
+		print("appending...")
+		ModLuaFileAppend("mods/noita.hardmod/files/perks.lua", perk_append_path)
+	end
 end
+
+ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/spells.lua")
+
+ModLuaFileAppend("data/scripts/perks/perk_list.lua", "mods/noita.hardmod/files/perks.lua")
 
 local translations = ModTextFileGetContent("data/translations/common.csv")
 translations = translations .. "\n" .. ModTextFileGetContent("mods/noita.hardmod/files/standard.csv").."\n"
 translations = translations:gsub("\r", ""):gsub("\n\n+", "\n")
 ModTextFileSetContent("data/translations/common.csv", translations)
+
+
+-- remove perks with not_progress from progress menu
+utils.modifile("data/scripts/perks/perk_reflect.lua", 
+[[	RegisterPerk( 
+		perk.id,
+		perk.ui_name,
+		perk.ui_description,
+		perk.ui_icon,
+		perk.perk_icon
+		)]],
+[[	if not perk.not_progress then RegisterPerk( 
+		perk.id,
+		perk.ui_name,
+		perk.ui_description,
+		perk.ui_icon,
+		perk.perk_icon
+		) end]])
 
 
 function OnModPreInit()

@@ -293,12 +293,18 @@ function hooks.post_update(frame)
 
 	local target_perks = {}
 	for perk_id in ComponentGetValue2(enemy_perk_data, "value_string"):gmatch("([^,]+)") do
-		target_perks[#target_perks+1] = enemy_perks_indexed[perk_id]
+		target_perks[#target_perks+1] = utils.deepcopy(enemy_perks_indexed[perk_id])
 	end
 
 	table.sort(target_perks, function(a, b)
 		return a.priority > b.priority
 	end)
+
+	for _,perk in ipairs(target_perks) do
+		if perk.func_inspector then
+			perk:func_inspector(target_perks)
+		end
+	end
 
 	local function render_perk(perk, x, y)
 		if perk.locked then GuiColorSetForNextWidget(gui, 0.3, 0.3, 0.3, 1) end

@@ -42,7 +42,6 @@ for file in nxml.edit_file("data/entities/misc/homing.xml") do
 	end
 end
 
-ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/appends/gun_actions.lua")
 ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/appends/temple_altar.lua")
 
 return {}

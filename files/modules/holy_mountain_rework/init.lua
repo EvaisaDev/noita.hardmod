@@ -1,7 +1,7 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local img = dofile_once("mods/noita.hardmod/lib/image_utils.lua")
 
-local hooks = {}
+local hooks = {} ---@hooks
 local path = "mods/noita.hardmod/files/modules/holy_mountain_rework/"
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
@@ -67,8 +67,8 @@ utils.modifile(
 	[[local teleport_back_x = 150]]
 )
 
-utils.modifile( --medicube
-	"data/scripts/buildings/teleport_snowcave_buried_eye_return.lua",
+utils.modifile(
+	"data/scripts/buildings/teleport_meditation_cube_return.lua",
 	[[local teleport_back_x = 190]],
 	[[local teleport_back_x = 150]]
 )
@@ -105,6 +105,22 @@ hooks.edit_material = function(elem)
 	elseif elem.attr.name == "templebrick_static_soft" then
 		elem.attr.durability = 9 --weaken the HM false-walls to be more breakable by starter-bomb spells
 	end
+end
+
+
+for xml in nxml.edit_file("data/entities/animals/boss_centipede/ending/ending_sampo_spot_mountain.xml") do
+	xml:add_child(nxml.new_element("Entity", {name = "hardmod.collapse_crystal_check"}, {
+		nxml.new_element("InheritTransformComponent"),
+		nxml.new_element("LuaComponent", {
+			script_source_file = path.."crystal/mountain_altar_check_crystal.lua",
+			execute_every_n_frame = "80"
+		})
+	}))
+end
+
+function hooks.player_spawned(p)
+	local x,y = EntityGetTransform(p)
+	EntityLoad("mods/noita.hardmod/files/modules/holy_mountain_rework/crystal/crystal.xml", x, y)
 end
 
 return hooks
