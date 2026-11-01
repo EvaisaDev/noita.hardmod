@@ -331,6 +331,18 @@ function utils.TriggerScriptDelayed(entity_id, script_path, delay)
 	})
 end
 
+---Formats an integer as an ordinal (1st, 2nd, 3rd, 4th, etc).
+---English-only, currently used only for splashes which aren't translated
+---@param int integer
+---@return string
+function utils.EnglishOrd(int)
+	local frac = int % 10
+	if frac == 1 then return int.."st" end
+	if frac == 2 then return int.."nd" end
+	if frac == 3 then return int.."rd" end
+	return int.."th"
+end
+
 ---Changes an entity's HP/max HP in DamageModelComponent. Values are 1/25
 ---@param eid entity_id Entity's ID
 ---@param hp integer? New HP (if nil and max_hp is present, will keep the entity's old HP but cap it)
