@@ -167,6 +167,8 @@ local function pick_modifiers_for(biome, count)
 end
 
 local function resolve_modifier(modifier)
+	if not modifier then return end
+
 	local id
 	local chance = 1
 

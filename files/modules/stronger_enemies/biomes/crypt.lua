@@ -12,7 +12,7 @@ AddEnemies(g_big_enemies, {
 		entity 	= "data/entities/animals/weakspirit.xml",
 	},
 	{
-		prob      = 0.06,
+		prob      = 0.05,
 		min_count = 1,
 		max_count = 1,
 		entity    = "data/entities/animals/thundermage_big.xml"
