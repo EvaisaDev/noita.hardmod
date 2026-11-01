@@ -61,4 +61,6 @@ AddBiomeGroup({ "meat" })
 ForcedBiomeModifiers.wandcave = { id = "FOG_OF_WAR_REAPPEARS", prob = 0.5 }
 ForcedBiomeModifiers.wizardcave = { id = "FOG_OF_WAR_REAPPEARS", prob = 0.5 }
 ForcedBiomeModifiers.alchemist_secret = { id = "FOG_OF_WAR_REAPPEARS", prob = 0.5 }
-ForcedBiomeModifiers.snowcave = "FREEZING"
+
+-- Was FREEZING, but hell no, that's just lag and inconvenience
+ForcedBiomeModifiers.snowcave = "FREEZING_COSMETIC"
