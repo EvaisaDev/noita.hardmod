@@ -1,7 +1,5 @@
 ---@diagnostic disable: undefined-global
 
-local modid = "Noita.Hardmod"
-
 local new_perks = {
 	{
 		id = "HARDMOD_PERK_SPELL_GEMS",
@@ -53,18 +51,6 @@ local new_perks = {
 		game_effect = "STUN_PROTECTION_ELECTRICITY",
 		stackable = false,
 		one_off_effect = false,
-		usable_by_enemies = false,
-		-- given from altar sacrifice
-		not_in_default_perk_pool = true,
-	},
-	{
-		id = "HARDMOD_PROTECTION_FIRE",
-		ui_name = "$perk_protection_fire",
-		ui_description = "$perkdesc_protection_fire",
-		ui_icon = "data/ui_gfx/perk_icons/protection_fire.png",
-		perk_icon = "data/items_gfx/perks/protection_fire.png",
-		game_effect = "PROTECTION_FIRE",
-		stackable = false,
 		usable_by_enemies = false,
 		-- given from altar sacrifice
 		not_in_default_perk_pool = true,
@@ -272,7 +258,6 @@ local perk_reworks = {
 		ui_description = "$hardmod_gold_is_dust_perkdesc",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/gold_is_dust/perk.png",
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/gold_is_dust/icon.png",
-		origin = modid,
 		stackable = false,
 		func = function()
 			GameAddFlagRun("hardmod.gold_is_dust_perk")

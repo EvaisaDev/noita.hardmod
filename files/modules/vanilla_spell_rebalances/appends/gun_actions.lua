@@ -151,6 +151,11 @@ local reworked_actions = {
 	["TAU"] = { mana = 120 },
 	["SIGMA"] = { mana = 90 },
 	["MU"] = { mana = 90 },
+	["SUMMON_WANDGHOST"] = {
+		spawn_level = "10",
+		spawn_probability = "0.1",
+		max_uses = 0,
+	},
 	["FREEZE"] = {
 		mana = 20,
 		action = function()
