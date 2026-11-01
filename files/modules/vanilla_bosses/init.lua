@@ -24,6 +24,13 @@ local edit = {
 			projectile = 0.2,
 		}
 	},
+	["boss_gate/gate_monster_a"] = {
+		damagecomp = { hp = 130 },
+		damagemult = {
+			projectile = 0.3,
+			explosion = 0.3,
+		}
+	},
 	["boss_meat/boss_meat"] = {
 		effects = { "STUN_PROTECTION_FREEZE" },
 		damagecomp = { hp = 80 },
@@ -96,17 +103,6 @@ for file in nxml.edit_file("data/entities/animals/boss_gate/gate_monster_a.xml")
 
 	file:first_of("PhysicsImageShapeComponent"):set("material", "hardmod_gate_boss_material")
 	file:first_of("CellEaterComponent"):set("ignored_material", "hardmod_gate_boss_material")
-
-	local dmc = file:first_of("Base"):first_of("DamageModelComponent")
-	if dmc then
-		dmc:set("hp", 130)
-
-		local mult = dmc:first_of("damage_multipliers")
-		if mult then
-			mult:set("projectile", 0.3)
-			mult:set("explosion", 0.3)
-		end
-	end
 
 	file:create_child("MagicConvertMaterialComponent", {
 		-- from_any_material = true,
