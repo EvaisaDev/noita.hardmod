@@ -18,13 +18,6 @@ Note: This list is not complete. Also, its best to experience the mod yourself f
   - The Phantom is named Ira and will grow stronger with each biome you visit, they will take the situation & previous encounters into consideration when selecting abilities to grant their next host in order to best slay you.
   - You have a 3 minute grace period before Ira begins haunting you, after which Ira will continually possess a new target every minute to hunt you down; however Ira will stop haunting you briefly if you banish them by killing their host, this grace period timer after each kill also grows longer with each biome you visit.
   - Ira can be banished instantly by charming their host with pheromones but this will anger Ira greatly and you may have a harder time fending them off in future encounters.
-- `truly_limited_spells`
-  - The Unlimited Spells perk has been removed.
-  - Spell Refresh is no longer automatically picked up (quality of life change)
-  - A new perk gives enemies a chance to drop "spell gems", which restore a few spell charges on pickup.
-  - Greek spells are now (by default) limited to 30 uses.
-  - Two new late-game spells allow you to cast limited spells with 0 remaining charges.
-  - More info: [readme.md](files/modules/truly_limited_spells/readme.md)
 - `vanilla_perk_rebalances`
   - All-Seeing Eye (perk) now grants vision around the cursor only, rather than lighting up the entire screen.
   - All-Seeing Eye (spell) is now less common early, and has fewer uses.
@@ -52,8 +45,12 @@ Note: This list is not complete. Also, its best to experience the mod yourself f
   - Adds an uncommon Healthy Extra HP dropped from chests, which increases your max HP by 25 and heals you by the same amount
 - `stronger_enemies`
   - Changes which enemies spawn where
-  - Some enemies that spawn in NG+1 now spawn in regular New Game
+  - Some enemies that spawn in NG+1 now spawn in regular New Game, along with some custom spawn rules
+  - Parallel Worlds have *all* possible spawns from all NG+ levels (no scaling is applied)
   - The blinding effect has a bigger visible area, and now only lasts 11 seconds (this is to compensate the fact that blinding mages now spawn in collapsed mines and coal pits)
+  - The confusion spirit has much less HP and is much easier to kill
+  - The weak spirit now disables all your protection perks (instead of increasing the damage you take), and spawns in much more areas
+  - Fixed swapper bypass
 - `better_anvil`
   - Hiisi Anvil has been moved! You now have to explore the Hiisi Base a bit to find it.
   - In the old place in the bottom right there is a book hinting at the general location of the anvil, so you don't have to search everything

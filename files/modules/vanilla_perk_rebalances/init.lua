@@ -4,10 +4,7 @@ local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 local lootlib = dofile_once("mods/noita.hardmod/lib/lootlib.lua") ---@type lootlib
 lootlib.add_patch_script("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/lootlib_patch.lua")
 
-
-
 ModMaterialsFileAdd("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/materials.xml")
-
 
 -- xml modifications as separate functions for better readability
 local function modify_master_of_blinding()

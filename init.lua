@@ -29,7 +29,6 @@ local modules = {
 	"ring_of_returning",
 	"no_more_max_hp_cheesing",
 	"phantom_nemesis",
-	"truly_limited_spells",
 	"alt_fire_anything",
 	"ending",
 	"credits",

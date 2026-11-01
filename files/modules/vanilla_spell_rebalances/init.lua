@@ -1,7 +1,6 @@
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
 local mists = { "slime", "alcohol", "blood", "radioactive" }
-
 for _,mist in pairs(mists) do
   for file in nxml.edit_file("data/entities/projectiles/deck/mist_"..mist..".xml") do
     local comp = file:first_of("ProjectileComponent")
@@ -43,6 +42,7 @@ for file in nxml.edit_file("data/entities/misc/homing.xml") do
 	end
 end
 
-ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/spell_appends.lua")
+ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/appends/gun_actions.lua")
+ModLuaFileAppend("data/scripts/biomes/temple_altar.lua", "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/appends/temple_altar.lua")
 
 return {}

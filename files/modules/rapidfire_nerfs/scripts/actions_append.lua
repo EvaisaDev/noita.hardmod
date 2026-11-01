@@ -202,7 +202,7 @@ local new_actions = {
 local materials = { "MATERIAL_WATER", "MATERIAL_OIL", "MATERIAL_BLOOD", "MATERIAL_CEMENT" }
 for _,material in pairs(materials) do
     reworked_actions[material] = {
-        mana = 8
+        mana = 12
     }
 end
 
