@@ -1,5 +1,6 @@
 dofile_once( "data/scripts/gun/gun_actions.lua" )
-dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+
+local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" )---@type utils
 local EZWand = dofile_once( "mods/noita.hardmod/lib/ezwand.lua" )
 
 local function get_max_uses( card_action )

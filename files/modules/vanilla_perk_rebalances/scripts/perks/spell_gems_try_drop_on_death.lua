@@ -27,7 +27,7 @@ if dmg_comp then
 		local x, y = EntityGetTransform( entity_id )
 		local offset_x = Random( -4, 4 )
 		local offset_y = Random( -4, 4 )
-		EntityLoad( "mods/noita.hardmod/files/modules/truly_limited_spells/entities/items/spell_gem.xml", x + offset_x, y + offset_y )
+		EntityLoad( "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/spell_gem.xml", x + offset_x, y + offset_y )
 
 		-- reset rnd
 		SetRandomSeed( -entity_id + gems_dropped, entity_id - gems_dropped )

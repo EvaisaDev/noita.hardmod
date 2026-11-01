@@ -23,7 +23,7 @@
     _tags="enabled_in_world"
     body_id="1"
     centered="1"
-    image_file="mods/noita.hardmod/files/modules/truly_limited_spells/gfx/items_gfx/spell_gem.png"
+    image_file="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/items/spell_gem.png"
     material="spell_gem_box2d" >
   </PhysicsImageShapeComponent>
 
@@ -58,7 +58,7 @@
   
   <LuaComponent
     _tags="enabled_in_world"
-    script_item_picked_up="mods/noita.hardmod/files/modules/truly_limited_spells/scripts/items/spell_gem.lua" >
+    script_item_picked_up="mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/spell_gem.lua" >
   </LuaComponent>
 
   <!-- particle glitter -->

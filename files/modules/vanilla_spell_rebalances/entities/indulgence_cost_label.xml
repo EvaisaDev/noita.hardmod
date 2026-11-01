@@ -1,18 +1,15 @@
 <Entity tags="hardmod_indulgence_cost_label">
+	<PotionComponent custom_color_material="gold"></PotionComponent>
 
-	<PotionComponent
-		custom_color_material="gold"
-	></PotionComponent>
-	
 	<LuaComponent
-		script_source_file="mods/noita.hardmod/files/modules/truly_limited_spells/scripts/misc/indulgence_cost_label_init.lua"
+		script_source_file="mods/noita.hardmod/files/modules/vanilla_spell_rebalances/spells/indulgence_cost_label_init.lua"
 		execute_on_added="0"
 		execute_every_n_frame="2"
 		remove_after_executed="1"
 	></LuaComponent>
 
 	<LuaComponent
-		script_source_file="mods/noita.hardmod/files/modules/truly_limited_spells/scripts/misc/indulgence_cost_label_update.lua"
+		script_source_file="mods/noita.hardmod/files/modules/vanilla_spell_rebalances/spells/indulgence_cost_label_update.lua"
 		execute_every_n_frame="1"
 	></LuaComponent>
 
@@ -46,5 +43,4 @@
 		hit_particle_force_multiplier="5.5"
 		physics_impulse_coeff="10000"
 	></ProjectileComponent>
-	
 </Entity>

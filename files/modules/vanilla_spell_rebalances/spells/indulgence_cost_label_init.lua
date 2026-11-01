@@ -16,9 +16,9 @@ for i=1,#text do
 end
 offsetx = textwidth * 0.5 - 0.5
 
-EntityAddComponent2( GetUpdatedEntityID(), "SpriteComponent", { 
+EntityAddComponent2( GetUpdatedEntityID(), "SpriteComponent", {
 	_tags = "enabled_in_world",
-	image_file = "mods/noita.hardmod/files/modules/truly_limited_spells/fonts/font_small_numbers_with_hyphen.xml",
+	image_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/fonts/font_small_numbers_with_hyphen.xml",
 	is_text_sprite = true,
 	offset_x = offsetx,
 	offset_y = 8,

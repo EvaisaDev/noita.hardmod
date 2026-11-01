@@ -4,12 +4,25 @@ local modid = "Noita.Hardmod"
 
 local new_perks = {
 	{
+		id = "HARDMOD_PERK_SPELL_GEMS",
+		ui_name = "$hardmod_perk_spell_gems_name",
+		ui_description = "$hardmod_perk_spell_gems_desc",
+		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/spell_gems_016.png",
+		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/spell_gems.png",
+		stackable = false,
+		one_off_effect = false,
+		usable_by_enemies = false,
+        func = function( entity_perk_item, entity_who_picked, item_name )
+            EntityAddChild( entity_who_picked, EntityLoad( "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/perks/spell_gems.xml" ) )
+        end
+	},
+	{
 		id = "HARDMOD_TINKER_AT_PEDESTALS",
 		ui_name = "$hardmod_perk_tinker_at_pedestals_name",
 		ui_description = "$hardmod_perk_tinker_at_pedestals_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/tinker_at_pedestals_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/tinker_at_pedestals.png",
-		stackable = STACKABLE_NO,
+		stackable = false,
 		one_off_effect = false,
 		usable_by_enemies = false,
 		func = function(entity_perk_item, entity_who_picked, item_name, pickup_count)
@@ -71,16 +84,15 @@ local new_perks = {
 	},
 	{ --Nabbed from Apotheosis
 		id = "HARDMOD_OVERSIZED_SHIELD",
-		id_append = "SHIELD",
 		ui_name = "$hardmod_perk_oversized_shield_name",
 		ui_description = "$hardmod_perk_oversized_shield_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/shield_oversized_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/shield_oversized.png",
-		stackable = STACKABLE_YES,
+		stackable = true,
 		stackable_how_often_reappears = 10,
 		stackable_maximum = 5,
 		max_in_perk_pool = 2,
-		usable_by_enemies = true,
+		usable_by_enemies = false,
 		func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
 			local x,y = EntityGetTransform( entity_who_picked )
 			local child_id = EntityLoad( "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/perks/shield_oversized.xml", x, y )
@@ -120,34 +132,6 @@ local new_perks = {
 			EntityAddTag( child_id, "perk_entity" )
 			EntityAddChild( entity_who_picked, child_id )
 		end,
-		func_enemy = function( entity_perk_item, entity_who_picked )
-			local x,y = EntityGetTransform( entity_who_picked )
-			local child_id = EntityLoad( "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/shield_oversized.xml", x, y )
-			local comps = EntityGetComponent( child_id, "EnergyShieldComponent" )
-			if( comps ~= nil ) then
-				for i,comp in ipairs( comps ) do
-					ComponentSetValue2( comp, "radius", 64 )
-					ComponentSetValue2( comp, "recharge_speed", 0.02 )
-				end
-			end
-
-			comps = EntityGetComponent( child_id, "ParticleEmitterComponent" )
-			if( comps ~= nil ) then
-				for i,comp in ipairs( comps ) do
-					local minradius,maxradius = ComponentGetValue2( comp, "area_circle_radius" )
-
-					if ( minradius ~= nil ) and ( maxradius ~= nil ) then
-						if ( minradius == 0 ) then
-							ComponentSetValue2( comp, "area_circle_radius", 0, 64 )
-						elseif ( minradius == 10 ) then
-							ComponentSetValue2( comp, "area_circle_radius", 64, 64 )
-						end
-					end
-				end
-			end
-
-			EntityAddChild( entity_who_picked, child_id )
-		end,
 		_remove = function( entity_who_picked )
 			local shield_num = tonumber( GlobalsGetValue( "PERK_SHIELD_OVERSIZED_COUNT", "0" ) ) - 1
 			GlobalsSetValue( "PERK_SHIELD_OVERSIZED_COUNT", tostring( shield_num ) )
@@ -166,10 +150,10 @@ local new_perks = {
 			end
 			if largest_shield > 0 then EntityKill(largest_shield) end
 		end,
-		func_remove = function( entity_who_picked )
+		func_remove = function()
 			local shield_num = 0
 			GlobalsSetValue( "PERK_SHIELD_OVERSIZED_COUNT", tostring( shield_num ) )
-	end,
+		end,
 	}
 }
 
@@ -180,7 +164,7 @@ local perk_reworks = {
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/all_seeing_eye_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/all_seeing_eye.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_NO,
+		stackable = false,
 		one_off_effect = false,
 		usable_by_enemies = false,
 		func = function( entity_perk_item, entity_who_picked, item_name )
@@ -194,76 +178,13 @@ local perk_reworks = {
 		end,
 	},
 	["SHIELD"] = { stackable_maximum = 3 },
-	["STAINLESS_ARMOUR"] = { stackable_maximum = 3 },
-	["PROTECTION_FIRE"] = {
-		ui_name = "$hardmod_perk_protection_fire_name",
-		ui_description = "$hardmod_perk_protection_fire_desc",
-		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_fire_016.png",
-		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_fire.png",
-		clear_original_game_effect = true,
-		stackable = STACKABLE_NO,
-		stackable_maximum = 1,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
-				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 0.25 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 0.25 )
-			end
-		end,
-		func_remove = function( entity_who_picked )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
-				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 4 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 4 )
-			end
-		end,
-	},
-	["BLEED_OIL"] = {
-		ui_description = "$hardmod_perk_bleed_oil_desc",
-		clear_original_game_effect = true,
-		remove_other_perks = nil,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
-				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 0.25 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 0.25 )
-
-				ComponentSetValue2( dmg_comp, "blood_material", "oil" )
-				ComponentSetValue2( dmg_comp, "blood_spray_material", "oil" )
-				ComponentSetValue2( dmg_comp, "blood_multiplier", 3.0 )
-				ComponentSetValue2( dmg_comp, "blood_sprite_directional", "data/particles/bloodsplatters/bloodsplatter_directional_oil_$[1-3].xml" )
-				ComponentSetValue2( dmg_comp, "blood_sprite_large", "data/particles/bloodsplatters/bloodsplatter_oil_$[1-3].xml" )
-			end
-		end,
-		func_remove = function( entity_who_picked )
-			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
-			if dmg_comp ~= nil then
-				local current_mtp = ComponentObjectGetValue2( dmg_comp, "damage_multipliers", "fire" )
-				local current_ignite_prob = ComponentGetValue2( dmg_comp, "fire_probability_of_ignition" )
-				ComponentObjectSetValue2( dmg_comp, "damage_multipliers", "fire", current_mtp * 4 )
-				ComponentSetValue2( dmg_comp, "fire_probability_of_ignition", current_ignite_prob * 4 )
-
-				ComponentSetValue2( dmg_comp, "blood_material", "blood" )
-				ComponentSetValue2( dmg_comp, "blood_spray_material", "blood" )
-				ComponentSetValue2( dmg_comp, "blood_multiplier", 1.0 )
-				ComponentSetValue2( dmg_comp, "blood_sprite_directional", "" )
-				ComponentSetValue2( dmg_comp, "blood_sprite_large", "" )
-			end
-		end,
-	},
 	["PROTECTION_EXPLOSION"] = {
 		ui_name = "$hardmod_perk_protection_explosion_name",
 		ui_description = "$hardmod_perk_protection_explosion_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_explosion.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_NO,
+		stackable = false,
 		stackable_maximum = 1,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
@@ -305,7 +226,7 @@ local perk_reworks = {
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_electricity.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_NO,
+		stackable = false,
 		stackable_maximum = 1,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
@@ -328,7 +249,7 @@ local perk_reworks = {
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/protection_melee.png",
 		clear_original_game_effect = true,
-		stackable = STACKABLE_NO,
+		stackable = false,
 		stackable_maximum = 1,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			local dmg_comp = EntityGetFirstComponent( entity_who_picked, "DamageModelComponent" )
@@ -432,7 +353,7 @@ local perk_reworks = {
 		ui_description = "$hardmod_perk_teleportitis_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/teleportitis_016.png",
 		perk_icon = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/perks/teleportitis.png",
-		stackable = STACKABLE_NO,
+		stackable = false,
 		usable_by_enemies = false,
 		func = function( entity_perk_item, entity_who_picked, item_name )
 			EntityAddComponent2( entity_who_picked, "LuaComponent", {
@@ -481,21 +402,15 @@ end
 
 for _,perk in pairs(perk_list) do
 	if perk_reworks[perk.id] then
-		if perk_reworks[perk.id].clear_original_game_effect then
-			perk.game_effect = ""
-		end
-		if perk_reworks[perk.id].clear_original_game_effect2 then
-			perk.game_effect2 = ""
-		end
+		local edit = perk_reworks[perk.id]
 
-		for k,v in pairs(perk_reworks[perk.id]) do
-			perk[k] = v
-		end
+		if edit.clear_original_game_effect then perk.game_effect = "" end
+		if edit.clear_original_game_effect2 then perk.game_effect2 = "" end
+
+		for k,v in pairs(edit) do perk[k] = v end
 	end
-	--AddFlagPersistent("perk_picked_"..perk.id:lower())
 end
 
 for _,perk in pairs(new_perks) do
-	--AddFlagPersistent("perk_picked_"..perk.id:lower())
 	table.insert(perk_list, perk)
 end
