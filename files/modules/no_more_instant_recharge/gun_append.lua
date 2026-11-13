@@ -14,15 +14,5 @@ function move_hand_to_discarded()
 				value_int = #discarded,
 			})
 		end
-		vsc = EntityGetFirstComponentIncludingDisabled( GetUpdatedEntityID(), "VariableStorageComponent", "hardmod_wand_reload_time" )
-		if vsc then
-			ComponentSetValue2( vsc, "value_int", current_reload_time )
-		else
-			vsc = EntityAddComponent2( GetUpdatedEntityID(), "VariableStorageComponent", {
-				_tags = "hardmod_wand_reload_time",
-				name = "hardmod_wand_reload_time",
-				value_int = #discarded,
-			})
-		end
 	end
 end

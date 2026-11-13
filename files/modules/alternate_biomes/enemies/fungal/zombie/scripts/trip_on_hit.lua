@@ -21,7 +21,7 @@ function damage_received(damage, message, entity_thats_responsible, is_fatal, pr
 	if ingestion == nil then
 		return
 	end
-	local stomach = ComponentGetValue2(ingestion, "ingestion_size")
-	EntityIngestMaterial(entity_id, CellFactory_GetType("fungi"), seconds)
-	ComponentSetValue2(ingestion, "ingestion_size", stomach)
+	--local stomach = ComponentGetValue2(ingestion, "ingestion_size")
+	--EntityIngestMaterial(entity_id, CellFactory_GetType("fungi"), seconds)
+	--ComponentSetValue2(ingestion, "ingestion_size", stomach)
 end

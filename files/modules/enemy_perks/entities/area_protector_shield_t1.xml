@@ -1,0 +1,36 @@
+<Entity tags="energy_shield,perk_entity">
+
+	<Base file="data/entities/misc/animal_energy_shield.xml">
+
+		<EnergyShieldComponent 
+			_tags="enabled_in_hand,item_identified__LEGACY"
+			max_energy="10"
+			recharge_speed="10"
+			radius="80.0" >
+		</EnergyShieldComponent>
+		
+		<ParticleEmitterComponent
+			emitted_material_name="gold"
+			area_circle_radius.max="80"
+			>
+		</ParticleEmitterComponent>
+		
+		<ParticleEmitterComponent
+			emitted_material_name="gold"
+			count_min="200"
+			count_max="250"
+			area_circle_radius.min="80"
+			area_circle_radius.max="80"
+			>
+		</ParticleEmitterComponent>
+		
+		<ParticleEmitterComponent
+			emitted_material_name="gold"
+			area_circle_radius.min="80"
+			area_circle_radius.max="80"
+			>
+		</ParticleEmitterComponent>
+
+	</Base>
+
+</Entity>

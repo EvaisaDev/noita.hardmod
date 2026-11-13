@@ -45,16 +45,11 @@ function GenerateToolboxSpells( toolbox, amount, do_print )
 				local spell_id = random_from_array( spells )
 				toolbox:AddSpells( spell_id )
 				success = true
+
+				-- print
 				if do_print then
-					dofile_once( "mods/D2DContentPack/files/scripts/actions.lua" )
-					for i,action in ipairs( actions ) do
-						if action.id == spell_id then
-							local x, y = EntityGetTransform( toolbox.entity_id )
-							GamePlaySound( "data/audio/Desktop/misc.bank", "game_effect/regeneration/tick", x, y )
-							GamePrint( "The Toolbox generated a new spell: \"" .. GameTextGetTranslatedOrNot( action.name ) .. "\"")
-							break
-						end
-					end
+					GamePlaySound( "data/audio/Desktop/misc.bank", "game_effect/regeneration/tick", x, y )
+					GamePrint( "The Toolbox generated a new spell!" )
 				end
 
 			else

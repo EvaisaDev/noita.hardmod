@@ -12,13 +12,14 @@ return {
 			stackable = true,
 			one_off_effect = true,
 			usable_by_enemies = false,
+			holy_mountain_exclusive = true,
 			func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
 				if reflecting then return end
 				dofile_once( "data/scripts/lib/utilities.lua" )
 
 				-- register the current y position to disqualify nearby hearts
 				local x, y = EntityGetTransform( entity_who_picked )
-				utils.SetInternalInt( entity_who_picked, "hardmod_time_trial_start_y", y )
+				GlobalsSetValue( "hardmod_time_trial_start_y", y )
 
 				-- add GameEffect, if it doesn't exist already
 				local game_effect = EntityGetAllChildren( entity_who_picked, "hardmod_time_trial_game_effect" )[1]
@@ -39,13 +40,14 @@ return {
 			stackable = true,
 			one_off_effect = true,
 			usable_by_enemies = false,
+			holy_mountain_exclusive = true,
 			func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
 				if reflecting then return end
 				dofile_once( "data/scripts/lib/utilities.lua" )
 
 				-- register the current y position to disqualify nearby hearts
 				local x, y = EntityGetTransform( entity_who_picked )
-				utils.SetInternalInt( entity_who_picked, "hardmod_glass_heart_start_y", y )
+				GlobalsSetValue( "hardmod_glass_heart_start_y", y )
 
 				-- add a damage_received script
 				EntityAddComponent( entity_who_picked, "LuaComponent",

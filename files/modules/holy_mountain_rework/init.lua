@@ -96,9 +96,14 @@ for _,xml_path in ipairs(hm_diggers) do
 end
 
 
+local dont_dig_mats = {
+	"templebrick_static",
+	"templebrick_noedge_static",
+	"rock_box2d_hard",
+}
+
 hooks.edit_material = function(elem)
-	local name = elem.attr.name
-	if name == "templebrick_static" or name == "templebrick_noedge_static" then
+	if dont_dig_mats[elem.attr.name] then
 		local tags = elem.attr.tags
 		if #(tags or "") == 0 then
 			elem.attr.tags = "[worms_lukki_ignore]"

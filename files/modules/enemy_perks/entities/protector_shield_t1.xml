@@ -4,27 +4,27 @@
 
 		<EnergyShieldComponent 
 			_tags="enabled_in_hand,item_identified__LEGACY"
-			recharge_speed="0.22" 
-			radius="48.0" >
+			recharge_speed="0.1" 
+			radius="36.0" >
 		</EnergyShieldComponent>
 		
 		<ParticleEmitterComponent
 			emitted_material_name="plasma_fading_pink"
-			area_circle_radius.max="48"
+			area_circle_radius.max="36"
 			>
 		</ParticleEmitterComponent>
 		
 		<ParticleEmitterComponent
 			emitted_material_name="plasma_fading_pink"
-			area_circle_radius.min="48"
-			area_circle_radius.max="48"
+			area_circle_radius.min="36"
+			area_circle_radius.max="36"
 			>
 		</ParticleEmitterComponent>
 		
 		<ParticleEmitterComponent
 			emitted_material_name="plasma_fading_pink"
-			area_circle_radius.min="48"
-			area_circle_radius.max="48"
+			area_circle_radius.min="36"
+			area_circle_radius.max="36"
 			>
 		</ParticleEmitterComponent>
 

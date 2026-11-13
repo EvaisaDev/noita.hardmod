@@ -25,7 +25,7 @@ function damage_received( damage, desc, entity_who_caused, is_fatal )
 	local colour
 	local comps = EntityGetComponent(entity_id,"VariableStorageComponent")
 	for k=1,#comps
-	do comp = comps[k]
+	do local comp = comps[k]
 		if ComponentGetValue2(comp,"name") == "shield_colour" then
 			vcomp = comp
 			colour = ComponentGetValue2(comp,"value_string")

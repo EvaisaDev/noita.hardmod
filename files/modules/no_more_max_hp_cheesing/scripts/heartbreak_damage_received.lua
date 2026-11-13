@@ -10,7 +10,8 @@ function damage_received(damage, message, attacker, is_fatal)
 		if dmg_comp ~= nil then
 			local p_max_hp = ComponentGetValue2(dmg_comp, "max_hp")
 
-			ComponentSetValue2(dmg_comp, "max_hp", math.min(math.max(p_max_hp - (damage * 0.1), 0.04)), p_max_hp)
+			local reduction = math.min(damage * 0.1, 4) -- -100 max hp at most
+			ComponentSetValue2(dmg_comp, "max_hp", math.max(p_max_hp - reduction, 2))
 		end
 	end
 end

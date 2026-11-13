@@ -7,7 +7,7 @@ local splashes = dofile_once("mods/noita.hardmod/files/modules/logo_splash/splas
 local death_splashes = dofile_once("mods/noita.hardmod/files/modules/logo_splash/splash_death.lua") ---@type (string|splash_entry)[]
 
 local year,month,day,hour,minute,second = GameGetDateAndTimeLocal()
---math.randomseed(second + minute * hour) --seed this off smth
+math.randomseed(year * 1000000 + month * 44640 + day * 1440 + hour * 60 + minute)
 
 local FONT = "data/fonts/font_pixel.xml"
 local TEXT_ANGLE = math.rad(20)

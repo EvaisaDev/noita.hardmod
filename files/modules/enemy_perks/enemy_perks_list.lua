@@ -126,17 +126,45 @@ enemy_perks = {
 		name = "$hardmod_eperk_protector_name",
 		description = "$hardmod_eperk_protector_desc",
 		weight = 8,
-		max = 1,
+		max = 2,
 		condition = function(self, data)
 			if not data.dmc then return end
-			local max_hp = ComponentGetValue2(data.dmc, "max_hp" )
+			if data.how_many_of_each_perk["HARDMOD_AREA_PROTECTOR"] then return end
+			local max_hp = ComponentGetValue2(data.dmc, "max_hp")
 			if max_hp >= 2 then
 				return true
 			end
 		end,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
-			EntityAddChild(entity_id, EntityLoad( dir.."entities/protector_shield.xml", x, y))
+			local tier = ( data.how_many_of_each_perk[self.id] or 0 ) + 1
+
+			EntityAddChild(entity_id, EntityLoad( dir.."entities/protector_shield_t"..tier..".xml", x, y))
+		end
+	},
+	{
+		id = "AREA_PROTECTOR",
+		name = "$hardmod_eperk_area_protector_name",
+		description = "$hardmod_eperk_area_protector_desc",
+		weight = 1,
+		max = 2,
+		biome_conditions = {
+			magical_temple = 2,
+			temple_of_the_art = 3,
+			wizards_den = 4,
+		},
+		condition = function(self, data)
+			return data.dmc ~= nil and data.level > 2
+		end,
+		func = function(self, entity_id, data)
+			local x, y = EntityGetTransform(entity_id)
+			local tier = ( data.how_many_of_each_perk[self.id] or 0 ) + 1
+
+			if tier == 1 then
+				EntityAddChild(entity_id, EntityLoad( dir.."entities/area_protector_shield_t1.xml", x, y))
+			elseif tier == 2 then
+				EntityAddChild(entity_id, EntityLoad( dir.."entities/area_protector_shield_t2.xml", x, y))
+			end
 		end
 	},
 	{
@@ -201,6 +229,9 @@ enemy_perks = {
 			for i = 1, clones_to_make do
 				local clone = EntityLoad(EntityGetFilename(entity_id), data.x, data.y)
 				EntityAddTag(clone, "hardmod_blessed")
+				for _,cbc in ipairs(EntityGetComponentIncludingDisabled(clone, "CameraBoundComponent") or {}) do
+					EntityRemoveComponent(clone, cbc)
+				end
 				eperk_utils.give_enemy_perks(clone, utils.deepcopy(data.selected_perks), data)
 				gang[#gang+1] = clone
 			end
@@ -322,6 +353,33 @@ enemy_perks = {
 		end
 	},
 	{
+		id = "DARK_FLAMES",
+		name = "$hardmod_eperk_dark_flames_name",
+		description = "$hardmod_eperk_dark_flames_desc",
+		weight = 2,
+		max = 1,
+		biome_conditions = {
+			magical_temple = 4,
+			temple_of_the_art = 8,
+			wizards_den = 8,
+		},
+		condition = function(self, data)
+			local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy,"AnimalAIComponent")
+			if animal_ai_comp
+			and ComponentGetValue2(animal_ai_comp,"attack_ranged_enabled")
+			and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends")
+			and ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between") >= 60 then -- only on slow shooters
+				return true
+			end
+		end,
+		func = function(self, entity_id, data)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_shot = dir.."scripts/dark_flames_on_shot.lua",
+				execute_every_n_frame = -1,
+			})
+		end
+	},
+	{
 		id = "CURSER",
 		name = "$hardmod_eperk_curser_name",
 		description = "$hardmod_eperk_curser_desc",
@@ -409,7 +467,7 @@ enemy_perks = {
 			temple_of_the_art = 10,
 			wizards_den = 10,
 		},
-		condition = function(self, data) return data.dmc end,
+		condition = function(...) return not is_projectile_immune(...) end,
 		func = function(self, entity_id, data)
 			ComponentObjectSetValue2(data.dmc, "damage_multipliers", "projectile",
 				ComponentObjectGetValue2(data.dmc, "damage_multipliers", "projectile") * .5
@@ -603,7 +661,7 @@ enemy_perks = {
 		priority = 20,
 		max = 1,
 		biome_conditions = {
-			coal_pits = 4,
+			coal_pits = 5,
 		},
 		condition = function(self, data)
 			return spawn_on_death_blacklist(self, data) and enemy_is_melee(self, data) and not enemy_is_ranged_attack(self, data) and not (data.vigour or data.is_boss)
@@ -752,6 +810,26 @@ enemy_perks = {
 			EntityAddComponent2(entity_id, "LuaComponent", {
 				script_death = dir.."scripts/drop_chest_on_death.lua"
 			})
+		end
+	},
+	{
+		id = "SHIELD_SAPPER",
+		name = "$hardmod_eperk_shield_sapper_name",
+		description = "$hardmod_eperk_shield_sapper_desc",
+		weight = 2,
+		max = 1,
+		biome_conditions = {
+			magical_temple = 4,
+			temple_of_the_art = 6,
+			wizards_den = 8,
+		},
+		condition = function(self, data)
+			increment_weight_with_level(self, data)
+			return data.level > 3
+		end,
+		func = function(self, entity_id, data)
+			local x, y = EntityGetTransform(entity_id)
+			EntityAddChild(entity_id, EntityLoad( dir.."entities/shield_sapper_aura.xml", x, y))
 		end
 	},
 	--{ --I'll implement this later, or someone can do it for me 🙏

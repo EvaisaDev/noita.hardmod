@@ -83,7 +83,7 @@ for xml in nxml.edit_file("data/entities/player_base.xml") do
 	local dmc = xml:first_of("DamageModelComponent")
 	if dmc then
 		local mults = dmc:first_of("damage_multipliers")
-		if mults then mults.attr.physics_hit = "0.05" end
+		if mults then mults.attr.physics_hit = "0.4" end
 	end
 end
 

@@ -1,10 +1,10 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local materials = {
-    {
-        material = "water",
-        weight = 10,
-    }
+	{
+		material = "water",
+		weight = 10,
+	}
 }
 
 

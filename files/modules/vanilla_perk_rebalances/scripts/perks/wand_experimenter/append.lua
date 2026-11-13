@@ -1,9 +1,8 @@
 dofile_once("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/wand_experimenter/shared.lua")
 dofile_once("data/scripts/game_helpers.lua")
 
--- 40 for shuffle, 20 for a nonshuffler
-local shuffle_bonus_multiplier = 2
-local heal_amounts = { 4, 4, 4, 4, 4 }
+-- 69 heal for non-shufflers (as per vanilla)
+local heal_amounts = { 1.2, 0.6, 0.36, 0.24, 0.16, 0.12, 0.08 }
 
 function wand_fired(wand)
   if not wand then return end
@@ -22,7 +21,6 @@ function wand_fired(wand)
   local comp = EntityGetFirstComponentIncludingDisabled(wand, "AbilityComponent")
   if not comp then return end
 
-  local shuffler = ComponentObjectGetValue2(comp, "gun_config", "shuffle_deck_when_empty")
   local casts = tonumber(ComponentGetValue2(comp, "stat_times_player_has_shot")) or 0
 
   if casts > #heal_amounts then
@@ -31,9 +29,6 @@ function wand_fired(wand)
   end
 
   local hp = heal_amounts[casts]
-  if shuffler then
-    hp = hp * shuffle_bonus_multiplier
-  end
 
   ---@diagnostic disable-next-line: undefined-global
   heal_entity(player, hp / 25)

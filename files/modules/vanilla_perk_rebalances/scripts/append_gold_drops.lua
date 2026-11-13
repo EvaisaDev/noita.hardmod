@@ -1,5 +1,5 @@
 return function(hooks)
-    hooks.legacy_nwt_blood_money_drops = false
+	hooks.legacy_nwt_blood_money_drops = false
 
 	hooks.pre_processing[#hooks.pre_processing+1] = {
 		id = "hardmod_blood_money_scaling",

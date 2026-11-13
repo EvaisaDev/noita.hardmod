@@ -132,12 +132,12 @@ hooks.new_perks = {
 		stackable = false,
 		one_off_effect = true,
 		usable_by_enemies = false,
-		func = function( entity_perk_item, entity_who_picked, item_name, pickup_count )
+		func = function(entity_perk_item, entity_who_picked, item_name, pickup_count)
 			if pickup_count > 1 then return end
 
-			local x, y = EntityGetTransform( entity_who_picked )
-			local toolbox_id = EntityLoad( dir.."entities/items/toolbox.xml", x, y - 8 )
-			EntityAddComponent2( toolbox_id, "LuaComponent", {
+			local x, y = EntityGetTransform(entity_who_picked)
+			local toolbox_id = EntityLoad(dir.."entities/items/toolbox.xml", x, y - 8)
+			EntityAddComponent2(toolbox_id, "LuaComponent", {
 				_tags = "enabled_in_hand,enabled_in_inventory",
 				script_source_file = dir.."scripts/perks/toolbox_scan.lua",
 				execute_every_n_frame = 60,
@@ -173,13 +173,13 @@ hooks.perk_patches = {
 		stackable = false,
 		one_off_effect = false,
 		usable_by_enemies = false,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			EntityAddChild( entity_who_picked, EntityLoad( dir.."entities/perks/all_seeing_eye.xml" ) )
+		func = function(entity_perk_item, entity_who_picked, item_name)
+			EntityAddChild(entity_who_picked, EntityLoad(dir.."entities/perks/all_seeing_eye.xml"))
 		end,
-		func_remove = function( entity_who_picked )
-			local perk_entity = EntityGetAllChildren( entity_who_picked, "hardmod_all_seeing_eye_entity" )[1]
+		func_remove = function(entity_who_picked)
+			local perk_entity = EntityGetAllChildren(entity_who_picked, "hardmod_all_seeing_eye_entity")[1]
 			if perk_entity ~= nil then
-				EntityKill( perk_entity )
+				EntityKill(perk_entity)
 			end
 		end,
 	},
@@ -272,20 +272,20 @@ hooks.perk_patches = {
 		perk_icon = dir.."ui_gfx/perks/teleportitis.png",
 		stackable = false,
 		usable_by_enemies = false,
-		func = function( entity_perk_item, entity_who_picked, item_name )
-			EntityAddComponent2( entity_who_picked, "LuaComponent", {
+		func = function(entity_perk_item, entity_who_picked, item_name)
+			EntityAddComponent2(entity_who_picked, "LuaComponent", {
 				_tags = "perk_component,hardmod_teleportitis",
 				script_source_file = dir.."scripts/perks/teleportitis_update.lua",
 				execute_every_n_frame = 1,
-			} )
-			EntityAddComponent2( entity_who_picked, "LuaComponent", {
+			})
+			EntityAddComponent2(entity_who_picked, "LuaComponent", {
 				_tags = "perk_component,hardmod_teleportitis",
 				script_damage_received = dir.."scripts/perks/teleportitis_on_damage.lua",
 				execute_every_n_frame = -1,
-			} )
+			})
 		end,
-		func_remove = function( entity_who_picked )
-			utils.EntityRemoveAllByTag( entity_who_picked, "hardmod_teleportitis" )
+		func_remove = function(entity_who_picked)
+			utils.EntityRemoveAllByTag(entity_who_picked, "hardmod_teleportitis")
 		end,
 	},
 	["LOW_RECOIL"] = {
@@ -302,15 +302,123 @@ hooks.perk_patches = {
 		ui_description = "$hardmod_perk_contact_damage_desc",
 		game_effect = "PROTECTION_MELEE",
 	},
+	-- ["WAND_EXPERIMENTER"] = {
+	-- 	ui_description = "$hardmod_perk_wand_experimenter_desc",
+	-- 	func = function()
+	-- 		-- do nothing
+	-- 	end,
+	-- 	func_remove = function()
+	-- 		-- do nothing
+	-- 	end,
+	-- },
 	--["LEVITATION_TRAIL"] = {
 	--	func = function(perk_entity, entity_id, perk_name)
 	--		EntityAddComponent2(entity_id, "LuaComponent", {
 	--			_tags="perk_component",
 	--			script_source_file = dir.."/levitation_trail/levitation_trail.lua",
 	--			execute_every_n_frame = 3,
-	--		} )
+	--		})
 	--	end
 	--},
+	["ALWAYS_CAST"] = {
+		ui_name = "$hardmod_perk_promote_random_spell_name",
+		ui_description = "$hardmod_perk_promote_random_spell_desc",
+		ui_icon = dir.."ui_gfx/perks/promote_random_spell_016.png",
+		perk_icon = dir.."ui_gfx/perks/promote_random_spell.png",
+		func = function(perk_entity, taker, perk_name)
+			local x,y = EntityGetTransform(perk_entity)
+			local wand = utils.GetHeldWand(taker)
+			if not wand then
+				GamePrintImportant("$hardmod_promote_ac_fail_empty", "$logdesc_d2d_promote_ac_fail_no_wands")
+				GamePlaySound("data/audio/Desktop/event_cues.bank", "event_cues/chest_bad/create", x, y)
+				return
+			end --no wands found
+
+			local max_allowed_always_casts = 4 --in case we want to change this
+			local chance_to_promote = 0.25 --some luck-based perk could increase the odds
+			local max_promotions = 1 --per perk
+
+			local ability_component = EntityGetFirstComponentIncludingDisabled(wand, "AbilityComponent")
+			if not ability_component then return end --wand fail bs
+
+			local always_casts = ComponentObjectGetValue2(ability_component, "gun_config", "deck_capacity") - EntityGetWandCapacity(wand)
+			if always_casts >= max_allowed_always_casts then
+				GamePrintImportant("$hardmod_promote_ac_fail", "$hardmod_promote_ac_fail_capped")
+				GamePlaySound("data/audio/Desktop/event_cues.bank", "event_cues/chest_bad/create", x, y)
+				return false
+			end
+
+			local unique_inv_spells = {}
+			local logged_spells = {}
+			local children = EntityGetAllChildren(taker)
+			for _,child in ipairs(children or {}) do
+				if EntityGetName(child) == "inventory_full" then
+					for _,item in ipairs(EntityGetAllChildren(child) or {}) do
+						local ia_component = EntityGetFirstComponentIncludingDisabled(item, "ItemActionComponent")
+						if ia_component then
+							local spell_id = ComponentGetValue2(ia_component, "action_id")
+							if not logged_spells[spell_id] then
+								logged_spells[spell_id] = true
+								unique_inv_spells[#unique_inv_spells+1] = item
+							end
+						end
+					end
+				end
+			end
+
+			local spells = {}
+			for _,item in ipairs(unique_inv_spells) do
+				local ia_comp = EntityGetFirstComponentIncludingDisabled(item, "ItemActionComponent")
+				if ia_comp then
+					spells[#spells+1] = {
+						eid = item, --Entity ID
+						sid = ComponentGetValue2(ia_comp, "action_id") --Spell ID
+					}
+				end
+			end
+
+			if #spells == 0 then
+				GamePrintImportant("$hardmod_promote_ac_fail_empty", "$hardmod_promote_ac_fail_no_spells")
+				GamePlaySound("data/audio/Desktop/event_cues.bank", "event_cues/chest_bad/create", x, y)
+				return
+			end
+
+			local indexed_gun_actions = dofile_once("mods/noita.hardmod/lib/gun_actions_indexed.lua")
+			local starting_num_spells = #spells
+			max_promotions = math.min(max_promotions, max_allowed_always_casts - always_casts) --lower the amount of allowed promotions if cap is already taken up
+			local promotions = 0
+			SetRandomSeed(-51-y, x+1)
+			for i = 1, starting_num_spells do
+				local rnd = Random(1,#spells)
+				local target_spell = spells[rnd]
+				table.remove(spells, rnd)
+				if Random() <= chance_to_promote then
+					promotions = promotions + 1
+					GamePrint(GameTextGet("$hardmod_promot_ac_success", GameTextGetTranslatedOrNot(indexed_gun_actions[target_spell.sid].name)))
+
+					EntityRemoveFromParent(target_spell.eid)
+					EntityAddChild(wand, target_spell.eid)
+
+					local deck_capacity = ComponentObjectGetValue2(ability_component, "gun_config", "deck_capacity")
+					deck_capacity = deck_capacity + 1
+					ComponentObjectSetValue2(ability_component, "gun_config", "deck_capacity", deck_capacity)
+					local item_component = EntityGetFirstComponentIncludingDisabled(target_spell.eid, "ItemComponent")
+					if item_component then
+						ComponentSetValue2(item_component, "permanently_attached", true)
+					end
+
+					EntitySetComponentsWithTagEnabled(target_spell.eid, "enabled_in_world", false)
+
+					if promotions >= max_promotions then break end
+				end
+			end
+			if promotions == 0 then
+				local absolute_fail_chance = string.format("%.3f%%", ((1-chance_to_promote)^starting_num_spells)*100)
+				GamePrintImportant("$hardmod_promote_ac_fail", GameTextGet("$hardmod_promote_ac_fail_unlucky", absolute_fail_chance))
+				GamePlaySound("data/audio/Desktop/event_cues.bank", "event_cues/chest_bad/create", x, y)
+			end
+		end
+	}
 }
 
 local remove_perks = {

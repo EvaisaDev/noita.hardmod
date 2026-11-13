@@ -1,0 +1,34 @@
+<Entity tags="energy_shield,perk_entity">
+
+	<Base file="data/entities/misc/animal_energy_shield.xml">
+
+		<EnergyShieldComponent 
+			_tags="enabled_in_hand,item_identified__LEGACY"
+			recharge_speed="0.22"
+			radius="40.0" >
+		</EnergyShieldComponent>
+		
+		<ParticleEmitterComponent
+			emitted_material_name="plasma_fading_pink"
+			area_circle_radius.max="40"
+			is_emitting="0"
+			>
+		</ParticleEmitterComponent>
+		
+		<ParticleEmitterComponent
+			emitted_material_name="plasma_fading_pink"
+			area_circle_radius.min="40"
+			area_circle_radius.max="40"
+			>
+		</ParticleEmitterComponent>
+		
+		<ParticleEmitterComponent
+			emitted_material_name="plasma_fading_pink"
+			area_circle_radius.min="40"
+			area_circle_radius.max="40"
+			>
+		</ParticleEmitterComponent>
+
+	</Base>
+
+</Entity>

@@ -347,7 +347,7 @@ end
 ---@param outMin int Lower end of the output range
 ---@param outMax int Higher end of the output range
 ---@return int result The mapped value
-function utils.Remap( value, inMin, inMax, outMin, outMax )
+function utils.Remap(value, inMin, inMax, outMin, outMax)
 	if inMax == inMin then
 		error("Input range cannot have zero length")
 	end
@@ -361,7 +361,7 @@ end
 --- Returns the pickup count of a specific perk
 ---@param perk_id string The perk's ID, i.e. "REMOVE_FOG_OF_WAR"
 ---@return number count The amount of times this perk was taken by the player.
-function utils.GetPerkPickupCount( perk_id )
+function utils.GetPerkPickupCount(perk_id)
 	dofile_once("data/scripts/perks/perk_list.lua")
 
 	---@diagnostic disable-next-line: undefined-global
@@ -483,6 +483,63 @@ function utils.GetIntegerCostOffsetX(cost_int)
 	return width * 0.5 - 0.5
 end
 
+function utils.GetSpellCost(base_cost, biome_id, biome_id_is_chunk)
+	if type(base_cost) == "string" then
+		local bc = (dofile_once("mods/noita.hardmod/lib/gun_actions_indexed.lua")[base_cost] or {}).price
+		if not bc then print("ACTION WAS INVALID: "..base_cost) return end
+		base_cost = bc
+	end
+
+	if biome_id_is_chunk then
+		local biomes = {
+			[1] = 0,
+			[2] = 0,
+			[3] = 0,
+			[4] = 1,
+			[5] = 1,
+			[6] = 1,
+			[7] = 2,
+			[8] = 2,
+			[9] = 2,
+			[10] = 2,
+			[11] = 2,
+			[12] = 2,
+			[13] = 3,
+			[14] = 3,
+			[15] = 3,
+			[16] = 3,
+			[17] = 4,
+			[18] = 4,
+			[19] = 4,
+			[20] = 4,
+			[21] = 5,
+			[22] = 5,
+			[23] = 5,
+			[24] = 5,
+			[25] = 6,
+			[26] = 6,
+			[27] = 6,
+			[28] = 6,
+			[29] = 6,
+			[30] = 6,
+			[31] = 6,
+			[32] = 6,
+			[33] = 6,
+		}
+
+		if biome_id > 35 then biome_id = 7
+		else biome_id = biomes[biome_id] or 0 end
+	end
+
+	biome_id = biome_id^2
+	local price = math.max(math.floor(((base_cost * 0.30) + (70 * biome_id)) * .1) * 10, 10)
+	if biome_id >= 10 then
+		price = price * 5
+	end
+
+	return price
+end
+
 ---Clones a table
 ---@param orig table
 ---@param copies nil
@@ -534,5 +591,27 @@ function utils.GetHeldWand(entity_id)
 
 	return backup_result
 end
+
+function utils.WandAddAlwaysCast(entity_id, action_id)
+	local action_entity_id = CreateItemActionEntity(action_id)
+	EntityAddChild(entity_id, action_entity_id)
+
+	-- we need to add a slot to the ability_comp
+	local ability_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "AbilityComponent")
+	if ability_comp then
+		local deck_capacity = ComponentObjectGetValue2(ability_comp, "gun_config", "deck_capacity")
+		deck_capacity = deck_capacity + 1
+		ComponentObjectSetValue2(ability_comp, "gun_config", "deck_capacity", deck_capacity)
+	end
+
+	local item_component = EntityGetFirstComponentIncludingDisabled(action_entity_id, "ItemComponent")
+	if item_component then 
+		ComponentSetValue2(item_component, "permanently_attached", true)
+	end
+
+	EntitySetComponentsWithTagEnabled(action_entity_id, "enabled_in_world", false)
+end
+
+
 
 return utils

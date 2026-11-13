@@ -49,7 +49,7 @@ return {
 		    type 		        = ACTION_TYPE_MODIFIER,
 			spawn_level         = "1,2,3,4,5",
 			spawn_probability   = "0.2,0.4,0.4,0.3,0.5",
-			related_extra_entities = { "mods/D2DContentPack/files/entities/projectiles/deck/controlled_reach.xml" },
+			related_extra_entities = { "mods/noita.hardmod/files/modules/spell_variety/entities/spells/controlled_reach.xml" },
 		    price               = 165,
 		    mana                = 4,
 		    action = function()

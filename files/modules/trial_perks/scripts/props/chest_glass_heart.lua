@@ -79,6 +79,7 @@ function on_open( entity_item )
 	SetRandomSeed( rand_x, rand_y )
 
 	drop_wand( x, y )
+	EntityLoad( "mods/noita.hardmod/files/modules/holy_mountain_items/entities/ring_of_elevation.xml", x, y )
 	EntityLoad( "data/entities/particles/image_emitters/chest_effect.xml", x, y )
 end
 

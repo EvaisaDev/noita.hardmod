@@ -255,7 +255,7 @@ local function GetAbilityWeight(ability_id, context, tier)
 			affected_abilities = {"haste","teleport_to_target"},
 			weight_change = function (ability_id)
 				local ratio_required = 2
-				if ability_id == "teleport_to_target" then ratio_required = 8 end
+				if ability_id == "teleport_to_target" then ratio_required = 4 end
 				local chase_modifier = math.max(banishment_ratio-ratio_required,0) --If the player is more than 3x (2x for haste) as likely to flee from felcesis, then start prioritising perks that let felcesis hunt the player down more easily to punish them for their cowardice
 				weight = weight * chase_modifier
 			end

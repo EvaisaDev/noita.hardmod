@@ -1,5 +1,7 @@
 dofile_once("data/scripts/status_effects/status_list.lua")
 
+do return end
+
 local cells_per_stain = 10
 
 if fungal_trip_index == nil then

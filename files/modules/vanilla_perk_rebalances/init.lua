@@ -142,6 +142,8 @@ hooks.mod_post_init = function()
 	ModLuaFileAppend("data/scripts/gun/gun_extra_modifiers.lua", dir.."scripts/appends/gun_extra_modifiers.lua")
 	ModLuaFileAppend("data/scripts/item_spawnlists.lua", dir.."scripts/appends/item_spawnlists.lua")
 	ModLuaFileAppend("data/scripts/biomes/snowcastle_hourglass_chamber.lua", dir.."scripts/appends/hourglass_chamber.lua")
+	-- ModLuaFileAppend( "data/scripts/gun/gun.lua", dir.."/scripts/appends/gun.lua" )
+	-- ModLuaFileAppend( "data/scripts/gun/procedural/gun_procedural.lua", dir.."/scripts/appends/gun_procedural.lua" )
 
 	-- ModLuaFileAppend("data/scripts/perks/perk.lua", root.."scripts/appends/perk.lua")
 	-- ModLuaFileAppend("data/scripts/magic/altar_tablet_magic.lua", root.."scripts/appends/altar_tablet_magic.lua")

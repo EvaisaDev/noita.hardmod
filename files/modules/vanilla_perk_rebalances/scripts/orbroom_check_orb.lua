@@ -1,7 +1,7 @@
 local eid = GetUpdatedEntityID()
 local x, y = EntityGetTransform(eid)
 
-local entities = EntityGetInRadius(x, y, 64)
+local entities = EntityGetInRadius(x, y, 160)
 
 for _,entity in pairs(entities) do
 	local comp = EntityGetFirstComponentIncludingDisabled(entity, "OrbComponent")

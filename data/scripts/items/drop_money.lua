@@ -81,7 +81,7 @@ hooks = { ---@class drop_money_hooks
 			id = "trick_blood_money",
 			func = function(data)
 				if data.trick_kill and ComponentGetValue2(data.comp_worldstate, "perk_trick_kills_blood_money") then
-					data.blood_money_chance = 1
+					data.blood_money_chance = 100
 				end
 			end
 		},
@@ -261,7 +261,11 @@ hooks = { ---@class drop_money_hooks
 }
 
 for _,path in ipairs(ModLuaFileGetAppends("data/scripts/items/__drop_money.lua")) do
-	dofile_once(path)(hooks)
+	if ModDoesFileExist(path) then
+		dofile_once(path)(hooks)
+	else
+		print("Warning!! drop_money.lua append " .. path .. " not found!!")
+	end
 end
 
 local function_tables = {
@@ -298,6 +302,7 @@ function do_money_drop(amount_multiplier, trick_kill, damage_type_bit_field, mes
 
 	local data = { ---@class gold_drop_data
 		comp_worldstate = comp_worldstate,
+		trick_kill = trick_kill,
 		blood_money_chance = ComponentGetValue2(comp_worldstate, "perk_hp_drop_chance"),
 		multiplier = amount_multiplier,
 		target_gold_group = "gold",

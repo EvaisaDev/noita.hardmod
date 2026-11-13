@@ -59,7 +59,7 @@ end
 
 -- change the particle colors
 local particle_comps = EntityGetComponentIncludingDisabled( proj_id, "ParticleEmitterComponent" )
-if exists( particle_comps ) then
+if particle_comps then
 	for i,particle_comp in ipairs( particle_comps ) do
 		ComponentSetValue2( particle_comp, "emitted_material_name", "spark_red_bright" )
 	end

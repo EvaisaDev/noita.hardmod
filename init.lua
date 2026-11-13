@@ -5,6 +5,17 @@
 -- D2D2
 -- qtyui_ too!!!!
 
+-------------------------
+--testing zone
+
+
+ModSettingSet("noita.hardmod.snail.disabled", true) --testing if this resolves crashes, remove this soon
+
+
+-------------------------
+
+
+
 local nxml_missing
 if not ModDoesFileExist("mods/noita.hardmod/lib/nxml/nxml.lua") then
 	ModTextFileSetContent("mods/noita.hardmod/lib/nxml/nxml.lua", ModTextFileGetContent("mods/noita.hardmod/files/scripts/nxml_backup.lua"))

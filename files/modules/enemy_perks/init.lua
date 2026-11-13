@@ -3,6 +3,7 @@ local _g = HARDMOD_GLOBAL_DATA
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local biome_index ---@type biome_path_to_simple_id
 local eperk_utils ---@type eperk_utils
+local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
 local dir = "mods/noita.hardmod/files/modules/enemy_perks/"
 
@@ -271,5 +272,9 @@ function hooks.post_update(frame)
 		end
 	end
 end--]]
+
+for file in nxml.edit_file("data/entities/projectiles/darkflame_stationary.xml") do
+	file:set("tags", "hardmod_darkflame")
+end
 
 return hooks
