@@ -180,14 +180,30 @@ hooks.spell_patches = {
 	},
 	["HEAL_BULLET"] = { indulgence_price = 250 },
 	["SPELLS_TO_POWER"] = { spawn_level = "10", spawn_probability = "0.5" },
-	-- ["TOUCH_WATER"] = { indulgence_cost = 500 },
-	-- ["TOUCH_OIL"] = { indulgence_cost = 500 },
-	-- ["TOUCH_ALCOHOL"] = { indulgence_cost = 500 },
-	-- ["TOUCH_PISS"] = { indulgence_cost = 500 },
-	-- ["TOUCH_GRASS"] = { indulgence_cost = 500 },
-	-- ["TOUCH_BLOOD"] = { indulgence_cost = 500 },
-	-- ["TOUCH_SMOKE"] = { indulgence_cost = 500 },
-	-- ["TOUCH_GOLD"] = { indulgence_cost = 500 },
+	["BOMB_DETONATOR"] = {
+		mana = 100,
+		max_uses = 20,
+		never_unlimited = true,
+		action = function()
+			c.fire_rate_wait = c.fire_rate_wait + 60
+			add_projectile( "data/entities/projectiles/deck/bomb_detonator.xml" )
+		end,
+		-- 	if reflecting then return end
+
+		-- 	local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
+		-- 	local prev_cast_frame = utils.GetInternalInt( GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame" ) or 0
+		-- 	local current_frame = GameGetFrameNum()
+		-- 	local x, y = EntityGetTransform( GetUpdatedEntityID() )
+		-- 	if current_frame - prev_cast_frame > 30 then
+		-- 		add_projectile( "data/entities/projectiles/deck/bomb_detonator.xml" )
+		-- 		GamePlaySound( "data/audio/Desktop/misc.bank", "misc/beam_from_sky_kick", x, y )
+		-- 		utils.SetInternalInt( GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame", current_frame )
+		-- 	else
+        --         GamePlaySound( "data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y )
+        --         add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
+		-- 	end
+		-- end,
+	}
 }
 
 local mats = { "MATERIAL_WATER", "MATERIAL_OIL", "MATERIAL_BLOOD", "MATERIAL_CEMENT", "WATER_TRAIL" }

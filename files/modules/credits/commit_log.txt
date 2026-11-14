@@ -702,9 +702,17 @@ reworking item immunities to be more extendible...
 merge that shit
 finished rewriting amplified items perk
 adding new on-death func support for eperks
+make spearbot unable to wallhack
+improve Stinky Aura particles
 adding on_death hook for eperks
 restructured modules.lua
+tweaking
 fixed incompat with apotheosis
+nerf Explosive Detonator
+add Wand Variety module
 I HATE WINDOWS!!! THE BUILD SCRIPT WAS COUNTING TWICE THE LINES ON WINDOWS BECAUSE OF \r\n OHMYGOD
 guh
+refactor to Haunted Wands
+give haunted wands 1/20 spawn chance
+change Shield Sapper aura colour
 add workflow for the build script (idk how this shi works)
