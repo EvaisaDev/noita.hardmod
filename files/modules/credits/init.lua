@@ -16,7 +16,7 @@ local dev_messages = {
 	},
 	{
 		from = "Copi",
-		message = "Copi\n\n\nThis project took up way too little of my time, barely egregious. The others deserve all the recognition they can get for their hard work, cheers to another community collab & a rushed workshop image.",
+		message = "This project took up way too little of my time, barely egregious.\nThe others deserve all the recognition they can get for their hard work,\ncheers to another community collab & a rushed workshop image.",
 		credit = "Copi"
 	},
 	{
