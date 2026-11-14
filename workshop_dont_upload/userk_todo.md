@@ -28,6 +28,7 @@
   - Drains mana from your wands in an area
 - Blinding Curser
 - Teleportitis Curser
+  - only applies once?
 
 
 ## bugs
