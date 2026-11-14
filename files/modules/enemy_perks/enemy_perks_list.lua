@@ -1020,7 +1020,7 @@ enemy_perks = {
 			if stacks == 2 then
 				EntityAddComponent2(entity_id, "VariableStorageComponent", {
 					name = "hardmod_all_seeing_radius",
-					value_int = 180,
+					value_int = 150,
 				})
 			end
 		end
