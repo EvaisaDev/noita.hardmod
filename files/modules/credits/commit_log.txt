@@ -716,3 +716,5 @@ refactor to Haunted Wands
 give haunted wands 1/20 spawn chance
 change Shield Sapper aura colour
 add workflow for the build script (idk how this shi works)
+chore: run automatic build script [skip ci]
+make the script only run on the main repo
