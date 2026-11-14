@@ -16,12 +16,12 @@ local dev_messages = {
 	},
 	{
 		from = "Copi",
-		message = "Copi\n\n\nThis project took up way too little of my time, barely egregious. The others deserve all the recognition they can get for their hard work, cheers to another community collab & a rushed workshop image.",
+		message = "This project took up way too little of my time, barely egregious.\nThe others deserve all the recognition they can get for their hard work,\ncheers to another community collab & a rushed workshop image.",
 		credit = "Copi"
 	},
 	{
 		from = "Dani2D",
-		message = "Working on Hardmod with my lovely colleagues at Notla Games has been\none of the best unpaid part-time jobs I'll ever have. I hope playing\nit has brought you as much enjoyment and frustration as it brought us\nwhile making it.\nThank you for playing!",
+		message = "Working on Harmod with my lovely colleagues at Notla Games\nhas been one of the best unpaid full-time jobs I'll ever have.\nI hope playing it has brought you as much joy and frustration\nas it brought us while making it.\nThank you for playing!",
 		credit = "https://meyer.games/"
 	},
 	{
@@ -36,6 +36,25 @@ local dev_messages = {
 	},
 }
 
+local SPECIAL_THANKS = [[
+
+
+
+Special thanks to Spoopy and CxRedix, for their visual
+designs of the cosmetic Hardmod completion rewards!
+
+Special thanks to GDLiZy, princeoflight612, realloh and
+others in the Noita community for their extensive playtesting
+and honest feedback throughout the development process!
+
+Special thanks to YOU, for voluntarily suffering through the
+twists and turns of our (ever so slightly evil) collab project!
+
+
+
+
+
+]]
 local FINAL_WORDS = [[
  
  
@@ -53,6 +72,10 @@ Find the hidden ARG!
 ]]
 local COMMIT_HISTORY = [[
  
+
+
+
+
 ==============
 COMMIT HISTORY
 ==============
@@ -84,7 +107,7 @@ if #dev_messages > 0 then
 	end
 end
 
-credits = credits .. COMMIT_HISTORY .. commit_log
+credits = credits .. SPECIAL_THANKS .. "\n \n \n \n \n" .. COMMIT_HISTORY .. commit_log
 
 local function escape(str) return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1") end
 local function add_release_break(target, release)

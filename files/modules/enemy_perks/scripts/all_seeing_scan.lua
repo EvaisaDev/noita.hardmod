@@ -3,7 +3,7 @@ local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local owner = GetUpdatedEntityID()
 local x, y = EntityGetTransform( owner )
 
-local radius = utils.GetInternalInt( owner, "hardmod_all_seeing_radius" ) or 130
+local radius = utils.GetInternalInt( owner, "hardmod_all_seeing_radius" ) or 115
 
 local nearby_players = EntityGetInRadiusWithTag( x, y, radius, "player_unit" )
 if not nearby_players or #nearby_players == 0 then return end
