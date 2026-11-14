@@ -703,4 +703,7 @@ merge that shit
 finished rewriting amplified items perk
 adding new on-death func support for eperks
 adding on_death hook for eperks
+restructured modules.lua
+fixed incompat with apotheosis
+ran build scripts
 I HATE WINDOWS!!! THE BUILD SCRIPT WAS COUNTING TWICE THE LINES ON WINDOWS BECAUSE OF \r\n OHMYGOD

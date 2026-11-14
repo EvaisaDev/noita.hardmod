@@ -124,6 +124,8 @@ local splashes = {
 	"You will die, for I am eba, and I will end you.",
 	"She is defrosting as we speak.",
 	"ITS A BRIMSTONE, ITS NOT A PENIS",
+	'"tablet is kil."\nno...',
+	"no yui, don't go to the fairside!",
 }
 
 --local seed = second*minute*hour/day*year
