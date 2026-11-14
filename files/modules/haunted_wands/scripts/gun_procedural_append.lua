@@ -154,7 +154,7 @@ function generate_gun( cost, level, force_unshuffle )
 	biome_index = dofile_once( "mods/noita.hardmod/lib/biome_index.lua" )
 	local biome = biome_index[DebugBiomeMapGetFilename( x, y )]
 	SetRandomSeed( GameGetFrameNum()-level, -GameGetFrameNum()+level )
-	if biome ~= "holy_mountain" and Random( 1, 20 ) <= 20 then
+	if biome ~= "holy_mountain" and Random( 1, 20 ) == 10 then
 		level = level + 1
 		possess_wand = true
 	end
