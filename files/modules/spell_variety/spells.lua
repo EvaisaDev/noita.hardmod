@@ -121,7 +121,7 @@ return {
 			sprite              = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/recharge_shield.png",
 			type 		        = ACTION_TYPE_PASSIVE,
 			spawn_level         = "1,2,3,4,5,6",
-			spawn_probability   = "0.2,0.4,0.6,0.4,0.4,0.6",
+			spawn_probability   = "0.3,0.4,0.6,0.4,0.5,0.7",
 			price               = 220,
 			mana                = 20,
 			custom_xml_file 	= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_recharge_shield.xml",
