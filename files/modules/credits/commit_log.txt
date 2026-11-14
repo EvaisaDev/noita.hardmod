@@ -718,3 +718,7 @@ change Shield Sapper aura colour
 add workflow for the build script (idk how this shi works)
 chore: run automatic build script [skip ci]
 make the script only run on the main repo
+fixed(?) Copi message newlines
+add special thanks to credits
+make wallhack eperk not show up too early
+make wallhack detection radius a bit smaller
