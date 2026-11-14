@@ -722,3 +722,4 @@ fixed(?) Copi message newlines
 add special thanks to credits
 make wallhack eperk not show up too early
 make wallhack detection radius a bit smaller
+Update homing_shoot.lua
