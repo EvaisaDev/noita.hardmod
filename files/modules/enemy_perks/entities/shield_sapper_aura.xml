@@ -10,7 +10,7 @@
 	></LuaComponent>
 
 	<ParticleEmitterComponent
-		emitted_material_name="spark_electric"
+		emitted_material_name="spark_white"
 		gravity.y="0.0"
 		lifetime_min="0.02"
 		lifetime_max="0.05"
@@ -31,7 +31,7 @@
 	</ParticleEmitterComponent>
 	
 	<ParticleEmitterComponent 
-		emitted_material_name="spark_electric"
+		emitted_material_name="spark_white"
 		gravity.y="0.0"
 		lifetime_min="0.4"
 		lifetime_max="0.7"

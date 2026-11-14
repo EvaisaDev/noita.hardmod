@@ -22,7 +22,7 @@ return {
 				local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
 				local prev_cast_frame = utils.GetInternalInt( GetUpdatedEntityID(), "hardmod_blink_prev_cast_frame" ) or 0
 				local current_frame = GameGetFrameNum()
-				if current_frame - prev_cast_frame > 48 then
+				if current_frame - prev_cast_frame > 30 then
 					add_projectile( "mods/noita.hardmod/files/modules/trial_perks/entities/spells/blink.xml" )
 					utils.SetInternalInt( GetUpdatedEntityID(), "hardmod_blink_prev_cast_frame", current_frame )
 				else
