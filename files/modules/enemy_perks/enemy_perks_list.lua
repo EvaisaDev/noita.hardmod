@@ -849,7 +849,9 @@ enemy_perks = {
 		biome_conditions = {
 			magical_temple = 4,
 			temple_of_the_art = 6,
-			wizards_den = 8,
+			wizards_den = 6,
+			sky = 6,
+			hell = 6,
 		},
 		condition = function(self, data)
 			increment_weight_with_level(self, data)
