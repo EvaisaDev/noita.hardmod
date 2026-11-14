@@ -7,8 +7,7 @@
   - enemies still drop 3x gold, but the gold is Cursed Gold Nuggets
   - blood gold and cursed gold cancel each other out, becoming regular gold
   - when it decays it turns into greed cursed liquid
-  - intent: works as a quick way to get money early on if you're skilled and want to speed up the game a bit, if done hitless can get you up to 990 gold in the first level very quickly
-  - note: add Gold Is Dust compat, should decay into toxic gold dust, make custom mats
+  - note: add Gold Is Dust compat, should decay into toxic gold dust, make custom mats for that and behaviour
 - rework physics damage again
   - should be viable, but not easy one-shotting everything in second floor consistently
 - Add Parallel Parity module
@@ -16,7 +15,6 @@
 	- This has been done via guaranteed Hastium basin in stage 2, though more options isnt a terrible idea, wait and observe on this topic for now
 - Look into making gold more valuable?
 - rewrite perk selection logic to be more integrated
-- fix PW cursed liquid to be like apoth's
 - remove item immunities perk if apotheosis is enabled?
 - fix zerk strat (i have a plan :>)
 
@@ -30,6 +28,7 @@
   - Drains mana from your wands in an area
 - Blinding Curser
 - Teleportitis Curser
+  - only applies once?
 
 
 ## bugs
@@ -40,6 +39,7 @@
 - make HM basin changes work in final stage
 - sungems dont spawn
 - Ira should probs remove CBC from their champion
+- fix PW cursed liquid to be like apoth's
 
 ## Spell Issues
 - Plasma does miserable damage

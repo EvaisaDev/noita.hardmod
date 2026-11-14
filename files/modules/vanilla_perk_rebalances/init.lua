@@ -198,4 +198,29 @@ hooks.mod_post_init = function()
 	end
 end
 
+
+-- Apotheosis fails to do nil checks for its target components, completely fails to load as a result, this disables the relevant code
+local f1,t1,f2,t2 =
+	[[do
+  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
+	[[if false then
+  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
+	[[do
+	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]],
+	[[if false then
+	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]]
+
+if ModIsEnabled("Apotheosis") then
+	utils.patchifile("mods/Apotheosis/files/scripts/mod_compatibility/vanilla_appends.lua", {
+		{
+			from = f1,
+			to = t1,
+		},
+		{
+			from = f2,
+			to = t2,
+		},
+	})
+end --We can remove this if Apotheosis 1.4.0 ever releases.
+
 return hooks
