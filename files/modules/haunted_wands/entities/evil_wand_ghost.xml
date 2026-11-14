@@ -26,17 +26,17 @@
 	</LuaComponent> -->
 
 	<LuaComponent
-		script_kick="mods/noita.hardmod/files/modules/wand_variety/scripts/evil_wand_ghost_on_kicked.lua"
+		script_kick="mods/noita.hardmod/files/modules/haunted_wands/scripts/evil_wand_ghost_on_kicked.lua"
 		execute_every_n_frame="-1"
 	></LuaComponent>
 
 	<LuaComponent
-		script_shot="mods/noita.hardmod/files/modules/wand_variety/scripts/evil_wand_ghost_on_shot.lua"
+		script_shot="mods/noita.hardmod/files/modules/haunted_wands/scripts/evil_wand_ghost_on_shot.lua"
 		execute_every_n_frame="-1"
 	></LuaComponent>
 
 	<LuaComponent
-		script_damage_about_to_be_received="mods/noita.hardmod/files/modules/wand_variety/scripts/evil_wand_ghost_on_damaged.lua"
+		script_damage_about_to_be_received="mods/noita.hardmod/files/modules/haunted_wands/scripts/evil_wand_ghost_on_damaged.lua"
 		execute_every_n_frame="-1"
 	></LuaComponent>
 

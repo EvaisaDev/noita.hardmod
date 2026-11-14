@@ -39,7 +39,7 @@ local modules = {
 		"worse_digging",
 		"vanilla_bugfixes",
 		"spell_variety",
-		"wand_variety",
+		"haunted_wands",
 		"for_the_worthy",
 		-- "no_more_instant_recharge", -- needs to be fixed
 		"snail",

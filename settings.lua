@@ -54,7 +54,7 @@ local module_ids = {
 	"unshuffle",
 	"starter_wands",
 	"spell_variety",
-	"wand_variety",
+	"haunted_wands",
 	"holy_mountain_items",
 	"trial_perks",
 	"better_anvil",

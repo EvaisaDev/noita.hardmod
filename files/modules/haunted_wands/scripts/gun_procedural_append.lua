@@ -118,12 +118,12 @@ local function host_evil_ghost( wand_entity, level )
 	EntityAddTag( wand_entity, "hardmod_evil_wand" )
 	EntityAddComponent2( wand_entity, "LuaComponent", {
 		_tags = "hardmod_evil_wand_temp",
-		script_item_picked_up = "mods/noita.hardmod/files/modules/wand_variety/scripts/evil_wand_on_pickup.lua",
+		script_item_picked_up = "mods/noita.hardmod/files/modules/haunted_wands/scripts/evil_wand_on_pickup.lua",
 		execute_every_n_frame = -1,
 	})
 	EntityAddComponent2( wand_entity, "LuaComponent", {
 		_tags = "hardmod_evil_wand_temp",
-		script_source_file = "mods/noita.hardmod/files/modules/wand_variety/scripts/evil_wand_update.lua",
+		script_source_file = "mods/noita.hardmod/files/modules/haunted_wands/scripts/evil_wand_update.lua",
 		execute_every_n_frame = 6,
 	})
 	EntityAddComponent2( wand_entity, "VariableStorageComponent", {
@@ -139,9 +139,10 @@ local function host_evil_ghost( wand_entity, level )
 	})
 
 	EntityAddChild( wand_entity,
-		EntityLoad( "mods/noita.hardmod/files/modules/wand_variety/entities/evil_wand_particles.xml", x, y ) )
+		EntityLoad( "mods/noita.hardmod/files/modules/haunted_wands/entities/evil_wand_particles.xml", x, y ) )
 
-	generate_spells( wand_entity, level )
+	-- generate_spells( wand_entity, level )
+	-- enable this function for custom spell generation
 end
 
 local _generate_gun = generate_gun

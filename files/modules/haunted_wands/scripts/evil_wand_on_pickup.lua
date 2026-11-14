@@ -7,7 +7,7 @@ function item_pickup( entity_item, entity_who_picked, item_name )
 
 	EntityAddComponent2( entity_item, "LuaComponent", {
 		_tags = "enabled_in_world,enabled_in_inventory,enabled_in_hand",
-		script_source_file = "mods/noita.hardmod/files/modules/wand_variety/scripts/evil_wand_on_pickup_2.lua",
+		script_source_file = "mods/noita.hardmod/files/modules/haunted_wands/scripts/evil_wand_on_pickup_2.lua",
 		execute_on_added = false,
 		execute_every_n_frame = 1,
 		execute_times = 1,

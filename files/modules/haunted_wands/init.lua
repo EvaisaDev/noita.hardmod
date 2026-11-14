@@ -5,9 +5,9 @@ local hooks = {}
 
 hooks.mod_post_init = function()
 	ModLuaFileAppend( "data/scripts/gun/procedural/gun_procedural.lua",
-		"mods/noita.hardmod/files/modules/wand_variety/scripts/gun_procedural_append.lua" )
+		"mods/noita.hardmod/files/modules/haunted_wands/scripts/gun_procedural_append.lua" )
 	ModLuaFileAppend( "data/scripts/gun/procedural/gun_procedural_better.lua",
-		"mods/noita.hardmod/files/modules/wand_variety/scripts/gun_procedural_append.lua" )
+		"mods/noita.hardmod/files/modules/haunted_wands/scripts/gun_procedural_append.lua" )
 end
 
 -- remove green pickup particles from haunted wands

@@ -355,7 +355,7 @@ local function maybe_host_evil_ghost( wand_entity, level )
 
 		EntityAddTag( wand_entity, "hardmod_evil_wand" )
 		EntityAddComponent2( wand_entity, "LuaComponent", {
-			script_item_picked_up = "mods/noita.hardmod/files/modules/wand_variety/scripts/evil_wand_on_pickup.lua",
+			script_item_picked_up = "mods/noita.hardmod/files/modules/haunted_wands/scripts/evil_wand_on_pickup.lua",
 			execute_every_n_frame = -1,
 		})
 		EntityAddComponent2( wand_entity, "VariableStorageComponent", {
@@ -363,7 +363,7 @@ local function maybe_host_evil_ghost( wand_entity, level )
 			value_int = level,
 		})
 		EntityAddChild( wand_entity,
-			EntityLoad( "mods/noita.hardmod/files/modules/wand_variety/entities/evil_wand_particles.xml", x, y ) )
+			EntityLoad( "mods/noita.hardmod/files/modules/haunted_wands/entities/evil_wand_particles.xml", x, y ) )
 
 		try_generate_spell_sequence( wand_entity, level )
 		-- add_random_desirable_spell( wand_entity, level )
