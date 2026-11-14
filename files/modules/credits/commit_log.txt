@@ -680,6 +680,8 @@ fixed determinism for guaranteed HM spells
 added "perk rain" event
 finalised effect, removed debug trigger
 ran build scripts
+make Kamikaze deal a bit less damage
+make Shielded eperk a bit less common early
 added weakghost aura ring indicator
 added 2 new eperks: Holy Reflection and Unstable Teleportitis
 Error handling to init.lua, files/scripts/perks.lua and files/scripts/spells.lua
@@ -691,3 +693,33 @@ biome map error
 add guaranteed hastium HM basin somewhere in the first 2 levels
 make guaranteed hastium HM basin only in 2nd level, not 1st
 fixed a few issues
+update runtime translation parser print to have a toggle
+tinkerzone on collapse
+nothing to see here
+Apoth biomemap compat + Slight Ira Buff
+Update biome_map.lua
+Update todo.txt
+make Protector shields smaller
+give Stinky aura an outline
+quick fix for thunderlord + stun immunity
+Update userk_todo.md
+nerf t1 Shielded eperk
+make Divine Shield not trigger on heal spells
+rework dark wizard ase interaction
+Ira Tweaks
+idk what happened here
+revert matosade nerf
+applied ASE rework to sunseed/sunstone
+add All-Seeing eperk
+make Vigour eperk unable to spawn in meat
+tweak Electricity eperk spawn rates
+prevent Shielded + Protector spawn
+flip Reduce Recharge spell back
+reworking item immunities to be more extendible...
+merge that shit
+finished rewriting amplified items perk
+adding new on-death func support for eperks
+adding on_death hook for eperks
+restructured modules.lua
+fixed incompat with apotheosis
+ran build scripts
