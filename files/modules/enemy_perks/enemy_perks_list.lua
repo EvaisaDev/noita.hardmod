@@ -973,7 +973,7 @@ enemy_perks = {
 		condition = function(self, data)
 			-- this perk can only appear on mages, ghosts (excl. wand ghosts) and some select enemies
 			local factions = "mage,mage_swapper,ghost,"
-			local creatures = { "monk", "spearbot", }
+			local creatures = { "monk", }
 
 			local strparts = split_string(EntityGetFilename(data.target_enemy),"/")
 			local filename = strparts[#strparts]
