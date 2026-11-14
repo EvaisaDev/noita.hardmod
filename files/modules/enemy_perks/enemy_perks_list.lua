@@ -976,9 +976,12 @@ enemy_perks = {
 		priority = 25,
 		max = 2,
 		biome_conditions = {
-			magical_temple = 3,
+			mines = 0,
+			coal_pits = 0,
+			magical_temple = 4,
 			temple_of_the_art = 4,
 			wizards_den = 4,
+			tower = 4,
 		},
 		condition = function(self, data)
 			-- this perk can only appear on mages, ghosts (excl. wand ghosts) and some select enemies
