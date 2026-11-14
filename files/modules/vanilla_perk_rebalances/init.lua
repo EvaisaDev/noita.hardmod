@@ -69,15 +69,16 @@ end
 
 
 --[[ Spells Materialised ]]
-
+--#region
 local spell_card_append_targets = {
 	["data/entities/misc/custom_cards/action.xml"] = true,
 	["data/entities/base_custom_card.xml"] = true,
 }
-
+--#endregion
 
 
 --[[ Gold Is Dust ]]
+--#region
 --if ModSettingGet("GID.vanilla_bloody then") then ModMaterialsFileAdd(root.."materials/materials_extra_bloody.xml") end
 if ModIsEnabled("prospector-perk") then
 	ModLuaFileAppend("mods/prospector-perk/files/perk/prospector.lua", dir.."gold_is_dust/append_prospector.lua")
@@ -123,6 +124,24 @@ for xml in nxml.edit_file("data/entities/player_base.xml") do
 			script_source_file=dir.."gold_is_dust/collect_gold.lua"
 		})
 	}))
+end
+--#endregion
+
+
+local ase_items = {
+	"data/entities/items/pickup/sun/sunseed.xml",
+	"data/entities/items/pickup/sun/sunstone.xml",
+}
+local ase_entity = nxml.parse_file("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/perks/all_seeing_eye.xml")
+for _,path in ipairs(ase_items) do
+	for xml in nxml.edit_file(path) do
+		for game_effect in xml:each_of("GameEffectComponent") do
+			if game_effect.attr.effect == "REMOVE_FOG_OF_WAR" then
+				xml:remove_child(game_effect)
+				xml:add_child(ase_entity)
+			end
+		end
+	end
 end
 
 
@@ -178,5 +197,30 @@ hooks.mod_post_init = function()
 		end
 	end
 end
+
+
+-- Apotheosis fails to do nil checks for its target components, completely fails to load as a result, this disables the relevant code
+local f1,t1,f2,t2 =
+	[[do
+  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
+	[[if false then
+  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
+	[[do
+	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]],
+	[[if false then
+	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]]
+
+if ModIsEnabled("Apotheosis") then
+	utils.patchifile("mods/Apotheosis/files/scripts/mod_compatibility/vanilla_appends.lua", {
+		{
+			from = f1,
+			to = t1,
+		},
+		{
+			from = f2,
+			to = t2,
+		},
+	})
+end --We can remove this if Apotheosis 1.4.0 ever releases.
 
 return hooks

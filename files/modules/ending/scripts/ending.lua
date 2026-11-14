@@ -1,7 +1,7 @@
 local modules = dofile_once("mods/noita.hardmod/modules.lua")---@type module_list
 local give_reward = true
 
-for _,module in pairs(modules.integral_modules) do
+for _,module in pairs(modules.integral_list) do
 	if ModSettingGet("noita.hardmod."..module..".disabled") then
 		give_reward = false
 	end

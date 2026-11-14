@@ -1,3 +1,6 @@
+if ComponentGetValue2(GetUpdatedComponentID(), "mTimesExecuted") <= 3 then return end
+-- ^skip damage first 3 times (starts damage on frame 160f (~2.5s))
+
 local entity_id = EntityGetRootEntity(GetUpdatedEntityID())
 if entity_id == GetUpdatedEntityID() then EntityKill(GetUpdatedEntityID()) end
 local pos_x,pos_y = EntityGetTransform(entity_id)

@@ -648,7 +648,7 @@ function utils.LinebreakString(str, max_width, font)
 			if test_line_w > max_width then max_width = test_line_w end
 			current_line = test_line
 		end
-	end --i actually realised i didnt need to modularise this when i realised I could instead modularise split_lines, may recombine
+	end
 
 	return table.concat(lines, "\n")
 end

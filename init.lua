@@ -28,11 +28,10 @@ local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 local modules = dofile_once("mods/noita.hardmod/modules.lua")---@type module_list
 
 local enabled_modules = {}
-for _,module in ipairs(modules.list) do
-	local enabled = not ModSettingGet("noita.hardmod."..module..".disabled")
-	if modules.forced_enable_state[module] ~= nil then enabled = modules.forced_enable_state[module] end
+for _,name in ipairs(modules.list) do
+	local enabled = not ModSettingGet("noita.hardmod."..name..".disabled")
 	if enabled then
-		enabled_modules[#enabled_modules+1] = module
+		enabled_modules[#enabled_modules+1] = name
 	end
 end
 

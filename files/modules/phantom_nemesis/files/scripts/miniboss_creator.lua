@@ -473,6 +473,15 @@ function CreateMiniboss(entity_id, x, y, tier, budget, health_mult)
 	local hp = ComponentGetValue2(dmgcomp, "max_hp")
 	ComponentSetValue2(dmgcomp, "max_hp", hp * health_mult)
 	ComponentSetValue2(dmgcomp, "hp", hp * health_mult)
+	local blood_type = ComponentGetValue2(dmgcomp,"blood_material")
+	local blood_tags = CellFactory_GetTags(CellFactory_GetType(blood_type)) or {}
+	for _,tag in ipairs(blood_tags) do
+		if tag == "[solid]" or tag == "[sand_ground]" then
+			--Make Ira not bleed their own blood if they're going to be imprisoned by it
+			ComponentSetValue2(dmgcomp,"blood_multiplier",0)
+			break
+		end
+	end
 	ComponentObjectSetValue2(dmgcomp,"damage_multipliers","physics_hit", math.max(0,1-((tier-1) * 0.4))) --Gain 40% physics damage reduction per tier, maxing out at physics damage immunity at tier 3
 	if tier >= 3 then ComponentSetValue2(dmgcomp,"fire_probability_of_ignition",0) end
 
@@ -501,7 +510,7 @@ function FindPossessionTarget(biomes_visited)
 	local possible_targets = EntityGetInRadiusWithTag(cam_x,cam_y,math.min(64+(biomes_visited*32),512),"enemy") or {}
 	local strongest_target = {}
 	local player_id = EntityGetWithTag("player_unit")[1] or 0
-	local minimum_distance_from_player = 32 --Don't let felcesis possess an enemy right that's in the player's face, too unfair
+	local minimum_distance_from_player = 76 --Don't let felcesis possess an enemy right that's in the player's face, too unfair (Contact distance's maximum radius + 12 pixels)
 	for _,target in ipairs(possible_targets) do
 		--Filter out non-viable targets
 
