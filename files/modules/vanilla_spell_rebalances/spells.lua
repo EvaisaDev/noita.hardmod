@@ -32,9 +32,18 @@ hooks.spell_patches = {
 		spawn_level = "10",
 		spawn_probability = "0"
 	},
-	["ADD_TRIGGER"] = { mana = 88, spawn_level = "10", spawn_probability = "0" },
-	["ADD_TIMER"] = { mana = 88, spawn_level = "10", spawn_probability = "0" },
-	["ADD_DEATH_TRIGGER"] = { mana = 88, spawn_level = "10", spawn_probability = "0" },
+	["ADD_TRIGGER"] = {
+		spawn_level = "3,4,5,6,10",
+		spawn_probability = "0.3,0.6,0.6,0.6,1",
+	},
+	["ADD_TIMER"] = {
+		spawn_level = "3,4,5,6,10",
+		spawn_probability = "0.3,0.6,0.6,0.6,1",
+	},
+	["ADD_DEATH_TRIGGER"] = {
+		spawn_level = "3,4,5,6,10",
+		spawn_probability = "0.3,0.6,0.6,0.6,1",
+	},
 	["PIERCING_SHOT"] = {
 		spawn_level = "5,6", -- PIERCING_SHOT
 		spawn_probability = "0.5,0.4", -- PIERCING_SHOT
