@@ -1,9 +1,22 @@
+---@diagnostic disable: param-type-mismatch
 local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" ) ---@type utils
+
+function death(damage_type_bit_field, message, attacker, drop_items)
+    local owner = GetUpdatedEntityID()
+    local ally = utils.GetInternalInt( owner, "hardmod_soul_linked_ally" ) or 0
+
+    if ally ~= 0 then
+        utils.SetInternalInt( ally, "hardmod_soul_linked_ally", 0 )
+        utils.EntityRemoveAllByTag( ally, "hardmod_soul_linked" )
+        EntitySetComponentsWithTagEnabled( ally, "hardmod_soul_link_active", false )
+    end
+end
 
 function damage_received( damage, desc, entity_who_caused, is_fatal )
     local owner = GetUpdatedEntityID()
     local ally = utils.GetInternalInt( owner, "hardmod_soul_linked_ally" ) or 0
     if ally == 0 then return end
+    if ( utils.GetInternalInt( owner, "hardmod_soul_linked_death" ) or 0 ) == 1 then return end
 
     local dmg_comp_self = EntityGetFirstComponentIncludingDisabled( owner, "DamageModelComponent" )
     local dmg_comp_ally = EntityGetFirstComponentIncludingDisabled( ally, "DamageModelComponent" )
@@ -11,7 +24,7 @@ function damage_received( damage, desc, entity_who_caused, is_fatal )
         local hp_self = ComponentGetValue2( dmg_comp_self, "hp" )
         local hp_ally = ComponentGetValue2( dmg_comp_ally, "hp" )
 
-        if damage > hp_self and ( math.abs( hp_ally - hp_self ) > 0.004 ) then
+        if damage > hp_self and hp_ally >= 0.05 then
             ComponentSetValue2( dmg_comp_self, "hp", 0.04 )
             GamePrint( "hp is now: " .. ComponentGetValue2( dmg_comp_self, "hp" ) )
 
@@ -21,7 +34,9 @@ function damage_received( damage, desc, entity_who_caused, is_fatal )
             end
         -- if both enemies have <1(.25) hp, they both die
         elseif hp_self <= 0.05 and hp_ally <= 0.05 then
-            EntityInflictDamage( ally, hp_ally * 1.1, "DAMAGE_CURSE", "soul linked", "NORMAL", 0, 0 )
+            utils.SetInternalInt( owner, "hardmod_soul_linked_death", 1 )
+            utils.SetInternalInt( ally, "hardmod_soul_linked_death", 1 )
+            EntityInflictDamage( ally, 39.96, "DAMAGE_CURSE", "soul linked", "NORMAL", 0, 0 )
         end
     end
 end
@@ -38,7 +53,7 @@ function damage_about_to_be_received( damage, x, y, entity_thats_responsible, cr
             local hp_ally = ComponentGetValue2( dmg_comp_ally, "hp" )
 
             -- if the owner would die from the damage and its ally has more than 1 hp remaining, prevent death
-            GamePrint( "hp self: " .. hp_self .. " / hp ally: " .. hp_ally )
+            -- GamePrint( "hp self: " .. hp_self .. " / hp ally: " .. hp_ally )
             if damage > hp_self and hp_ally > 0.04 then
                 if ( utils.GetInternalInt( owner, "hardmod_soul_linked_immunity_given" ) or 0 ) == 0 then
                     utils.SetInternalInt( owner, "hardmod_soul_linked_immunity_given", 1 )
