@@ -87,6 +87,7 @@ local modules = {
 		no_more_instant_recharge = {},
 		snail = {},
 		greed_curse_rework = {},
+		bosses = {},
 	},
 	-- `true` to force enable, `false` to force disable
 	force_disable_modules = {

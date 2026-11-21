@@ -11,12 +11,13 @@ local custom_biomes = {
 	{ h = 0, color = "ffff56a5", file = "pw_barrier.xml" },
 	{ h = 0, color = "ffffe098", file = "cheese/biome.xml" },
 	{ h = 0, color = "ffffdf94", file = "orbroom_sky.xml" },
+	{ h = 0, color = "ff664e81", path = "mods/noita.hardmod/files/modules/bosses/hamis/spider_nest.xml" },
 }
 
 for file in nxml.edit_file("data/biome/_biomes_all.xml") do
 	for _,biome in pairs(custom_biomes) do
 		file:create_child("Biome", {
-			biome_filename = "mods/noita.hardmod/files/modules/biome_map/biome/" .. biome.file,
+			biome_filename = biome.file and ("mods/noita.hardmod/files/modules/biome_map/biome/"..biome.file) or biome.path,
 			height_index = biome.h,
 			color = biome.color
 		})
@@ -93,6 +94,15 @@ utils.patchifile("data/scripts/biomes/pyramid_top.lua", {
 		]]
 	}
 })
+
+-- move medicube room
+for file in nxml.edit_file("data/entities/buildings/teleport_meditation_cube.xml") do
+	local comp = file:first_of("TeleportComponent")
+	if comp then
+		comp:set("target.x", -5317)
+		comp:set("target.y", 2871)
+	end
+end
 
 ModMagicNumbersFileAdd("mods/noita.hardmod/files/modules/biome_map/magic_numbers.xml")
 ModMaterialsFileAdd("mods/noita.hardmod/files/modules/biome_map/materials.xml")
