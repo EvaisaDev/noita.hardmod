@@ -1,0 +1,142 @@
+<Entity name="$animal_hardmod_suur_hamis" tags="hardmod_suur_hamis,boss,polymorphable_NOT,teleportable_NOT,glue_NOT,necrobot_NOT,touchmagic_immunity,no_enemy_perks">
+    <Base file="data/entities/base_enemy_basic.xml">
+        <ItemChestComponent level="1"></ItemChestComponent>
+
+        <AnimalAIComponent
+            escape_if_damaged_probability="0"
+            sense_creatures="1"
+            attack_melee_max_distance="10" 
+    		attack_dash_enabled="1"
+    	    eating_area_radius_x="8"
+    	    eating_area_radius_y="8"
+			attack_dash_damage="0"
+			attack_melee_enabled="0"
+			attack_ranged_enabled="0"
+    	    mouth_offset_x="0" 
+    	    mouth_offset_y="6"
+		></AnimalAIComponent>
+        
+        <SpriteComponent 
+            image_file="mods/noita.hardmod/files/modules/bosses/gfx/hamis/boss.xml" 
+            offset_x="6" 
+            offset_y="12"
+		></SpriteComponent>
+        
+        <SpriteAnimatorComponent
+            rotate_to_surface_normal="0"
+		></SpriteAnimatorComponent>
+
+        <DamageModelComponent
+            hp="40"
+			max_hp="40"
+			air_needed="0"
+			materials_damage="0"
+			fire_probability_of_ignition="0"
+			physics_objects_damage="0"
+			critical_damage_resistance="1"
+            ragdoll_filenames_file="data/ragdolls/longleg/filenames.txt"
+            ragdoll_offset_y="-6"
+			blood_sprite_directional="data/particles/bloodsplatters/bloodsplatter_directional_purple_$[1-3].xml"
+			blood_sprite_large="data/particles/bloodsplatters/bloodsplatter_purple_$[1-3].xml"
+            blood_spray_material="fading_blood"
+            blood_spray_create_some_cosmetic="1"
+		></DamageModelComponent>
+        
+        <CharacterPlatformingComponent 
+            jump_velocity_y="-140" 
+            run_velocity="25"
+		></CharacterPlatformingComponent>
+
+        <GenomeDataComponent herd_id="spider"></GenomeDataComponent>
+        
+        <HitboxComponent 
+            _enabled="1"
+			aabb_min_x="-5" 
+            aabb_min_y="-6" 
+            aabb_max_x="5" 
+            aabb_max_y="6" 
+		></HitboxComponent>
+		
+		<CharacterDataComponent
+			collision_aabb_min_x="-2" 
+			collision_aabb_max_x="2" 
+			collision_aabb_min_y="-6" 
+			collision_aabb_max_y="3"
+			mass="0.4"
+		></CharacterDataComponent>
+    </Base>
+
+	<BossHealthBarComponent></BossHealthBarComponent>
+	
+	<LuaComponent
+		script_damage_about_to_be_received="mods/noita.hardmod/files/modules/bosses/hamis/on_before_damage.lua"
+	></LuaComponent>
+
+	<!-- starts throwing glues after a second of spawning -->
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/bosses/hamis/ai/mode_glue.lua"
+		execute_every_n_frame="60"
+		remove_after_executed="1"
+	></LuaComponent> 
+
+	<!-- attack loop: -->
+	<!-- starts throwing hamises at you after 10s pass -->
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/bosses/hamis/ai/summon_hamises.lua"
+		execute_every_n_frame="600"
+		execute_times="-1"
+	></LuaComponent>
+
+	<!-- then, after 5s, back to throwing glues for another 10s -->
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/bosses/hamis/ai/mode_glue.lua"
+		execute_every_n_frame="900"
+		execute_times="-1"
+	></LuaComponent>
+
+	<!--==============-->
+
+	<!-- delete the nest fully after spawning -->
+	<MagicConvertMaterialComponent
+		from_material="nest_static"
+		to_material="air"
+		kill_when_finished="0"
+		radius="64"
+		steps_per_frame="64"
+		loop="0"
+	></MagicConvertMaterialComponent>
+
+	<AudioComponent
+		file="data/audio/Desktop/animals.bank"
+		event_root="animals/longleg"
+	></AudioComponent>
+
+	<Entity>
+		<InheritTransformComponent/>
+	    <GameEffectComponent effect="STUN_PROTECTION_FREEZE" frames="-1"></GameEffectComponent>
+	    <GameEffectComponent effect="STUN_PROTECTION_ELECTRICITY" frames="-1"></GameEffectComponent>
+	    <GameEffectComponent effect="PROTECTION_FREEZE" frames="-1"></GameEffectComponent>
+	    <GameEffectComponent effect="PROTECTION_POLYMORPH" frames="-1"></GameEffectComponent>
+	    <GameEffectComponent effect="KNOCKBACK_IMMUNITY" frames="-1"></GameEffectComponent>
+	</Entity>
+	
+	<!-- <InteractableComponent
+		_tags="enabled_in_world,enabled_if_charmed"
+		_enabled="0"
+		name="longleg_love"
+		ui_text="$ui_longleg_love"
+        exclusivity_group="1"
+	></InteractableComponent>
+	
+	<LuaComponent
+		script_interacting="data/scripts/animals/longleg_pet.lua"
+		>
+	</LuaComponent>
+	
+	<LuaComponent
+		script_source_file="data/scripts/animals/longleg_love.lua"
+		execute_every_n_frame="60"
+		>
+	</LuaComponent> -->
+
+</Entity>

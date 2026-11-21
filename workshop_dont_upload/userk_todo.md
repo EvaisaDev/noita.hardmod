@@ -1,30 +1,43 @@
 # todo
 - add individual perk window to eperk inspector
 - switch Spells Materialised to directly read mouse inputs rather than rely on throw script_shot nonsense
-- add visual for player holding a spell
-- implement d2d Add AC perk rework
-- guarantee an egg spell in HM6 (replace a spell shop item or add to a wand shop item)
-- curse of greed rework
-  - no material converter curse following you
-  - enemies still drop 3x gold, but the gold is Cursed Gold Nuggets
-  - cursed nuggets damage you for 0.1 * gold value
-  - blood gold and cursed gold cancel each other out, becoming regular gold
-  - maybe when it decays it turns into greed cursed liquid?
-  - intent: works as a quick way to get money early on if you're skilled and want to speed up the game a bit, if done hitless can get you up to 990 gold in the first level very quickly
-  - note: add Gold Is Dust compat, should decay into toxic gold dust, make custom mats
 - rework physics damage again
-  - should be viable, but not easy one-shotting everything in second floor consistently
+  - should be viable, but not easy one-shotting everything in second floor consistently?
+  - specifics can be hammered out later, would just like it to be viable damage without being too powerful
 - Add Parallel Parity module
 - Look into improving early-game mobility
-- Look into improving early-game gold gain
+	- This has been done via guaranteed Hastium basin in stage 2, though more options isnt a terrible idea, wait and observe on this topic for now
+- remove item immunities perk if apotheosis is enabled?
+- fix zerk strat (i have a plan :> (concrete))
+- move food poisoning immunity to EYV and make sure it works with vomit eperk
+- make icon on anti-tele status better
+- add sort after fields for perks and spells
+- make shit perk border chunkier?
 
 ## Enemy Perk Ideas
-- Chaotic Polymorph Aura
-  - Chaotically Polymorphs non-player targets in its field randomly
+- Mass Chaotic Polymorph on death
+  - Chaotically polymorphs all creatures in a large area on death
 - Armed
   - Enemy spawns with a random wand that shatters on death
   - Wands are from a premade list
+  - 50% of spells are dropped on death?
+- Drain Field
+  - Drains mana from your wands in an area
+- Blinding Curser
+- Teleportitis Curser
+  - only applies once?
+- Aura that destroys projectiles if its been inside of it for 1 second
+
 
 ## bugs
 - 2nd and 3rd hand statue kicked drops summon portal spell
 - Snail module crashes?
+- make HM basin changes work in final stage
+- Ira should probs remove CBC from their champion
+
+## Spell Issues
+### These are not things I intend to change on my own, but with the consultation of Yui and the other devs in #noita-coommunity-collab
+- Plasma does miserable damage
+- linear arc is less damage for more mana than add damage
+- ASE spell has 5 charges
+- freeze charge is rough atm, perhaps should just be higher price + make more enemies freeze/melee immune?

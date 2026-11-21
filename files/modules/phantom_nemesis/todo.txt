@@ -1,1 +1,2 @@
-Save who Ira is possessing between mod restarts by removing the camerabound component (Maybe I'll do this? cba rn tbh)
+Fix Ira's possession target vanishing after Ira stops possessing them
+Look into Ira granting enemies who are already immune to projectile damage addition immunities, making them unkillable.

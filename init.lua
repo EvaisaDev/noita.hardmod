@@ -9,7 +9,7 @@
 --testing zone
 
 
-ModSettingSet("noita.hardmod.snail.disabled", true) --testing if this resolves crashes, remove this soon
+ModSettingSet("noita.hardmod.snail.disabled", true) --This module causes crashes, need to fix
 
 
 -------------------------
@@ -25,68 +25,13 @@ end
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
-local modules = {
-	"test_module_dont_run",
-	"example",
-	"nerfed_combat_healing",
-	"enemy_perks",
-	"trappier_traps",
-	"cheeseless_triggers",
-	"logo_splash",
-	"starter_wands",
-	"unshuffle",
-	"limited_spells",
-	"vanilla_perk_rebalances",
-	"vanilla_spell_rebalances",
-	"spells_reweighted",
-	"vanilla_quests",
-	"vanilla_bosses",
-	--"no_more_chainsaw_wrapping", -- shit module never enable
-	"less_explosive",
-	"holy_mountain_rework",
-	"holy_mountain_items",
-	"no_more_max_hp_cheesing",
-	"phantom_nemesis",
-	"alt_fire_anything",
-	-- TODO: rename "ending" to "core", since now it also spawns the For The Worthy perk?
-	-- might also add more stuff things
-	"ending",
-	"credits",
-	"nerf_vanilla_cheeses",
-	-- replaced by `ending` module requiring 11 orbs to pickup sampo
-	-- "stronger_kolmi",
-	"chest_tweaks",
-	"better_anvil",
-	"rapidfire_nerfs",
-	"trial_perks",
-	"biome_map",
-	"biome_modifiers",
-	"stronger_enemies",
-	"potions",
-	"alternate_biomes",
-	"polymorph_gui",
-	"worse_digging",
-	"vanilla_bugfixes",
-	"spell_variety",
-	"for_the_worthy",
-	-- "no_more_instant_recharge", -- needs to be fixed
-	"snail",
-	"greed_curse_rework",
-}
-
-local force_enable_state = {
-	test_module_dont_run = false,
-	example = false,
-	-- Replaces vanilla credits
-	credits = true,
-}
+local modules = dofile_once("mods/noita.hardmod/modules.lua")---@type module_list
 
 local enabled_modules = {}
-for _,module in ipairs(modules) do
-	local enabled = not ModSettingGet("noita.hardmod."..module..".disabled")
-	if force_enable_state[module] ~= nil then enabled = force_enable_state[module] end
+for _,name in ipairs(modules.list) do
+	local enabled = not ModSettingGet("noita.hardmod."..name..".disabled")
 	if enabled then
-		enabled_modules[#enabled_modules+1] = module
+		enabled_modules[#enabled_modules+1] = name
 	end
 end
 
@@ -110,6 +55,7 @@ local hooks = {
 	--Player hooks
 	player_spawned = {}, --OnPlayerSpawned
 	player_changed = {}, --on player polymorphed/unpolymorphed
+	player_biome_changed = {}, -- when the player changes biome
 	player_destroyed = {}, --OnPlayerDied
 
 	--Pause hooks
@@ -120,8 +66,8 @@ local hooks = {
 }
 
 HARDMOD_GLOBAL_DATA = { ---@class HardmodGlobalInitData
-	module_ids = modules,
 	player = nil, --player EID.
+	---@type { path: string, name: string }?
 	player_poly_identity = nil, --contains some data on the player if they are polymorphed, nil if not polymorphed.
 	player_does_not_exist = true, --this is set to false on `player_spawned` and set to true on `player_destroyed`.
 
@@ -132,15 +78,27 @@ local gd = HARDMOD_GLOBAL_DATA
 ModTextFileSetContent("mods/noita.hardmod/files/__spell_appends.lua", "--")
 ModTextFileSetContent("mods/noita.hardmod/files/__perk_appends.lua", "--")
 
-for _,module in ipairs(enabled_modules) do
-	print("adding module: "..module)
-	local module_path = table.concat({"mods/noita.hardmod/files/modules/",module,"/"})
-	local module_hooks = dofile(module_path.."init.lua") or {}
-	for hook_name,hook in pairs(module_hooks) do
-		if hooks[hook_name] ~= nil then --Throw that shit away, let me stuff random shit in the hooks table >:(
-			hooks[hook_name][#hooks[hook_name]+1] = hook
-		end
+---If this table is not empty, a tablet containing all the strings in init_errors will be spawned on top of the player
+---@type string[]
+local init_error_lines = {}
+
+---@param err string
+local function add_init_error(err)
+	for line in err:gmatch("[^\n]+") do
+		table.insert(init_error_lines, line)
 	end
+	print("[noita.hardmod] [ERROR]", err)
+end
+
+local function add_module(module)
+	local module_path = table.concat({"mods/noita.hardmod/files/modules/",module,"/"})
+
+	if not ModDoesFileExist(module_path.."init.lua") then
+		add_init_error("Module "..module..": init.lua does not exist")
+		return
+	end
+
+	local module_hooks = dofile_once(module_path.."init.lua") or {}
 
 	local spell_append_path = module_path..(module_hooks.spells_path or "spells.lua")
 	if ModDoesFileExist(spell_append_path) then
@@ -151,64 +109,30 @@ for _,module in ipairs(enabled_modules) do
 	if ModDoesFileExist(perk_append_path) then
 		ModLuaFileAppend("mods/noita.hardmod/files/__perk_appends.lua", perk_append_path)
 	end
-end
 
-
-
-ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/scripts/spells.lua")
-ModLuaFileAppend("data/scripts/perks/perk_list.lua", "mods/noita.hardmod/files/scripts/perks.lua")
-
-
-dofile("mods/noita.hardmod/files/translations/debug_split.lua")
-local translations = ModTextFileGetContent("data/translations/common.csv")
-translations = translations .. "\n" .. ModTextFileGetContent("mods/noita.hardmod/files/translations/standard.csv").."\n"
-translations = translations:gsub("\r", ""):gsub("\n\n+", "\n")
-ModTextFileSetContent("data/translations/common.csv", translations)
-
-
--- remove perks with not_progress from progress menu
-utils.modifile("data/scripts/perks/perk_reflect.lua",
-[[	RegisterPerk( 
-		perk.id,
-		perk.ui_name,
-		perk.ui_description,
-		perk.ui_icon,
-		perk.perk_icon
-		)]],
-[[	if not perk.not_progress then RegisterPerk( 
-		perk.id,
-		perk.ui_name,
-		perk.ui_description,
-		perk.ui_icon,
-		perk.perk_icon
-		) end]]
-)
-
-
-
-function OnModPreInit()
-	for _,func in ipairs(hooks.mod_pre_init) do
-		func()
-	end
-end
-function OnModInit()
-	for _,func in ipairs(hooks.mod_init) do
-		func()
-	end
-end
-function OnModPostInit()
-	for _,func in ipairs(hooks.mod_post_init) do
-		func()
+	for hook_name,hook in pairs(module_hooks) do
+		if hooks[hook_name] then
+			hooks[hook_name][#hooks[hook_name]+1] = hook
+		end
 	end
 end
 
-function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where the Mod* API is available. after this materials.xml will be loaded.
-	SetRandomSeed(-2497, 492)
-	for _,func in ipairs(hooks.magic_numbers_and_seed_initialised) do
-		func()
+--- Note: Only do this for init hooks!!!!
+local function try_run_hooks(hook_name, ...)
+	if type(hooks[hook_name]) ~= "table" then
+		add_init_error("Hook "..hook_name..": invalid hook name?!?!")
+		return
 	end
 
-	-- this code adds tags to preexisting materials, its good for compatibility
+	for _,func in pairs(hooks[hook_name]) do
+		local succ, res = pcall(func, ...)
+		if not succ then
+			add_init_error("Hook "..hook_name..": "..tostring(res))
+		end
+	end
+end
+
+local function patch_materials()
 	local files = ModMaterialFilesGet()
 	for _, file in ipairs(files) do --add modded materials
 		for xml in nxml.edit_file(file) do
@@ -228,29 +152,94 @@ function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where
 	end
 end
 
-function OnBiomeConfigLoaded()
-	for _,func in ipairs(hooks.biome_config) do
-		func()
+for _,module in ipairs(enabled_modules) do
+	print("[noita.hardmod] Adding module: "..module)
+
+	local success, res = pcall(add_module, module)
+	if not success then
+		add_init_error("Module "..module..": "..tostring(res))
 	end
 end
 
-function OnWorldInitialized()
-	for _,func in ipairs(hooks.world_init) do
-		func()
+
+ModLuaFileAppend("data/scripts/gun/gun_actions.lua", "mods/noita.hardmod/files/scripts/spells.lua")
+ModLuaFileAppend("data/scripts/perks/perk_list.lua", "mods/noita.hardmod/files/scripts/perks.lua")
+
+
+dofile("mods/noita.hardmod/files/translations/debug_split.lua")
+local translations = ModTextFileGetContent("data/translations/common.csv")
+translations = translations .. "\n" .. ModTextFileGetContent("mods/noita.hardmod/files/translations/standard.csv").."\n"
+translations = translations:gsub("\r", ""):gsub("\n\n+", "\n")
+ModTextFileSetContent("data/translations/common.csv", translations)
+
+local biome_idx, biome_idx_rev
+---@return biome_path_to_simple_id, exact_id_to_biome_path
+function HARDMOD_GLOBAL_DATA.get_biome_index()
+	if not biome_idx or not biome_idx_rev then
+		biome_idx, biome_idx_rev = dofile_once("mods/noita.hardmod/lib/biome_index.lua")
+	end
+
+	return biome_idx, biome_idx_rev
+end
+
+function OnModPreInit() try_run_hooks("mod_pre_init") end
+function OnModInit() try_run_hooks("mod_init") end
+function OnModPostInit() try_run_hooks("mod_post_init") end
+
+function OnMagicNumbersAndWorldSeedInitialized() -- this is the last point where the Mod* API is available. after this materials.xml will be loaded.
+	SetRandomSeed(-2497, 492)
+
+	-- ok but who called this initialiSed, its initialiZed smh my head!!! :(
+	try_run_hooks("magic_numbers_and_seed_initialised")
+
+	-- This one uses pcall on the entire procedure rather than each hook call for performance reasons
+	local succ, res = pcall(patch_materials)
+	if not succ then
+		add_init_error("Error patching materials: "..tostring(res))
 	end
 end
 
+function OnBiomeConfigLoaded() try_run_hooks("biome_config") end
+function OnWorldInitialized() try_run_hooks("world_init") end
 
-function OnPlayerSpawned(p)
-	gd.player = p
+function OnPlayerSpawned(pid)
+	gd.player = pid
 	gd.player_does_not_exist = false
+
 	local is_run_start = not GameHasFlagRun("noita.hardmod.on_player_spawned_flag")
-	for _,func in ipairs(hooks.player_spawned) do
-		func(p, is_run_start)
+	if is_run_start then
+		if not EntityGetFirstComponent(pid, "BiomeTrackerComponent") then
+			EntityAddComponent2(pid, "BiomeTrackerComponent")
+		end
+
+		EntityAddComponent2(pid, "LuaComponent", {
+			script_biome_entered = "mods/noita.hardmod/files/scripts/biome_entered.lua",
+			execute_every_n_frame = -1
+		})
 	end
+
+	try_run_hooks("player_spawned", pid, is_run_start)
 	GameAddFlagRun("noita.hardmod.on_player_spawned_flag")
 
 	if nxml_missing then GamePrint("$hardmod_nxml_missing") end
+
+	if #init_error_lines > 0 then
+		local lines = {}
+		local max_width = 80
+		for _,line in pairs(init_error_lines) do
+			if #line > 0 then
+				for i=1,#line,max_width do
+					table.insert(lines, line:sub(i, i + max_width + 1))
+				end
+			else table.insert(lines, "") end
+		end
+
+		local x, y = EntityGetTransform(pid)
+		utils.SpawnTablet(
+			x, y, "Noita Hard Mod: Errors occurred!!!",
+			table.concat(lines, "\n"):sub(1, 2000)
+		)
+	end
 end
 
 function OnPlayerDied(p)
@@ -264,7 +253,7 @@ end
 
 local prev_max_eid = -1
 local max_eid = -1
-local check_entities = function()
+local function check_entities(is_post)
 	local old_player = gd.player
 	local borked_polymorph_entity
 	if not (gd.player_does_not_exist or EntityGetIsAlive(gd.player)) then
@@ -279,32 +268,31 @@ local check_entities = function()
 			if EntityHasTag(i, "player_unit") then
 				gd.player = i
 				gd.player_poly_identity = nil
+			elseif EntityHasTag(i, "polymorphed_player") then
+				gd.player = i
+				gd.player_poly_identity = {
+					path = EntityGetFilename(i),
+					name = EntityGetName(i)
+				}
 			else
-				if EntityHasTag(i, "polymorphed_player") then
-					gd.player = i
-					gd.player_poly_identity = {
-						path = EntityGetFilename(i),
-						name = EntityGetName(i)
-					}
-				else
-					for _,comp in ipairs(EntityGetComponent(i, "GameStatsComponent") or {}) do
-						if ComponentGetTypeName(comp) ~= "GameStatsComponent" then --Check if GSC is bugged (store as backup if yes)
-							borked_polymorph_entity = borked_polymorph_entity or i
-							goto continue
-						elseif ComponentGetValue2(comp, "is_player") then
-							gd.player = i
-							gd.player_poly_identity = {
-								path = EntityGetFilename(i),
-								name = EntityGetName(i)
-							}
-							goto continue
-						end
+				for _,comp in ipairs(EntityGetComponent(i, "GameStatsComponent") or {}) do
+					if ComponentGetTypeName(comp) ~= "GameStatsComponent" then --Check if GSC is bugged (store as backup if yes)
+						borked_polymorph_entity = borked_polymorph_entity or i
+						goto continue
+					elseif ComponentGetValue2(comp, "is_player") then
+						gd.player = i
+						gd.player_poly_identity = {
+							path = EntityGetFilename(i),
+							name = EntityGetName(i)
+						}
+						goto continue
 					end
 				end
 			end
 			::continue::
 		end
-		for _,func in ipairs(hooks.new_eid) do
+		local hooks_target = is_post and hooks.new_eid_post or hooks.new_eid
+		for _,func in ipairs(hooks_target) do
 			--Unused system for generating a table of all the entity's VariableStorageComponent data, shelved until it seems like it'd be actually useful
 			--local varcomp_tree = {}
 			--for _,varcomp in ipairs(EntityGetComponent(i, "VariableStorageComponent") or {}) do
@@ -335,10 +323,29 @@ local check_entities = function()
 	end
 end
 
+local old_biome_file
+local function on_player_biome_changed()
+	if not gd.player then return end
+	GameRemoveFlagRun("hardmod_player_biome_changed")
+
+	local x, y = EntityGetTransform(gd.player)
+	local filename = DebugBiomeMapGetFilename(x, y)
+
+	if filename == old_biome_file then return end
+	old_biome_file = filename
+
+	local biome_id = gd.get_biome_index()[filename] or "unknown"
+	local biome_name = GlobalsGetValue("hardmod_player_new_biome_name", "_EMPTY_")
+
+	for _,func in pairs(hooks.player_biome_changed) do
+		func(gd.player, x, y, filename, biome_id, biome_name)
+	end
+end
+
 function OnWorldPreUpdate()
 	gd.frame = GameGetFrameNum()
 	SetRandomSeed(-2497, 492-gd.frame) --maybe fixes stale-randomness issues?
-	check_entities()
+	check_entities(false)
 
 	for _,func in ipairs(hooks.pre_update) do
 		func(gd.frame)
@@ -346,6 +353,12 @@ function OnWorldPreUpdate()
 end
 
 function OnWorldPostUpdate()
+	check_entities(true)
+
+	if GameHasFlagRun("hardmod_player_biome_changed") then
+		on_player_biome_changed()
+	end
+
 	for _,func in ipairs(hooks.post_update) do
 		func(gd.frame)
 	end

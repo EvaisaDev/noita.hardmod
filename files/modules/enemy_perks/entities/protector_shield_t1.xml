@@ -4,7 +4,8 @@
 
 		<EnergyShieldComponent 
 			_tags="enabled_in_hand,item_identified__LEGACY"
-			recharge_speed="0.1" 
+			recharge_speed="0.1"
+			energy_required_to_shield="0.4"
 			radius="36.0" >
 		</EnergyShieldComponent>
 		

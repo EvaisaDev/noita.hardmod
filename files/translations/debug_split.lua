@@ -1,6 +1,6 @@
 local path = "mods/noita.hardmod/files/translations/"
 
-local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
+local log_strings = false
 
 local translations = {
 	["key"] = {},
@@ -65,8 +65,8 @@ do
 end
 
 local function transcribe_line(line)
-	if line:sub(1,1) == ',' then return end
-	if line:sub(1,#"hardmod_setting_") == "hardmod_setting_" then return end
+	if line:sub(1, 1) == ',' then return end
+	if line:sub(1, #"hardmod_setting_") == "hardmod_setting_" then return end
 
 
 	local current_column = 1
@@ -107,8 +107,10 @@ while true do
 	n = n + 1
 end
 
-for index, value in ipairs(translations["en"]) do
-	print(tostring(value))
+if log_strings then
+	for _,en in ipairs(translations["en"]) do
+		print(tostring(en))
+	end
 end
 
 local standard = ""
@@ -122,7 +124,7 @@ for i, key in ipairs(translations["key"]) do
 	standard = standard .. line .. ",,,\n"
 end
 
-ModTextFileSetContent(path.."standard.csv",standard)
+ModTextFileSetContent(path.."standard.csv", standard)
 
 for lang,name in pairs(nonstandard_langs) do
 	if #translations[lang] == 0 then goto continue end
@@ -135,6 +137,6 @@ for lang,name in pairs(nonstandard_langs) do
 	end
 
 
-    ModTextFileSetContent(path..name..".csv",translation)
+    ModTextFileSetContent(path..name..".csv", translation)
 	::continue::
 end

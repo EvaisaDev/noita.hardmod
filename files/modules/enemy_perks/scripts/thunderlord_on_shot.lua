@@ -1,6 +1,20 @@
-function shot( entity_id )
-	local x, y = EntityGetTransform( entity_id )
-	EntityAddChild(entity_id, EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/thunderlord_hitfx.xml", x, y))
+function shot(entity_id)
+	local x, y = EntityGetTransform(entity_id)
+
+	-- iffy workaround to make thunderlord not apply stun if they are electric stun immune,
+	-- cba to implement something more thorough atm
+	local apply_stun = true
+	local nearby_players = EntityGetWithTag("player_unit")
+	if nearby_players then
+		for i,player in ipairs(nearby_players) do
+			if GameGetGameEffect(player, "STUN_PROTECTION_ELECTRICITY") then
+				apply_stun = false
+			end
+		end
+	end
+	if apply_stun then
+		EntityAddChild(entity_id, EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/thunderlord_hitfx.xml", x, y))
+	end
 
 	EntityAddComponent2(entity_id, "LuaComponent", {
 		script_source_file = "mods/noita.hardmod/files/modules/enemy_perks/scripts/thunderlord_try_electrify.lua",

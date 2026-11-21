@@ -1,4 +1,4 @@
-local hooks = {}
+local hooks = {}---@type hooks
 local dir = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/"
 
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
@@ -18,14 +18,6 @@ end
 imutil.ImageOverlay("data/biome_impl/orbroom_visual.png", dir.."gfx/orbroom_visual.png")
 
 -- xml modifications as separate functions for better readability
-local function modify_master_of_blinding()
-	for xml in nxml.edit_file("data/entities/animals/wizard_dark.xml") do
-		xml:add_child(nxml.new_element("LuaComponent", {
-			script_source_file=dir.."scripts/wizard_dark_ase_scan.lua",
-			execute_every_n_frame="2",
-		}))
-	end
-end
 
 local function modify_wandstone()
 	for xml in nxml.edit_file("data/entities/items/pickup/wandstone.xml") do
@@ -46,12 +38,12 @@ end
 
 local function modify_xray()
 	local path = "data/entities/projectiles/deck/xray.xml"
-	local xml = nxml.parse( ModTextFileGetContent( path ) )
+	local xml = nxml.parse(ModTextFileGetContent(path))
 	local proj_comp = xml:first_of("ProjectileComponent")
 	if proj_comp then
-		proj_comp:set( "lifetime", 30 )
+		proj_comp:set("lifetime", 30)
 	end
-	ModTextFileSetContent( path, tostring(xml) )
+	ModTextFileSetContent(path, tostring(xml))
 end
 
 local function modify_wand_experimenter()
@@ -69,15 +61,16 @@ end
 
 
 --[[ Spells Materialised ]]
-
+--#region
 local spell_card_append_targets = {
 	["data/entities/misc/custom_cards/action.xml"] = true,
 	["data/entities/base_custom_card.xml"] = true,
 }
-
+--#endregion
 
 
 --[[ Gold Is Dust ]]
+--#region
 --if ModSettingGet("GID.vanilla_bloody then") then ModMaterialsFileAdd(root.."materials/materials_extra_bloody.xml") end
 if ModIsEnabled("prospector-perk") then
 	ModLuaFileAppend("mods/prospector-perk/files/perk/prospector.lua", dir.."gold_is_dust/append_prospector.lua")
@@ -124,6 +117,32 @@ for xml in nxml.edit_file("data/entities/player_base.xml") do
 		})
 	}))
 end
+--#endregion
+
+local update_amp_item_scr = dir.."scripts/perks/update_amplified_item.lua"
+local amplified_items_lua_comp = nxml.new_element("LuaComponent", {
+	_tags = "enabled_in_hand",
+	--script_source_file = update_amp_item_scr,
+	--execute_every_n_frame = "300",
+	execute_every_n_frame = "-1",
+	script_enabled_changed = update_amp_item_scr,
+	--script_item_picked_up = update_amp_item_scr,
+})
+
+local amplified_item_targets = {
+	"data/entities/items/pickup/brimstone.xml",
+	"data/entities/items/pickup/waterstone.xml",
+	"data/entities/items/pickup/thunderstone.xml",
+	"mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/cheese.xml",
+	"data/entities/items/pickup/sun/sunseed.xml",
+	"data/entities/items/pickup/sun/sunstone.xml",
+	"data/entities/items/pickup/evil_eye.xml",
+}
+for _,path in ipairs(amplified_item_targets) do
+	for xml in nxml.edit_file(path) do
+		xml:add_child(amplified_items_lua_comp)
+	end
+end
 
 
 
@@ -131,7 +150,6 @@ ModLuaFileAppend("data/scripts/items/__drop_money.lua", dir.."scripts/append_gol
 
 
 hooks.mod_init = function()
-	modify_master_of_blinding()
 	modify_wandstone()
 	modify_mountain_altar()
 	modify_xray()
@@ -142,14 +160,13 @@ hooks.mod_post_init = function()
 	ModLuaFileAppend("data/scripts/gun/gun_extra_modifiers.lua", dir.."scripts/appends/gun_extra_modifiers.lua")
 	ModLuaFileAppend("data/scripts/item_spawnlists.lua", dir.."scripts/appends/item_spawnlists.lua")
 	ModLuaFileAppend("data/scripts/biomes/snowcastle_hourglass_chamber.lua", dir.."scripts/appends/hourglass_chamber.lua")
-	-- ModLuaFileAppend( "data/scripts/gun/gun.lua", dir.."/scripts/appends/gun.lua" )
-	-- ModLuaFileAppend( "data/scripts/gun/procedural/gun_procedural.lua", dir.."/scripts/appends/gun_procedural.lua" )
+	-- ModLuaFileAppend("data/scripts/gun/gun.lua", dir.."/scripts/appends/gun.lua")
+	-- ModLuaFileAppend("data/scripts/gun/procedural/gun_procedural.lua", dir.."/scripts/appends/gun_procedural.lua")
 
 	-- ModLuaFileAppend("data/scripts/perks/perk.lua", root.."scripts/appends/perk.lua")
 	-- ModLuaFileAppend("data/scripts/magic/altar_tablet_magic.lua", root.."scripts/appends/altar_tablet_magic.lua")
 
 	dofile_once("data/scripts/gun/gun_actions.lua")
-	---@diagnostic disable-next-line:undefined-global
 	for _,action in pairs(actions) do
 		if action.custom_xml_file then
 			spell_card_append_targets[action.custom_xml_file] = true
@@ -178,5 +195,30 @@ hooks.mod_post_init = function()
 		end
 	end
 end
+
+
+-- Apotheosis fails to do nil checks for its target components, completely fails to load as a result, this disables the relevant code
+local f1,t1,f2,t2 =
+	[[do
+  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
+	[[if false then
+  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
+	[[do
+	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]],
+	[[if false then
+	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]]
+
+if ModIsEnabled("Apotheosis") then
+	utils.patchifile("mods/Apotheosis/files/scripts/mod_compatibility/vanilla_appends.lua", {
+		{
+			from = f1,
+			to = t1,
+		},
+		{
+			from = f2,
+			to = t2,
+		},
+	})
+end --We can remove this if Apotheosis 1.4.0 ever releases.
 
 return hooks

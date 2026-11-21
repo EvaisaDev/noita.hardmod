@@ -26,6 +26,14 @@ function item_pickup(item, player)
 		end
 	end
 
+	local modules = dofile_once("mods/noita.hardmod/modules.lua") ---@type module_list
+	for _,module in ipairs(modules.list) do
+		local path = "mods/noita.hardmod/modules/"..module.."/swan_song.lua"
+		if ModDoesFileExist(path) then
+			dofile(path)
+		end
+	end
+
 	GamePrintImportant("$hardmod_hell_mode_popup_title", "$hardmod_hell_mode_popup_desc")
 	GameScreenshake(150)
 	EntityKill(item)

@@ -1,6 +1,8 @@
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua")---@type nxml
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
+local hooks = {} ---@type hooks
+
 local alt_biomes = dofile_once("mods/noita.hardmod/files/modules/alternate_biomes/biome_list.lua")
 
 utils.AddEnemyToProgress("hardmod_wizard_confusion", "wizard_twitchy")
@@ -54,7 +56,37 @@ local function patch_enemy_changes()
 			from = [[data/entities/misc/effect_spirit_weakness.xml]],
 			to = [[mods/noita.hardmod/files/modules/stronger_enemies/entities/effect_spirit_weaken.xml]]
 		},
+		{
+			from = [[EntityAddChild]],
+			insert_before = [[
+				AddFlagPersistent("hardmod_found_spirit_weaken")
+			]]
+		}
 	})
+
+	for xml in nxml.edit_file("data/entities/animals/weakspirit.xml") do
+		xml:add_child(nxml.new_element("ParticleEmitterComponent", {
+			["emitted_material_name"]="plasma_fading",
+			["gravity.y"]="0.0",
+			["lifetime_min"]="0.02",
+			["lifetime_max"]="0.05",
+			["count_min"]="90",
+			["count_max"]="170",
+			["render_on_grid"]="1",
+			["fade_based_on_lifetime"]="1",
+			["area_circle_radius.min"]="220",
+			["area_circle_radius.max"]="220",
+			["cosmetic_force_create"]="0",
+			["airflow_force"]="0.3",
+			["airflow_time"]="0.01",
+			["airflow_scale"]="0.05",
+			["emission_interval_min_frames"]="0",
+			["emission_interval_max_frames"]="0",
+			["emit_cosmetic_particles"]="1",
+			["is_emitting"]="1",
+			["custom_alpha"]="0.7",
+		}))
+	end
 
 	utils.patchifile("data/entities/projectiles/orb_poly.xml", {
 		{ from = [[damage="0.3"]], to=[[damage="0"]] },
@@ -149,14 +181,16 @@ local function patch_fixes()
 	end
 end
 
+dofile_once("mods/noita.hardmod/files/modules/stronger_enemies/hp-multipliers.lua")
+function hooks.new_eid(eid)
+	if not EntityHasTag(eid, "enemy") then return end
+	HardmodTransformEnemy(eid)
+end
+
 patch_spawn_rules()
 patch_less_annoyances()
 patch_fixes()
 patch_enemy_changes()
 patch_enemy_resistances()
 
-return {
-	player_spawned = function()
-		-- EntityLoad("mods/noita.hardmod/files/modules/stronger_enemies/entities/hardmod_wizard_confusion.xml", 627, -125)
-	end
-}
+return hooks

@@ -1,11 +1,13 @@
----@diagnostic disable: undefined-global
-
 local new_perks = {}
 local perk_patches = {}
 local edit_perk_hooks = {}
 
+local function add_patches(path)
+	if not ModDoesFileExist(path) then
+		error("File does not exist: "..path)
+		return
+	end
 
-for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__perk_appends.lua")) do
 	local hooks = dofile_once(path)
 	for _,new_perk in ipairs(hooks.new_perks or {}) do
 		new_perks[#new_perks+1] = new_perk
@@ -17,6 +19,12 @@ for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__perk_appen
 			if curr_value ~= nil and value ~= curr_value then print(('[%s] COLLISION at "%s": %s -> %s'):format(perk_id, key, curr_value, value)) end
 			perk_patches[perk_id][key] = value
 		end
+
+		-- idk why was it not working otherwise
+		if perk_patch.remove_game_effect then
+			perk_patches[perk_id].game_effect = nil
+			perk_patches[perk_id].game_effect2 = nil
+		end
 	end
 	if hooks.edit_perk then
 		edit_perk_hooks[#edit_perk_hooks+1] = hooks.edit_perk
@@ -26,7 +34,18 @@ for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__perk_appen
 	end
 end
 
+local function edit_perks(perk)
+	for _,func in ipairs(edit_perk_hooks) do
+		func(perk)
+	end
+end
 
+for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__perk_appends.lua")) do
+	local succ, res = pcall(add_patches, path)
+	if not succ then
+		print("[Hardmod] Patching perks failed from "..path..": "..tostring(res))
+	end
+end
 
 local num_perks = #perk_list
 for i,perk in ipairs(new_perks) do
@@ -43,8 +62,8 @@ for _,perk in ipairs(perk_list) do
 		end
 	end
 
-	for _,func in ipairs(edit_perk_hooks) do
-		func(perk)
+	local succ, res = pcall(edit_perks, perk)
+	if not succ then
+		print("[Hardmod] Patching perk "..perk.id.." failed: "..tostring(res))
 	end
-	--AddFlagPersistent("perk_picked_"..perk.id:lower())
 end

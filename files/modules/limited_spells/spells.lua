@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 local action_id_table = nil
 local function get_spell_data(action_id)
 	if not action_id_table then
@@ -66,6 +64,9 @@ local function run_greek(data, recursion_level, dont_draw, no_recursion)
 	if spell and spell.never_unlimited then
 		local frame = GameGetFrameNum()
 		if not reflecting and frame - last_greek_error > 20 then
+			local player = GetUpdatedEntityID()
+			local x, y = EntityGetTransform(player)
+
 			GamePrint(GameTextGet("$hardmod_spell_greek_limited", GameTextGetTranslatedOrNot(spell.name)))
 			GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/out_of_mana", x, y)
 			last_greek_error = frame
@@ -91,7 +92,7 @@ local function run_greek_all(list, recursion_level, spell_type, no_recursion, bl
 	end
 end
 
-local hooks = {}
+local hooks = {}---@type spell_hooks
 
 hooks.new_spells = {
 	{
@@ -105,7 +106,7 @@ hooks.new_spells = {
 		spawn_requires_flag = "hardmod_cannot_spawn",
 		price = 1000,
 		mana = 20,
-		action = function()
+		action = function(recursion_level)
 			if reflecting then return end
 
 			local data = nil
@@ -113,7 +114,7 @@ hooks.new_spells = {
 			elseif #hand > 0 then data = hand[1]
 			end
 
-			if data.id == "HARDMOD_SPELL_INDULGENCE" then return end
+			if not data or data.id == "HARDMOD_SPELL_INDULGENCE" then return end
 
 			local rec = check_recursion(data, recursion_level)
 			if not data or rec < 0 or data.uses_remaining > 0 then
@@ -158,7 +159,7 @@ hooks.new_spells = {
 			end
 
 			ComponentSetValue2(wcomp, "money", money - cast_price)
-			
+
 			data.action(rec)
 			mana = mana - data.mana
 
@@ -180,8 +181,8 @@ hooks.new_spells = {
         description = "$hardmod_spell_damage_double_desc",
         sprite = "mods/noita.hardmod/files/modules/limited_spells/gfx/ui_gfx/spells/damage_double.png",
         type = ACTION_TYPE_MODIFIER,
-        spawn_level = "5,6,10",
-        spawn_probability = "0.3,0.3,0.2",
+        spawn_level = "3,4,5,6",
+        spawn_probability = "0.3,0.3,0.3,0.3",
         price = 160,
         mana = 20,
         max_uses = 10,
@@ -193,11 +194,11 @@ hooks.new_spells = {
 
             c.extra_entities = c.extra_entities .. "mods/noita.hardmod/files/modules/limited_spells/entities/spells/damage_double.xml,"
             c.extra_entities = c.extra_entities .. "data/entities/particles/tinyspark_yellow.xml,"
-            draw_actions( 1, true )
+            draw_actions(1, true)
 
             if reflecting then return end
-            local x, y = EntityGetTransform( GetUpdatedEntityID() )
-            GamePlaySound( "data/audio/Desktop/projectiles.bank", "player_projectiles/black_hole/create", x, y )
+            local x, y = EntityGetTransform(GetUpdatedEntityID())
+            GamePlaySound("data/audio/Desktop/projectiles.bank", "player_projectiles/black_hole/create", x, y)
         end,
     },
 }
@@ -313,35 +314,32 @@ hooks.spell_patches = {
 		spawn_level = "5,6,10",
 		spawn_probability = "0.1,0.1,1",
 		mana = 80,
-		action = function()
+		action = function(rec)
 			c.fire_rate_wait = c.fire_rate_wait + 15
 			if reflecting then return end
 
-			local owner = GetUpdatedEntityID()
-			if EntityHasTag( owner ) then return end
+			local player = GetUpdatedEntityID()
+			if not EntityHasTag(player, "player_unit") then return end
 
-			local children = EntityGetAllChildren( owner )
-			for k=1,#children do
-				child = children[k]
-			    if EntityGetName( child ) == "inventory_full" then
-			        local inventory_items = EntityGetAllChildren(child)
-			        if( inventory_items ~= nil ) then
-			            for z=1, #inventory_items do
-			            	local item = inventory_items[z]
+			local inventory
+			for _,child in pairs(EntityGetAllChildren(player) or {}) do
+				if EntityGetName(child) == "inventory_full" then
+					inventory = EntityGetAllChildren(child)
+					break
+				end
+			end
+			if not inventory then return end
 
-			            	local ia_comp = EntityGetFirstComponentIncludingDisabled( item, "ItemActionComponent" )
-			            	if ia_comp then
-			            		local action_id = ComponentGetValue2( ia_comp, "action_id" )
-			            		local data = get_spell_data( action_id )
-								local rec = check_recursion( data, recursion_level )
-			            		if data then
-			            			run_greek( data, rec )
-			            			break
-								end
-			            	end
-			            end
-			        end
-			    end
+			for _,item in pairs(inventory) do
+				local ia_comp = EntityGetFirstComponentIncludingDisabled(item, "ItemActionComponent")
+				if ia_comp then
+					local action_id = ComponentGetValue2(ia_comp, "action_id")
+					local data = get_spell_data(action_id)
+					if data then
+						run_greek(data, rec, true, true)
+						break
+					end
+				end
 			end
         end,
     },
@@ -351,13 +349,38 @@ hooks.spell_patches = {
 	["GRENADE"] = { max_uses = 30 },
 	["GRENADE_TRIGGER"] = { max_uses = 30 },
 	["GRENADE_ANTI"] = { max_uses = 30 },
-	["ROCKET_TIER_2"] = { max_uses = 10 },
-	["ROCKET_TIER_3"] = { max_uses = 10 },
+	["ROCKET"] = {
+		max_uses = 10,
+		action = function()
+			add_projectile("data/entities/projectiles/deck/rocket.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 60
+			c.ragdoll_fx = 2
+			shot_effects.recoil_knockback = 240.0 -- more knockback more oomph!!
+		end,
+	},
+	["ROCKET_TIER_2"] = {
+		max_uses = 10,
+		action = function()
+			add_projectile("data/entities/projectiles/deck/rocket_tier_2.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 90
+			c.ragdoll_fx = 2
+			shot_effects.recoil_knockback = 360.0 -- more knockback more oomph!!
+		end,
+	},
+	["ROCKET_TIER_3"] = {
+		max_uses = 10,
+		action = function()
+			add_projectile("data/entities/projectiles/deck/rocket_tier_3.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 120
+			c.ragdoll_fx = 2
+			shot_effects.recoil_knockback = 420.0 -- more knockback more oomph!!
+		end,
+	},
 
-	["FISH"] = { never_unlimited = true, max_uses = 10 },
-	["EXPLODING_DEER"] = { never_unlimited = true, max_uses = 5 },
-	["EXPLODING_DUCKS"] = { never_unlimited = true, max_uses = 10, mana = 120 },
-	["FREEZING_GAZE"] = { max_uses = 10, never_unlimited = true },
+	["FISH"] = { max_uses = 10 },
+	["EXPLODING_DEER"] = { max_uses = 5 },
+	["EXPLODING_DUCKS"] = { max_uses = 10, mana = 120 },
+	["FREEZING_GAZE"] = { max_uses = 10 },
 
 	["FIREBALL_RAY_ENEMY"] = { max_uses = 10 },
 	["LIGHTNING_RAY_ENEMY"] = { max_uses = 10 },
@@ -370,10 +393,8 @@ hooks.spell_patches = {
 	["SWARM_WASP"] = { max_uses = 16 },
 	["FRIEND_FLY"] = { max_uses = 16 },
 
-	["DARKFLAME"] = { max_uses = -1 },
 	["THUNDERBALL"] = { max_uses = 10 },
-	["ICEBALL"] = { never_unlimited = true },
-	["DAMAGE_FOREVER"] = { max_uses = 0, never_unlimited = true },
+	["DAMAGE_FOREVER"] = { max_uses = -1 },
 	["ALL_DISCS"] = { max_uses = 10, never_unlimited = true },
 	["ALL_ACID"] = { max_uses = 10, never_unlimited = true },
 
@@ -385,12 +406,8 @@ hooks.spell_patches = {
 }
 
 local never_unlimited = {
-	"BLACK_HOLE_BIG", "WHITE_HOLE_BIG", "FREEZING_GAZE", "BOMB_HOLY",
-	"PROPANE_TANK", "CRUMBLING_EARTH", "SUMMON_ROCK", "NUKE", "NUKE_GIGA",
-	"DESTRUCTION", "MASS_POLYMORPH", "STATIC_TO_SAND", "SHIELD_FIELD", "BERSERK_FIELD",
-	"PROJECTILE_TRANSMUTATION_FIELD", "PROJECTILE_THUNDER_FIELD", "VACUUM_LIQUID",
-	"TENTACLE_RAY_ENEMY", "LIGHTNING_RAY_ENEMY", "FIREBALL_RAY_ENEMY",
-	"ORBIT_NUKES", "CRUMBLING_EARTH_PROJECTILE", "X_RAY",
+	"BLACK_HOLE_BIG", "WHITE_HOLE_BIG", "BOMB_HOLY", "CRUMBLING_EARTH", "NUKE", "NUKE_GIGA",
+	"DESTRUCTION", "MASS_POLYMORPH", "STATIC_TO_SAND", "ORBIT_NUKES", "CRUMBLING_EARTH_PROJECTILE",
 	"ALL_NUKES", "ALL_ROCKETS", "ALL_DEATHCROSSES", "ALL_BLACKHOLES", "ALL_SPELLS",
 	"METEOR_RAIN", "WORM_RAIN",
 }

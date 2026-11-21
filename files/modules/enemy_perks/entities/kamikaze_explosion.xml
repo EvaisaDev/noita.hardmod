@@ -5,6 +5,7 @@
 		<ProjectileComponent
 			lifetime="0"
 			><config_explosion
+        		damage="3"
 				max_durability_to_destroy="8"
 			></config_explosion>
 		</ProjectileComponent>

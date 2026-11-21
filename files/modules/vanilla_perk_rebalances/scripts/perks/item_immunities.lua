@@ -1,42 +1,30 @@
-local script_interval_frames = 20
+local item_effects = dofile_once("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/item_effects_data.lua")
 
 local entity = GetUpdatedEntityID()
 local player = EntityGetRootEntity(entity)
+
 local inventory
-
-local weakening = EntityGetAllChildren(player, "spirit_weaken_effect")
-if weakening and #weakening > 0 then
-	return
-end
-
 for _,child in pairs(EntityGetAllChildren(player) or {}) do
-  if EntityGetName(child) == "inventory_quick" then
-    inventory = child
-    break
-  end
+	if EntityGetName(child) == "inventory_quick" then
+		inventory = child
+		break
+	end
 end
+if not inventory then return end
 
-if not inventory then
-  return
-end
+local inventory_component = EntityGetFirstComponentIncludingDisabled(player, "Inventory2Component")
+if not inventory_component then return end
 
-local added = {}
 
----@param name game_effect
-local function add_effect(name)
-  if added[name] then return end
-  added[name] = true
+local state = true
+local active_item = ComponentGetValue2(inventory_component, "mActualActiveItem")
 
-  local effect = GetGameEffectLoadTo(player, name, true)
-  if effect then
-    ComponentSetValue2(effect, "frames", script_interval_frames + 1)
-  end
-end
+local weakening = EntityGetAllChildren(player, "spirit_weaken_effect") or {}
+if #weakening > 0 then state = false end
 
 for _,item in pairs(EntityGetAllChildren(inventory) or {}) do
-  if EntityHasTag(item, "thunderstone") then add_effect("PROTECTION_ELECTRICITY")
-  elseif EntityHasTag(item, "brimstone") then add_effect("PROTECTION_FIRE")
-  elseif EntityHasTag(item, "waterstone") then add_effect("BREATH_UNDERWATER")
-  elseif EntityHasTag(item, "hardmod_cheese") then add_effect("PROTECTION_MELEE")
-  end
+	local func = item_effects[EntityGetFilename(item)]
+	if func and item ~= active_item then
+		func(item, state)
+	end
 end

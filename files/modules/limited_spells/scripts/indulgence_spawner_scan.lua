@@ -21,7 +21,7 @@ end
 
 local sx, sy = x + 88, y
 EntityLoad("mods/noita.hardmod/files/modules/limited_spells/entities/misc/indulgence_emitter.xml", sx, sy)
-GamePlaySound("data/audio/Desktop/projectiles.snd", "player_projectiles/crumbling_earth/create", sx, sy )
+GamePlaySound("data/audio/Desktop/projectiles.snd", "player_projectiles/crumbling_earth/create", sx, sy)
 
 local indulgence = CreateItemActionEntity("HARDMOD_SPELL_INDULGENCE", sx, sy)
 EntityAddComponent2(indulgence, "ItemCostComponent", {
@@ -56,5 +56,7 @@ EntityAddComponent2(indulgence, "SpriteComponent", {
 	text = tostring(INDULGENCE_COST),
 	z_index = -1,
 })
+
+AddFlagPersistent("hardmod_unlocked_indulgence")
 
 EntityKill(GetUpdatedEntityID())

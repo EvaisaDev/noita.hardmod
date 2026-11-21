@@ -23,7 +23,7 @@
 		airflow_force="0.101"
 		airflow_time="0.51"
 		airflow_scale="0.05"
-    
+
 		emission_interval_min_frames="4"
 		emission_interval_max_frames="9"
 		emit_cosmetic_particles="1"

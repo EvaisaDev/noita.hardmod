@@ -3,25 +3,25 @@
 	<Base file="mods/noita.hardmod/files/modules/enemy_perks/entities/area_protector_shield_t1.xml">
 
 		<EnergyShieldComponent
-			radius="48.0" >
+			radius="40.0" >
 		</EnergyShieldComponent>
 		
 		<ParticleEmitterComponent
-			area_circle_radius.max="48"
+			area_circle_radius.max="40"
 			>
 		</ParticleEmitterComponent>
 		
 		<ParticleEmitterComponent
 			count_min="100"
 			count_max="150"
-			area_circle_radius.min="48"
-			area_circle_radius.max="48"
+			area_circle_radius.min="40"
+			area_circle_radius.max="40"
 			>
 		</ParticleEmitterComponent>
 		
 		<ParticleEmitterComponent
-			area_circle_radius.min="48"
-			area_circle_radius.max="48"
+			area_circle_radius.min="40"
+			area_circle_radius.max="40"
 			>
 		</ParticleEmitterComponent>
 

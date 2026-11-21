@@ -49,8 +49,18 @@ local evil_hms = {
 	{ 8000, 8700 },
 }
 
-local function get_material(x, y)
+local hastium_hms = {
+	{ -2048, 2560 },
+	{ -1536, 2560 },
+	{ -1024, 2560 },
+	{ -512, 2560 },
+	{ 0, 2560 },
+	{ 512, 2560 },
+	{ 1024, 2560 },
+	{ 1536, 2560 },
+}
 
+local function get_material(x, y)
 	SetRandomSeed(666, 666)
 	local evil = Random(1, 16)
 	if evil <= #evil_hms then
@@ -58,6 +68,11 @@ local function get_material(x, y)
 		if y >= hm[1] and y <= hm[2] then
 			return "lava"
 		end
+	end
+
+	local hastium = hastium_hms[Random(1, #hastium_hms)]
+	if x == hastium[1] and y == hastium[2] then
+		return "magic_liquid_faster_levitation_and_movement"
 	end
 
 	SetRandomSeed(x, y)
@@ -76,7 +91,10 @@ function spawn_altar_top(x, y, is_solid)
 	if y > 12000 then colors = base.."altar_top_ending.png" end
 	LoadPixelScene(
 		colors,	"data/biome_impl/temple/altar_top_visual.png",
-		x, y-40, "", true, false, {["ff0000ff"] = material,}
+		x, y-40, "", true, false,
+		{
+			["ff0000ff"] = material,
+		}
 	)
 
 	if is_solid then

@@ -1,3 +1,4 @@
+---@diagnostic disable
 --[[
  * The following is a Lua port of the NXML parser:
  * https://github.com/xwitchproject/nxml

@@ -1,0 +1,18 @@
+<Entity tags="perk_entity,hardmod_all_seeing_eye_entity">
+
+    <InheritTransformComponent
+        only_position="1"
+    ></InheritTransformComponent>
+
+    <SpriteComponent 
+        _tags="enabled_in_hand,fog_of_war_hole"
+        alpha="1.0"
+        image_file="data/particles/torch_fog_of_war_hole.xml"
+        smooth_filtering="1"
+        fog_of_war_hole="1"
+        has_special_scale="1"
+        special_scale_x="3.0"
+        special_scale_y="3.0" >
+    </SpriteComponent>
+    
+</Entity>

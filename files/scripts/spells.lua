@@ -1,13 +1,15 @@
----@diagnostic disable: undefined-global
-
 local new_spells = {}
 local spell_patches = {}
 local edit_spell_hooks = {}
 
 dofile_once("data/scripts/gun/gun_enums.lua")
 
+local function add_patches(path)
+	if not ModDoesFileExist(path) then
+		error("File does not exist: "..path)
+		return
+	end
 
-for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__spell_appends.lua")) do
 	local hooks = dofile_once(path)
 	for _,new_spell in ipairs(hooks.new_spells or {}) do
 		new_spells[#new_spells+1] = new_spell
@@ -28,7 +30,18 @@ for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__spell_appe
 	end
 end
 
+local function edit_spells(spell)
+	for _,func in ipairs(edit_spell_hooks) do
+		func(spell)
+	end
+end
 
+for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__spell_appends.lua")) do
+	local succ, res = pcall(add_patches, path)
+	if not succ then
+		print("[Hardmod] Patching spells from "..path.." failed: "..tostring(res))
+	end
+end
 
 local num_spells = #actions
 for i,spell in ipairs(new_spells) do
@@ -42,7 +55,8 @@ for _,spell in ipairs(actions) do
 		end
 	end
 
-	for _,func in ipairs(edit_spell_hooks) do
-		func(spell)
+	local succ, res = pcall(edit_spells, spell)
+	if not succ then
+		print("[Hardmod] Patching spell "..spell.id.." failed: "..tostring(res))
 	end
 end

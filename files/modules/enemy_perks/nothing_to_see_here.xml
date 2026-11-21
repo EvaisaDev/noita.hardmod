@@ -1,0 +1,17 @@
+<Entity>
+    <SpriteComponent
+        _enabled="0"
+        image_file="mods/noita.hardmod/files/modules/enemy_perks/nothing_to_see_here.png"
+        z_index="-1.4"
+        offset_y="-54"
+    />
+
+    <LuaComponent
+        script_source_file="mods/noita.hardmod/files/modules/enemy_perks/nothing_to_see_here.lua"
+        execute_every_n_frame="-1"
+    />
+
+    <UIInfoComponent
+        name="nothing to see here, just us bugged perk icons!"
+    />
+</Entity>

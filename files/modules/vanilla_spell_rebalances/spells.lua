@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 local function apply_freeze()
 	if reflecting then return end
 
@@ -17,9 +15,25 @@ local function apply_freeze()
 	end
 end
 
-local hooks = {}
+local hooks = {}---@type spell_hooks
 
-hooks.new_spells = {}
+hooks.new_spells = {
+	{
+		id = "HARDMOD_TORCH_MAGIC",
+		name = "$hardmod_spell_torch_magic_name",
+		description = "$hardmod_spell_torch_magic_desc",
+		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/magic_torch.png",
+		type = ACTION_TYPE_PASSIVE,
+		spawn_level = "5,6,10",
+		spawn_probability = "0.8,0.6,0.4",
+		price = 200,
+		mana = 8,
+		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/cards/card_torch_magic.xml",
+		action = function()
+			draw_actions(1, true)
+		end,
+	},
+}
 
 hooks.spell_patches = {
 	["BOMB"] = { max_uses = 5 },
@@ -86,16 +100,14 @@ hooks.spell_patches = {
 		end
 	},
 	["FREEZE_FIELD"] = {
-		mana = 75,
-		max_uses = 3,
-		never_unlimited = true,
+		mana = 50, max_uses = 5,
 		action = function()
 			apply_freeze()
 			add_projectile("data/entities/projectiles/deck/freeze_field.xml")
 			c.fire_rate_wait = c.fire_rate_wait + 15
 		end
 	},
-	["POLYMORPH_FIELD"] = { mana = 90, max_uses = 3, never_unlimited = true },
+	["POLYMORPH_FIELD"] = { mana = 75, max_uses = 5 }, --no need to nerf so hard imo, polymorph immunity exists -K
 	["ELECTROCUTION_FIELD"] = { mana = 50, max_uses = 10 },
 	["CHAOS_POLYMORPH_FIELD"] = { mana = 50 },
 	["AREA_DAMAGE"] = { mana = 60 },
@@ -147,6 +159,16 @@ hooks.spell_patches = {
 			current_reload_time = current_reload_time - 8
 		end
 	},
+	["DARKFLAME"] = {
+		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/darkflame_player.png",
+		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/card_darkflame_player.xml",
+		max_uses = -1,
+		mana = 40,
+		action = function()
+			add_projectile("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/darkflame_player.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 14
+		end,
+	},
 	["FLAMETHROWER"] = { -- damage is also changed in damage.lua
 		mana = 15,
 		max_uses = -1,
@@ -157,7 +179,7 @@ hooks.spell_patches = {
 		end,
 	},
 	["BUCKSHOT"] = {
-		action 		= function()
+		action = function()
 			add_projectile("data/entities/projectiles/deck/buckshot_player.xml")
 			add_projectile("data/entities/projectiles/deck/buckshot_player.xml")
 			add_projectile("data/entities/projectiles/deck/buckshot_player.xml")
@@ -180,20 +202,45 @@ hooks.spell_patches = {
 	},
 	["HEAL_BULLET"] = { indulgence_price = 250 },
 	["SPELLS_TO_POWER"] = { spawn_level = "10", spawn_probability = "0.5" },
-	-- ["TOUCH_WATER"] = { indulgence_cost = 500 },
-	-- ["TOUCH_OIL"] = { indulgence_cost = 500 },
-	-- ["TOUCH_ALCOHOL"] = { indulgence_cost = 500 },
-	-- ["TOUCH_PISS"] = { indulgence_cost = 500 },
-	-- ["TOUCH_GRASS"] = { indulgence_cost = 500 },
-	-- ["TOUCH_BLOOD"] = { indulgence_cost = 500 },
-	-- ["TOUCH_SMOKE"] = { indulgence_cost = 500 },
-	-- ["TOUCH_GOLD"] = { indulgence_cost = 500 },
+	["BOMB_DETONATOR"] = {
+		mana = 100,
+		max_uses = 20,
+		never_unlimited = true,
+		action = function()
+			c.fire_rate_wait = c.fire_rate_wait + 60
+			add_projectile("data/entities/projectiles/deck/bomb_detonator.xml")
+		end,
+		-- 	if reflecting then return end
+
+		-- 	local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")
+		-- 	local prev_cast_frame = utils.GetInternalInt(GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame") or 0
+		-- 	local current_frame = GameGetFrameNum()
+		-- 	local x, y = EntityGetTransform(GetUpdatedEntityID())
+		-- 	if current_frame - prev_cast_frame > 30 then
+		-- 		add_projectile("data/entities/projectiles/deck/bomb_detonator.xml")
+		-- 		GamePlaySound("data/audio/Desktop/misc.bank", "misc/beam_from_sky_kick", x, y)
+		-- 		utils.SetInternalInt(GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame", current_frame)
+		-- 	else
+        --         GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+        --         add_projectile("data/entities/projectiles/deck/fizzle.xml")
+		-- 	end
+		-- end,
+	},
+	["TORCH"] = {
+		description = "$hardmod_spell_torch_desc",
+		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/cards/card_torch.xml",
+	},
+	["TORCH_ELECTRIC"] = {
+		description = "$hardmod_spell_torch_electric_desc",
+		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/cards/card_torch_electric.xml",
+		mana = -2,
+	},
 }
 
 local mats = { "MATERIAL_WATER", "MATERIAL_OIL", "MATERIAL_BLOOD", "MATERIAL_CEMENT", "WATER_TRAIL" }
 local crits = { "HITFX_CRITICAL_WATER", "HITFX_CRITICAL_OIL", "HITFX_CRITICAL_BLOOD" }
 
-for _,spell in pairs(mats) do hooks.spell_patches[spell] = { mana = 18 } end
+for _,spell in pairs(mats) do hooks.spell_patches[spell] = { mana = 7 } end
 for _,spell in pairs(crits) do hooks.spell_patches[spell] = { mana = 25 } end
 
 local curses = { "CURSE", "CURSE_WITHER_PROJECTILE", "CURSE_WITHER_EXPLOSION", "CURSE_WITHER_MELEE", "CURSE_WITHER_ELECTRICITY" }

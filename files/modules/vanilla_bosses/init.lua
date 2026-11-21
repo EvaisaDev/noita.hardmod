@@ -37,6 +37,24 @@ local edit = {
 			projectile = 0.5,
 		}
 	},
+	["boss_pit/boss_pit"] = {
+		from_base = true,
+		tags = "no_enemy_perks",
+		damagecomp = {
+			max_hp = 120,
+			hp = 120,
+		},
+		damagemult = {
+			projectile = 1,
+			explosion = 1,
+			fire = 1,
+			electric = 1,
+			ice = 1,
+			holy = 1.2,
+			slice = 2.4,
+			toxic = 2.4,
+		}
+	},
 	["boss_gate/gate_monster_a"] = {
 		from_base = true,
 		damagecomp = { hp = 130 },
@@ -55,6 +73,13 @@ local edit = {
 			slice = 0.6,
 		}
 	},
+	["boss_limbs/boss_limbs"] = {
+		damagecomp = { hp = 70 },
+		damagemult = {
+			melee = 0.3,
+			projectile = 0.5,
+		}
+	},
 	["boss_fish/fish_giga"] = {}, --missing boss tag
 	["boss_gate/gate_monster_b"] = {}, --missing boss tag
 	["boss_gate/gate_monster_c"] = {}, --missing boss tag
@@ -62,17 +87,16 @@ local edit = {
 }
 
 for enemy,data in pairs(edit) do
-	print(enemy)
 	for f in nxml.edit_file("data/entities/animals/"..enemy..".xml") do
 		local file = data.from_base and f:first_of("Base") or f
 
 		local tags = f.attr.tags or file.attr.tags or "boss"
-		if not (','..tags..','):find(",boss,") then
-			if #tags == 0 then tags = "boss" else tags = table.concat({tags,"boss"}, ',') end
+		if not (","..tags..","):find(",boss,") then
+			if #tags == 0 then tags = "boss" else tags = table.concat({tags, "boss"}, ",") end
 			f.attr.tags = tags
 		end
 		if data.tags then
-			file:set("tags", tags..','..data.tags) --should always have boss tag at least thanks to above code
+			file:set("tags", tags..","..data.tags) --should always have boss tag at least thanks to above code
 		end
 
 		if data.damagecomp then
