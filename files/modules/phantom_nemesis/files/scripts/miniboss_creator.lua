@@ -127,6 +127,18 @@ local context_checks = {
 			local repossession_ratio = total_possessions/total_deaths
 			return repossession_ratio
 		end
+	},
+	{
+		id = "has_innateshield",
+		check = function(entity_id)
+			local children = EntityGetAllChildren(entity_id) or {}
+			for _,child in ipairs(children) do
+				if EntityHasTag(child,"energy_shield") then return true end
+			end
+			local energyshield_comp = EntityGetFirstComponentIncludingDisabled(entity_id,"EnergyShieldComponent") or 0
+			if energyshield_comp > 0 then return true end
+			return false
+		end
 	}
 }
 
@@ -160,6 +172,7 @@ local function GetAbilityWeight(ability_id, context, tier)
 	local player_shield_count = context.player_shield_count
 	local most_taken_damage_type = context.most_taken_damage_type
 	local banishment_ratio = context.banishment_ratio
+	local has_innateshield = context.has_innateshield
 
 	---@class WeightConsideration
 	---@field affected_abilities string[]
@@ -260,7 +273,7 @@ local function GetAbilityWeight(ability_id, context, tier)
 			affected_abilities = {"haste","teleport_to_target"},
 			weight_change = function (ability_id)
 				local ratio_required = 2
-				if ability_id == "teleport_to_target" then ratio_required = 4 end
+				if ability_id == "teleport_to_target" then ratio_required = 4 if context.has_physicsbody then weight = 0 end end
 				local chase_modifier = math.max(banishment_ratio-ratio_required,0) --If the player is more than 3x (2x for haste) as likely to flee from felcesis, then start prioritising perks that let felcesis hunt the player down more easily to punish them for their cowardice
 				weight = weight * chase_modifier
 			end
@@ -285,6 +298,12 @@ local function GetAbilityWeight(ability_id, context, tier)
 				if repulsion_field_count > 0 then
 					weight = weight * (repulsion_field_count*10)
 				end
+			end
+		},
+		{
+			affected_abilities = {"summoner"},
+			weight_change = function ()
+				if has_innateshield then weight = 0 end
 			end
 		}
 	}
@@ -479,6 +498,7 @@ function CreateMiniboss(entity_id, x, y, tier, budget, health_mult)
 	end
 
 	local dmgcomp = EntityGetFirstComponentIncludingDisabled(entity_id, "DamageModelComponent")
+	local hardmod_physicsdmg_mult = 0.01
 	if dmgcomp then
 		local hp = ComponentGetValue2(dmgcomp, "max_hp")
 		ComponentSetValue2(dmgcomp, "max_hp", hp * health_mult)
@@ -492,7 +512,7 @@ function CreateMiniboss(entity_id, x, y, tier, budget, health_mult)
 				break
 			end
 		end
-		ComponentObjectSetValue2(dmgcomp,"damage_multipliers","physics_hit", math.max(0,1-((tier-1) * 0.4))) --Gain 40% physics damage reduction per tier, maxing out at physics damage immunity at tier 3
+		ComponentObjectSetValue2(dmgcomp,"damage_multipliers","physics_hit", math.max(0,1-((tier-1) * 0.4))*hardmod_physicsdmg_mult) --Gain 40% physics damage reduction per tier, maxing out at physics damage immunity at tier 3
 		if tier >= 3 then ComponentSetValue2(dmgcomp,"fire_probability_of_ignition",0) end
 	end
 
@@ -551,10 +571,11 @@ function FindPossessionTarget(biomes_visited)
 		local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(target,"AnimalAIComponent")
 		local proj_comp = EntityGetFirstComponentIncludingDisabled(target,"ProjectileComponent")
 		local lifetime_comp = EntityGetFirstComponentIncludingDisabled(target,"LifetimeComponent")
+		local collisiontrigger_comp EntityGetFirstComponentIncludingDisabled(target,"CollisionTriggerComponent")
 		local damagemodel_comp = EntityGetFirstComponentIncludingDisabled(target,"DamageModelComponent")
 		local camerabound_comp = EntityGetFirstComponentIncludingDisabled(target,"CameraBoundComponent")
 		local physics_body_comp = EntityGetFirstComponentIncludingDisabled(target,"PhysicsImageShapeComponent")
-		if proj_comp or lifetime_comp or not camerabound_comp or not damagemodel_comp or ComponentGetIsEnabled(damagemodel_comp) == false then
+		if proj_comp or lifetime_comp or not camerabound_comp or collisiontrigger_comp or not damagemodel_comp or ComponentGetIsEnabled(damagemodel_comp) == false then
 			goto skipthistarget
 		end
 
