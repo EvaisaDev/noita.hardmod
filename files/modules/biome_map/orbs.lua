@@ -18,4 +18,8 @@ for _,orb in pairs(orbs) do
 end
 
 local str = table.concat(result, " ")
-GlobalsSetValue("ORB_MAP_STRING", str)
+local ng = tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT")) or 0
+
+if ng == 0 then
+	GlobalsSetValue("ORB_MAP_STRING", str)
+end

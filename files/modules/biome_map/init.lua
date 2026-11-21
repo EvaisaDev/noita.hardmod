@@ -82,11 +82,17 @@ imutil.ImageOverlay("data/biome_impl/robot_egg.png", "mods/noita.hardmod/files/m
 
 -- pyramid orb is moved to top-right cloudscape
 imutil.ImageReplace("data/biome_impl/pyramid/top_visual.png", "mods/noita.hardmod/files/modules/biome_map/gfx/pyramid_top_visual.png")
-utils.modifile(
-	"data/scripts/biomes/pyramid_top.lua",
-	[[EntityLoad( "data/entities/items/orbs/orb_01.xml", x, y )]],
-	[[--]]
-)
+utils.patchifile("data/scripts/biomes/pyramid_top.lua", {
+	{
+		from = [[EntityLoad( "data/entities/items/orbs/orb_01.xml", x, y )]],
+		insert_before = [[
+			if (tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT")) or 0) > 0 then
+		]],
+		insert_after = [[
+			end
+		]]
+	}
+})
 
 ModMagicNumbersFileAdd("mods/noita.hardmod/files/modules/biome_map/magic_numbers.xml")
 ModMaterialsFileAdd("mods/noita.hardmod/files/modules/biome_map/materials.xml")
