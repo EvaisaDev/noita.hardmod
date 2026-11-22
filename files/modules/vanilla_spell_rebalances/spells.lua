@@ -43,7 +43,7 @@ hooks.new_spells = {
 			if not data then return end
 
 			while #deck >= how_many and data and (data.type == ACTION_TYPE_MODIFIER or data.type == ACTION_TYPE_PASSIVE or data.type == ACTION_TYPE_OTHER or data.type == ACTION_TYPE_DRAW_MANY) do
-				if not sacrilege_blacklisted_spells[data.id] then
+				if (data.uses_remaining or data.uses_remaining ~= 0) and not sacrilege_blacklisted_spells[data.id] then
 					if data.type == ACTION_TYPE_MODIFIER then
 						dont_draw_actions = true
 						data.action()
@@ -72,6 +72,15 @@ hooks.new_spells = {
 				if check and (check.type == ACTION_TYPE_PROJECTILE or check.type == ACTION_TYPE_STATIC_PROJECTILE or check.type == ACTION_TYPE_MATERIAL or check.type == ACTION_TYPE_UTILITY) then
 					valid = true
 					break
+				end
+			end
+
+			if data.uses_remaining and data.uses_remaining > 0 then
+				data.uses_remaining = data.uses_remaining - 1
+
+				local reduce_uses = ActionUsesRemainingChanged(data.inventoryitem_id, data.uses_remaining)
+				if not reduce_uses then
+					data.uses_remaining = data.uses_remaining + 1 -- cancel the reduction
 				end
 			end
 
