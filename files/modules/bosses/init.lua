@@ -3,7 +3,6 @@
 -- and disabling this module means some bosses might break
 
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua")---@type nxml
-
 local hooks = {} ---@type hooks
 
 function hooks.player_spawned(player)
