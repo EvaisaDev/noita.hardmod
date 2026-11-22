@@ -43,10 +43,12 @@ hooks.new_spells = {
 			if not data then return end
 
 			while #deck >= how_many and data and (data.type == ACTION_TYPE_MODIFIER or data.type == ACTION_TYPE_PASSIVE or data.type == ACTION_TYPE_OTHER or data.type == ACTION_TYPE_DRAW_MANY) do
-				if data.type == ACTION_TYPE_MODIFIER and not sacrilege_blacklisted_spells[data.id] then
-					dont_draw_actions = true
-					data.action()
-					dont_draw_actions = false
+				if not sacrilege_blacklisted_spells[data.id] then
+					if data.type == ACTION_TYPE_MODIFIER then
+						dont_draw_actions = true
+						data.action()
+						dont_draw_actions = false
+					end
 				end
 
 				how_many = how_many + 1
@@ -54,6 +56,7 @@ hooks.new_spells = {
 			end
 
 			if not data or not data.related_projectiles then return end
+			if data.uses_remaining and data.uses_remaining == 0 then return end
 
 			local target = data.related_projectiles[1]
 			local count = data.related_projectiles[2] or 1
