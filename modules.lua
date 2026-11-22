@@ -79,14 +79,21 @@ local modules = {
 		},
 		alternate_biomes = {},
 		polymorph_gui = {},
-		worse_digging = {},
+		worse_digging = {
+			integral = true,
+		},
 		vanilla_bugfixes = {},
 		spell_variety = {},
 		haunted_wands = {},
 		for_the_worthy = {},
-		no_more_instant_recharge = {},
+		no_more_instant_recharge = {
+			integral = true,
+		},
 		snail = {},
 		greed_curse_rework = {},
+		materials = {
+			integral = true,
+		},
 	},
 	-- `true` to force enable, `false` to force disable
 	force_disable_modules = {
