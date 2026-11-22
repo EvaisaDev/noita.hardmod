@@ -1,7 +1,5 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
-local entity_id = GetUpdatedEntityID()
-
 local function has_vsc(eid, variable_name)
 	local vs_comps = EntityGetComponent(eid, "VariableStorageComponent")
 	if vs_comps ~= nil then
@@ -14,24 +12,28 @@ local function has_vsc(eid, variable_name)
 	end
 	return false
 end
-if has_vsc(entity_id, "no_gold_drop") then return end
 
--- scale from 20% chance to drop at 0 HP, to 50% chance at 500 HP
-local dmg_comp = EntityGetFirstComponent(entity_id, "DamageModelComponent")
-if dmg_comp then
-	local max_hp = ComponentGetValue2(dmg_comp, "max_hp")
-	local chance_to_drop = utils.Remap(max_hp, 0, 20, 20, 50)
-	local rnd = Random(1, 100)
-	local gems_dropped = 0
-	while rnd < chance_to_drop and gems_dropped < 10 do
-		local x, y = EntityGetTransform(entity_id)
-		local offset_x = Random(-4, 4)
-		local offset_y = Random(-4, 4)
-		EntityLoad("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/spell_gem.xml", x + offset_x, y + offset_y)
+function death(damage_type_bit_field, message, attacker, drop_items)
+	local entity_id = GetUpdatedEntityID()
+	if has_vsc(entity_id, "no_gold_drop") then return end
+	local x, y = EntityGetTransform(entity_id)
+	SetRandomSeed(x, y)
+	if Random(1, 6) < 6 then return end
 
-		-- reset rnd
-		SetRandomSeed(-entity_id + gems_dropped, entity_id - gems_dropped)
-		rnd = Random(1, 100)
-		gems_dropped = gems_dropped + 1
+	local dmg_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "DamageModelComponent")
+	if dmg_comp then
+		local max_hp = ComponentGetValue2(dmg_comp, "max_hp")
+
+		-- scale from 2 gems at 100 HP, up to 10 gems at 1000+ HP
+		local gems_to_drop = math.min( math.max( max_hp / 4, 2 ), 10 )
+		-- very low-hp enemies drop only 1
+		if max_hp < 2 then gems_to_drop = 1 end
+
+		for i=1, gems_to_drop do
+			local x, y = EntityGetTransform(entity_id)
+			local offset_x = Random(-4, 4)
+			local offset_y = Random(-4, 4)
+			EntityLoad("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/spell_gem.xml", x + offset_x, y + offset_y)
+		end
 	end
 end

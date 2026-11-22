@@ -46,9 +46,6 @@ hooks.spell_patches = {
 		spawn_level = "10",
 		spawn_probability = "0"
 	},
-	["ADD_TRIGGER"] = { mana = 88, spawn_level = "10", spawn_probability = "0" },
-	["ADD_TIMER"] = { mana = 88, spawn_level = "10", spawn_probability = "0" },
-	["ADD_DEATH_TRIGGER"] = { mana = 88, spawn_level = "10", spawn_probability = "0" },
 	["PIERCING_SHOT"] = {
 		spawn_level = "5,6", -- PIERCING_SHOT
 		spawn_probability = "0.5,0.4", -- PIERCING_SHOT
@@ -228,11 +225,9 @@ hooks.spell_patches = {
 	},
 	["TORCH"] = {
 		description = "$hardmod_spell_torch_desc",
-		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/cards/card_torch.xml",
 	},
 	["TORCH_ELECTRIC"] = {
 		description = "$hardmod_spell_torch_electric_desc",
-		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/cards/card_torch_electric.xml",
 		mana = -2,
 	},
 }
