@@ -45,7 +45,7 @@ local function check_for_player()
 					local p_hp = ComponentGetValue2(dmg_comp, "hp")
 					local p_max_hp = ComponentGetValue2(dmg_comp, "max_hp")
 
-					EntityInflictDamage(player, math.min(p_max_hp * 0.2, p_hp * 0.5), "DAMAGE_SLICE", "broken tether", "NORMAL", 0, 0)
+					EntityInflictDamage(player, math.min(p_max_hp * 0.2, p_hp * 0.5), "DAMAGE_SLICE", "$hardmod_eperk_tether_broken", "NORMAL", 0, 0)
 				end
 			end
 		end

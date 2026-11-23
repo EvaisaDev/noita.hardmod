@@ -1350,7 +1350,6 @@ enemy_perks = {
 
 			local stacks = (data.how_many_of_each_perk[self.id] or 0) + 1
 			if stacks == 2 then
-				local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 				utils.SetInternalInt(entity_id, "hardmod_tether_stacks", stacks)
 			end
 		end
