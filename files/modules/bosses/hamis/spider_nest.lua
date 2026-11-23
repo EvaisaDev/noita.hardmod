@@ -17,6 +17,7 @@ RegisterSpawnFunction(0xffffd230, "spawn_empty_potion")
 RegisterSpawnFunction(0xff03dead, "spawn_small_nest")
 
 RegisterSpawnFunction(0xffff935a, "spawn_boss_nest")
+RegisterSpawnFunction(0xffe3ff29, "spawn_boss_reward")
 
 g_props = {
 	total_prob = 0,
@@ -65,7 +66,7 @@ g_hamis = {
 	total_prob = 0,
 	{
 		prob = 1.0, min_count = 2, max_count = 5,
-		entity = "mods/noita.hardmod/files/modules/bosses/hamis/entity/animal_longleg.xml"
+		entity = "mods/noita.hardmod/files/modules/bosses/hamis/entity/longleg.xml"
 	},
 }
 
@@ -108,6 +109,11 @@ end
 
 function spawn_boss_nest(x, y)
 	EntityLoad("mods/noita.hardmod/files/modules/bosses/hamis/entity/boss_nest.xml", x, y)
+end
+
+function spawn_boss_reward(x, y)
+	print("loading trigger", x, y)
+	EntityLoad("mods/noita.hardmod/files/modules/bosses/hamis/entity/boss_reward_trigger.xml", x, y)
 end
 
 function spawn_small_nest(x, y)

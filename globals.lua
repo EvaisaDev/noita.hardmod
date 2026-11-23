@@ -15,7 +15,7 @@
 ---@field name string
 ---@field sprite string
 ---@field sprite_unidentified string?
----@field related_projectiles string[]?
+---@field related_projectiles [string, integer?]?
 ---@field related_extra_entities string[]?
 ---@field type integer
 ---@field spawn_level string?

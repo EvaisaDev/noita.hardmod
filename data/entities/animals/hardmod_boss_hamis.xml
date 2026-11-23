@@ -1,0 +1,3 @@
+<Entity name="$animal_hardmod_boss_hamis">
+	<Base file="mods/noita.hardmod/files/modules/bosses/hamis/entity/hardmod_boss_hamis.xml" include_children="1"></Base>
+</Entity>

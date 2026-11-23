@@ -1,10 +1,10 @@
 <!-- this will be summoned by the boss -->
 <!-- but also spawns in the biome itself -->
 <!-- i like the biome having a bunch of hamises, but CBC makes so that only 20 can exist at once :( -->
-<Entity name="$animal_longleg" tags="no_enemy_perks">
-    <Base file="data/entities/base_enemy_basic.xml" >
-        <ItemChestComponent level="1" > </ItemChestComponent>
-        
+<Entity name="$animal_longleg" tags="polymorphable_NOT,teleportable_NOT,no_enemy_perks">
+    <Base file="data/entities/base_enemy_basic.xml">
+        <ItemChestComponent level="1"></ItemChestComponent>
+
 		<!-- FIVE HUNDRED HÄMIKSET -->
 		<CameraBoundComponent max_count="500"></CameraBoundComponent>
 
@@ -35,19 +35,18 @@
             ragdoll_offset_y="-6"
 			blood_sprite_directional="data/particles/bloodsplatters/bloodsplatter_directional_purple_$[1-3].xml"
 			blood_sprite_large="data/particles/bloodsplatters/bloodsplatter_purple_$[1-3].xml"
-            blood_spray_material="fading_blood"
+            blood_spray_material="blood_fading"
             blood_spray_create_some_cosmetic="1"
-			>
-        </DamageModelComponent>
+			fire_damage_amount="0"
+			fire_probability_of_ignition="0"
+		></DamageModelComponent>
         
         <CharacterPlatformingComponent 
             jump_velocity_y="-140" 
-            run_velocity="25"  >
-        </CharacterPlatformingComponent>
+            run_velocity="25"
+		></CharacterPlatformingComponent>
 
-        <GenomeDataComponent 
-            herd_id="spider">
-        </GenomeDataComponent>
+        <GenomeDataComponent herd_id="spider"></GenomeDataComponent>
         
         <HitboxComponent 
             _enabled="1"
@@ -55,8 +54,7 @@
             aabb_min_y="-6" 
             aabb_max_x="5" 
             aabb_max_y="6" 
-			>
-        </HitboxComponent>
+		></HitboxComponent>
 		
 		<CharacterDataComponent
 			collision_aabb_min_x="-2" 
@@ -64,18 +62,16 @@
 			collision_aabb_min_y="-6" 
 			collision_aabb_max_y="3"
 			mass="0.4"
-			>
-		</CharacterDataComponent>
+		></CharacterDataComponent>
 
-		<LuaComponent
-			script_death=""
-		></LuaComponent>
+		<!-- no gold 4 u -->
+		<LuaComponent script_death=""></LuaComponent>
     </Base>
 	
 	<AudioComponent
 		file="data/audio/Desktop/animals.bank"
-		event_root="animals/longleg" >
-	</AudioComponent>
+		event_root="animals/longleg"
+	></AudioComponent>
 	
 	<InteractableComponent
 		_tags="enabled_in_world,enabled_if_charmed"
@@ -87,13 +83,16 @@
 	
 	<LuaComponent
 		script_interacting="data/scripts/animals/longleg_pet.lua"
-		>
-	</LuaComponent>
+	></LuaComponent>
 	
 	<LuaComponent
 		script_source_file="data/scripts/animals/longleg_love.lua"
 		execute_every_n_frame="60"
-		>
-	</LuaComponent>
+	></LuaComponent>
 
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/bosses/scripts/hamis_init.lua"
+		execute_on_added="1"
+		remove_after_executed="1"
+	></LuaComponent>
 </Entity>
