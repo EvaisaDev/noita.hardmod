@@ -1133,11 +1133,11 @@ enemy_perks = {
 			if data.perks_to_give then data.perks_to_give = data.perks_to_give + 10 end
 		end,
 		on_death = function(self, entity_id, ddata)
-    		if EntityHasTag(entity_id, "boss") then
-    		    EntityLoad("data/entities/items/pickup/chest_random_super.xml", ddata.x, ddata.y)
-    		else
-    		    EntityLoad("data/entities/items/pickup/chest_random.xml", ddata.x, ddata.y)
-    		end
+			if EntityHasTag(entity_id, "boss") then
+				EntityLoad("data/entities/items/pickup/chest_random_super.xml", ddata.x, ddata.y)
+			else
+				EntityLoad("data/entities/items/pickup/chest_random.xml", ddata.x, ddata.y)
+			end
 		end
 	},
 	{

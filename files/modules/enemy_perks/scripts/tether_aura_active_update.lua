@@ -8,24 +8,24 @@ local owner = EntityGetRootEntity(aura)
 local x, y = EntityGetTransform(aura)
 
 local function ease_angle(angle, target_angle, easing)
-    local dir = (angle - target_angle) / (math.pi * 2)
-    dir = dir - math.floor(dir + 0.5)
-    dir = dir * (math.pi * 2)
-    return angle - dir * easing
+	local dir = (angle - target_angle) / (math.pi * 2)
+	dir = dir - math.floor(dir + 0.5)
+	dir = dir * (math.pi * 2)
+	return angle - dir * easing
 end
 
 local function follow_owner()
-    local ox, oy = EntityGetTransform(owner)
-    local dx = ox - x
-    local dy = oy - y
-    local dist = math.sqrt(dx * dx + dy * dy)
+	local ox, oy = EntityGetTransform(owner)
+	local dx = ox - x
+	local dy = oy - y
+	local dist = math.sqrt(dx * dx + dy * dy)
 
-    if dist > MAX_OWNER_FOLLOW_SPEED then
-	    local dir_x = dx / dist
-	    local dir_y = dy / dist
-	    EntitySetTransform(aura,
-	    	x + (dir_x * MAX_OWNER_FOLLOW_SPEED),
-	    	y + (dir_y * MAX_OWNER_FOLLOW_SPEED))
+	if dist > MAX_OWNER_FOLLOW_SPEED then
+		local dir_x = dx / dist
+		local dir_y = dy / dist
+		EntitySetTransform(aura,
+			x + (dir_x * MAX_OWNER_FOLLOW_SPEED),
+			y + (dir_y * MAX_OWNER_FOLLOW_SPEED))
 	elseif dist > RADIUS then
 		EntityKill(aura)
 		EntityAddChild(owner, EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/tether_aura_dormant.xml", x, y))
