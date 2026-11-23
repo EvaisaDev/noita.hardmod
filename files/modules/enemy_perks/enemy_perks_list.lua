@@ -544,7 +544,7 @@ enemy_perks = {
 		weight = 6,
 		priority = 3,
 		max = 1,
-		min_level = 3,
+		min_level = 2,
 		unique_slot = "large_aura",
 		func = function(self, entity_id, data)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/damage_buffer.xml", data.x, data.y))
