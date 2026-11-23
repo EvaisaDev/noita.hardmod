@@ -544,7 +544,7 @@ enemy_perks = {
 		weight = 6,
 		priority = 3,
 		max = 1,
-		min_level = 3,
+		min_level = 2,
 		unique_slot = "large_aura",
 		func = function(self, entity_id, data)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/damage_buffer.xml", data.x, data.y))
@@ -612,6 +612,7 @@ enemy_perks = {
 		description = "$hardmod_eperk_magic_resistance_desc",
 		weight = 7,
 		priority = 12,
+		requires_dmc = true,
 		biome_conditions = {
 			magical_temple = 10,
 			temple_of_the_art = 10,
@@ -631,6 +632,7 @@ enemy_perks = {
 		weight = 5,
 		priority = 3,
 		max = 1,
+		requires_dmc = true,
 		condition = function(self, data)
 			increment_weight_with_level(self, data)
 			return GameGetGameEffectCount(data.target_enemy, "PROTECTION_EXPLOSION") == 0 and not is_projectile_immune(self, data) end,
@@ -646,6 +648,7 @@ enemy_perks = {
 		priority = 3,
 		max = 1,
 		min_level = 3,
+		requires_dmc = true,
 		biome_conditions = {
 			frozen_vault = 6,
 			sandcave = 6,
@@ -1133,11 +1136,11 @@ enemy_perks = {
 			if data.perks_to_give then data.perks_to_give = data.perks_to_give + 10 end
 		end,
 		on_death = function(self, entity_id, ddata)
-    		if EntityHasTag(entity_id, "boss") then
-    		    EntityLoad("data/entities/items/pickup/chest_random_super.xml", ddata.x, ddata.y)
-    		else
-    		    EntityLoad("data/entities/items/pickup/chest_random.xml", ddata.x, ddata.y)
-    		end
+			if EntityHasTag(entity_id, "boss") then
+				EntityLoad("data/entities/items/pickup/chest_random_super.xml", ddata.x, ddata.y)
+			else
+				EntityLoad("data/entities/items/pickup/chest_random.xml", ddata.x, ddata.y)
+			end
 		end
 	},
 	{
@@ -1350,7 +1353,6 @@ enemy_perks = {
 
 			local stacks = (data.how_many_of_each_perk[self.id] or 0) + 1
 			if stacks == 2 then
-				local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 				utils.SetInternalInt(entity_id, "hardmod_tether_stacks", stacks)
 			end
 		end

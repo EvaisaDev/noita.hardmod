@@ -46,10 +46,18 @@
 - Snail module crashes?
 - make HM basin changes work in final stage
 - Ira should probs remove CBC from their champion
+- Bug report, 23/11/26
+  - Got a bug with inventory bags mod on latest version, worked fine before.
+    
+    Was normal in the first biome, got the damage field perk in HM (no clue if relevant), picked up a wand in second biome. When I tried to take it out - it just disappeared. After trying to take one of the old wands, it ate it too and gave me the floating hands from hand statue mob. They killed a couple of mobs, was funny.
+    
+    Did a mod restart. Wands didn't come back. Was 1 left in the storage, ate it too. Then I tried to take out a potion, which disappeared as well. Instead got like 3 sets of those floating hands that killed me this time, was much less funny.
+
+    Also, met the infected hamis, it has "fair mod" written all over it. 
 
 ## Compatibility
 - Apply Glimmer changes to modded glimmers
-- Spell Gems don't work on spells
+- Spell Gems don't work on spells in advanced inv?
 
 ## Spell Issues
 ### These are not things I intend to change on my own, but with the consultation of Yui and the other devs in #noita-coommunity-collab

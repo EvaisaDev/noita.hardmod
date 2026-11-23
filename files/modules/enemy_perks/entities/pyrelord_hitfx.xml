@@ -1,6 +1,6 @@
 <Entity>
    <HitEffectComponent 
-      effect_hit="LOAD_UNIQUE_GAME_EFFECT"
-      value_string="data/entities/misc/effect_on_fire.xml">
+	  effect_hit="LOAD_UNIQUE_GAME_EFFECT"
+	  value_string="data/entities/misc/effect_on_fire.xml">
    </HitEffectComponent >
 </Entity>

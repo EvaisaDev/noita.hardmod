@@ -78,7 +78,7 @@ local modules = {
 			integral = true,
 		},
 		alternate_biomes = {},
-		polymorph_gui = {},
+		qol = {},
 		worse_digging = {
 			integral = true,
 		},
@@ -91,6 +91,7 @@ local modules = {
 		},
 		snail = {},
 		greed_curse_rework = {},
+		--material_madness = {},
 		materials = {
 			integral = true,
 		},

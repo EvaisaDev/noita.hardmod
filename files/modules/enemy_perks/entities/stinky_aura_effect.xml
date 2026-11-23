@@ -14,6 +14,6 @@
 		icon_sprite_file="data/ui_gfx/status_indicators/food_poisoning.png"
 		name="$status_food_poisoning"
 		description="$statusdesc_food_poisoning"
-		display_above_head="1"
+		is_perk="0"
 	/>
 </Entity>

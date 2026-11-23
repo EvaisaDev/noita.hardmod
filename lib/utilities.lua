@@ -206,25 +206,33 @@ function utils.ShootProjectile(shooter, entity_file, x, y, vel_x, vel_y, send_me
 	---@type entity_id
 	---@diagnostic disable-next-line: assign-type-mismatch
 	shooter = shooter or 0
-	local entity_id = EntityLoad(entity_file, x, y)
+	local projectile = EntityLoad(entity_file, x, y)
 	vel_x = vel_x or 0
 	vel_y = vel_y or 0
 	send_message =  send_message or true
 
 	local herd_id = utils.GetHerdID(shooter)
 
-	GameShootProjectile(shooter, x, y, x+vel_x, y+vel_y, entity_id, send_message)
+	GameShootProjectile(shooter, x, y, x+vel_x, y+vel_y, projectile, send_message)
 
-	for _,proj_comp in ipairs(EntityGetComponent(entity_id, "ProjectileComponent") or {}) do
+	local friendly_fire = EntityHasTag(shooter, "friendly_fire_enabled")
+	if friendly_fire then EntityAddTag(projectile, "friendly_fire_enabled") end
+
+	for _,proj_comp in ipairs(EntityGetComponent(projectile, "ProjectileComponent") or {}) do
 		ComponentSetValue2(proj_comp, "mWhoShot", shooter)
 		ComponentSetValue2(proj_comp, "mShooterHerdId", herd_id) --should be fine if nil..?
+
+		if friendly_fire then
+			ComponentSetValue2(proj_comp, "friendly_fire", true)
+			ComponentSetValue2(proj_comp, "collide_with_shooter_frames", 6)
+		end
 	end
 
-	for _,vel_comp in ipairs(EntityGetComponent(entity_id, "VelocityComponent") or {}) do
+	for _,vel_comp in ipairs(EntityGetComponent(projectile, "VelocityComponent") or {}) do
 		ComponentSetValue2(vel_comp, "mVelocity", vel_x, vel_y)
 	end
 
-	return entity_id
+	return projectile
 end
 
 ---Shorthand for quickly getting the int value of a VSC
