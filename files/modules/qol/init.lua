@@ -234,7 +234,8 @@ end
 
 for xml in nxml.edit_file("data/entities/misc/effect_no_heal_in_meat_biome.xml") do
 	xml:add_child(nxml.new_element("LuaComponent", {
-		script_biome_entered = dir.."meat_curse/meat_realm_curse.lua"
+		_tags = "effect_no_heal_in_meat_biome",
+		script_enabled_changed = dir.."meat_realm_curse.lua"
 	}))
 end
 

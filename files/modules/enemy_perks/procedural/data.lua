@@ -45,10 +45,6 @@ local on_hit_callbacks = {
 				count_max=3,
 			})
 			--We can't set these values inherently when creating a new component via lua, so set them here instead
-			print("a")
-			print(table.concat({ComponentGetValue2(comp, "color_change")}, ", "))
-			print(table.concat({ComponentGetValue2(comp, "randomize_position")}, ", "))
-			print(table.concat({ComponentGetValue2(comp, "randomize_velocity")}, ", "))
 			ComponentSetValue2(comp, "color_change", 0, 0, 0, -.2)
 			ComponentSetValue2(comp, "gravity", 0, 0)
 			ComponentSetValue2(comp, "scale", 1, 0.2)
