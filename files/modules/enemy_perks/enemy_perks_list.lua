@@ -1289,7 +1289,7 @@ enemy_perks = {
 		condition = function(self, data)
 			-- this perk can only appear on mages, ghosts (excl. wand ghosts) and some select enemies
 			local factions = "mage,mage_swapper,ghost,"
-			local creatures = { "monk", }
+			local creatures = { "/monk.xml", }
 
 			local strparts = split_string(EntityGetFilename(data.target_enemy), "/")
 			local filename = strparts[#strparts]
@@ -1344,8 +1344,8 @@ enemy_perks = {
 			tower = 4,
 		},
 		condition = function(self, data)
-			if not data.dmc then return end
-			return ComponentGetValue2(data.dmc, "max_hp") >= 3
+			return data.dmc and ComponentGetValue2(data.dmc, "max_hp") >= 3
+			and ( #EntityGetInRadiusWithTag(x, y, 500, "hardmod_giant_eperk_aura") == 0 )
 		end,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
@@ -1361,11 +1361,15 @@ enemy_perks = {
 		id = "ANTI_TELE_AURA",
 		name = "$hardmod_eperk_anti_tele_aura_name",
 		description = "$hardmod_eperk_anti_tele_aura_desc",
-		weight = 1,
+		weight = 2,
 		priority = 23,
 		max = 1,
 		min_level = 6,
 		unique_slot = "large_aura",
+		condition = function(self, data)
+			local x, y = EntityGetTransform(data.target_enemy)
+			return #EntityGetInRadiusWithTag(x, y, 500, "hardmod_giant_eperk_aura") == 0
+		end,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/anti_tele_aura.xml", x, y))
