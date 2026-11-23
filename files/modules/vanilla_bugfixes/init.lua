@@ -477,6 +477,7 @@ utils.modifile("data/entities/misc/area_damage.xml", [["$damage_rock_curse"]], [
 utils.modifile("data/entities/misc/custom_cards/propane_tank.xml", [["Propane tank"]], [["$action_propane_tank"]])
 
 -- Fix "bzzt!" death message from sawblades not being translatable, "bzzt!" -> "$hardmod_damage_sawblade"
+-- Translators should at least have the option to transliterate.
 local sawblade_targets = {
 	"data/entities/projectiles/deck/disc_bullet_big.xml",
 	"data/entities/projectiles/deck/disc_bullet_bigger.xml",
@@ -484,6 +485,14 @@ local sawblade_targets = {
 }
 for _,file in ipairs(sawblade_targets) do
 	utils.modifile(file, [["bzzt!"]], [["$hardmod_damage_sawblade"]])
+end
+
+
+--remove <DMC/> from Houre 
+for xml in nxml.edit_file("data/entities/animals/ghost.xml") do
+	for dmc in xml:each_of("DamageModelComponent") do
+		xml:remove_child(dmc)
+	end
 end
 
 
