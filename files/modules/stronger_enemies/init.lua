@@ -117,6 +117,19 @@ local function patch_enemy_changes()
 			aicomp:set("creature_detection_angular_range_deg", 90)
 		end
 	end
+
+	local drop_gold = {
+		"firebugnest.lua",
+		"flynest.lua",
+		"spidernest.lua",
+	}
+
+	for _,file in pairs(drop_gold) do
+		utils.modifile(
+			"data/scripts/buildings/"..file,
+			[[vars.script_death =]], "-- "
+		)
+	end
 end
 
 local function patch_enemy_resistances()

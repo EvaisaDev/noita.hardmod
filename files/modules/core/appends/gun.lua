@@ -58,26 +58,58 @@ TRIGGER_HIT_WORLD = 1
 TRIGGER_TIMER = 2
 TRIGGER_DEATH = 3
 
+---@param trigger QueuedTrigger
+function EnqueueTrigger(trigger)
+	table.insert(trigger_queue, trigger)
+end
+
+function RunTriggerQueue()
+	local todo = trigger_queue
+	handle_trigger_queue = false
+	trigger_queue = {}
+
+	---@type table<TriggerType, { delay_frames: integer, shotstates: integer[] }>
+	local groups = {}
+	---@type TriggerType[]
+	local group_order = {}
+
+	if #todo == 0 then return end
+
+	for _,trigger in pairs(todo) do
+		if not groups[trigger.type] then
+			table.insert(group_order, trigger.type)
+			groups[trigger.type] = {
+				delay_frames = trigger.delay_frames or 20,
+				shotstates = {}
+			}
+		end
+
+		table.insert(groups[trigger.type].shotstates, trigger.draw_count or 1)
+	end
+
+	for _,type in pairs(group_order) do
+		local group = groups[type]
+
+		if type == TRIGGER_HIT_WORLD then BeginTriggerHitWorld()
+		elseif type == TRIGGER_TIMER then BeginTriggerTimer(group.delay_frames)
+		elseif type == TRIGGER_DEATH then BeginTriggerDeath()
+		else goto continue end
+
+		for _,draw_count in pairs(group.shotstates) do
+			draw_shot(create_shot(draw_count), true)
+		end
+
+		EndTrigger()
+		::continue::
+	end
+end
+
 local orig_begin_proj = BeginProjectile
 function BeginProjectile(...)
 	orig_begin_proj(...)
 
 	if handle_trigger_queue then
-		handle_trigger_queue = false
-		if #trigger_queue == 0 then return end
-
-		local todo = trigger_queue
-		trigger_queue = {}
-
-		for _,trigger in pairs(todo) do
-			if trigger.type == TRIGGER_HIT_WORLD then BeginTriggerHitWorld()
-			elseif trigger.type == TRIGGER_TIMER then BeginTriggerTimer(trigger.delay_frames)
-			elseif trigger.type == TRIGGER_DEATH then BeginTriggerDeath()
-			else break end
-
-			draw_shot(create_shot(trigger.draw_count), true)
-			EndTrigger()
-		end
+		RunTriggerQueue()
 	end
 end
 
@@ -88,21 +120,59 @@ function _start_shot(...)
 	handle_trigger_queue = false
 end
 
-local function wrap_add_projectile(orig_fn)
-	return function(...)
-		if not reflecting then
-			handle_trigger_queue = true
-		end
-
-		orig_fn(...)
+local orig_add_projectile = add_projectile
+function add_projectile(file)
+	if not reflecting and #trigger_queue > 0 then
+		handle_trigger_queue = true
 	end
+
+	orig_add_projectile(file)
 end
 
-add_projectile                   = wrap_add_projectile(add_projectile)
--- TODO: [AT][spark bolt trigger] seems broken, other combinations work fine tho?...
--- dont have energy to figure this out rn
-add_projectile_trigger_hit_world = wrap_add_projectile(add_projectile_trigger_hit_world)
-add_projectile_trigger_timer     = wrap_add_projectile(add_projectile_trigger_timer)
-add_projectile_trigger_death     = wrap_add_projectile(add_projectile_trigger_death)
+local orig_add_trigger = add_projectile_trigger_hit_world
+function add_projectile_trigger_hit_world(file, draws)
+	if not reflecting and #trigger_queue > 0 then
+		EnqueueTrigger({
+			type = TRIGGER_HIT_WORLD,
+			draw_count = draws
+		})
+
+		add_projectile(file)
+		return
+	end
+
+	orig_add_trigger(file, draws)
+end
+
+local orig_add_timer = add_projectile_trigger_timer
+function add_projectile_trigger_timer(file, delay_frames, draws)
+	if not reflecting and #trigger_queue > 0 then
+		EnqueueTrigger({
+			type = TRIGGER_TIMER,
+			delay_frames = delay_frames,
+			draw_count = draws
+		})
+
+		add_projectile(file)
+		return
+	end
+
+	orig_add_timer(file, delay_frames, draws)
+end
+
+local orig_add_exptrigger = add_projectile_trigger_death
+function add_projectile_trigger_death(file, draws)
+	if not reflecting and #trigger_queue > 0 then
+		EnqueueTrigger({
+			type = TRIGGER_DEATH,
+			draw_count = draws
+		})
+	
+		add_projectile(file)
+		return
+	end
+
+	orig_add_exptrigger(file, draws)
+end
 
 --#endregion
