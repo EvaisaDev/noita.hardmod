@@ -70,14 +70,13 @@ for _,proj in pairs(lasers) do
 			pcomp:set("penetrate_entities", 1)
 		end
 
-		for emitter in file:each_of("LaserEmitterComponent") do
-			local laser = emitter:first_of("laser")
-			if laser then
-				laser:set("damage_to_entities", 0.001)
-				-- laser:set("max_cell_durability_to_destroy", 11)
-				laser:set("damage_apply_hitbox_dmg_multiplier", 0)
-			end
-		end
+		--for emitter in file:each_of("LaserEmitterComponent") do
+		--	local laser = emitter:first_of("laser")
+		--	if laser then
+		--		laser:set("damage_to_entities", 0.04)
+		--		laser:set("damage_apply_hitbox_dmg_multiplier", 0)
+		--	end
+		--end
 	end
 end
 

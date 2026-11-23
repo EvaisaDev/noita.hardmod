@@ -490,9 +490,8 @@ end
 
 --remove <DMC/> from Houre 
 for xml in nxml.edit_file("data/entities/animals/ghost.xml") do
-	for dmc in xml:each_of("DamageModelComponent") do
-		xml:remove_child(dmc)
-	end
+	local dmc = xml:first_of("DamageModelComponent")
+	if dmc then xml:remove_child(dmc) end
 end
 
 

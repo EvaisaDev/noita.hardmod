@@ -3,7 +3,7 @@ local _g = HARDMOD_GLOBAL_DATA
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 local dir = utils.module_dir.."qol/"
 
-local nxml = dofile_once("mods/noita.hardmod/lib/nxml.lua") ---@type nxml
+local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
 
 ModLuaFileAppend("data/scripts/status_effects/status_list.lua", "mods/noita.hardmod/files/modules/qol/status_list_append.lua")

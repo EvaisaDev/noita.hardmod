@@ -7,7 +7,7 @@ SetRandomSeed(GameGetFrameNum(), pos_x + pos_y + entity_id)
 
 local size = 8
 
-local radius_cap = #EntityGetInRadiusWithTag(pos_x, pos_y, size*1.3, "hardmod_darkflame")*.7
+local radius_cap = #EntityGetInRadiusWithTag(pos_x, pos_y, size*1.3, "hardmod_darkflame")*.07
 local total_cap = #EntityGetWithTag("hardmod_darkflame")*.005
 if Random() < math.max(radius_cap, total_cap) then return end
 
