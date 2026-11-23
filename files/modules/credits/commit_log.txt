@@ -914,3 +914,9 @@ upd*
 on 2nd thought just keep it close to vanilla lmao
 update absolution's description (smh imagine LYING)
 this is jank but at least its a biiit better
+small tweaks
+refactored polymorph_gui module into qol module, added new qol to it
+removed <DMC/> from Houre
+fixed some formatting
+unnerfed plasma spells, made Plasma Beam and Plasma Cross appear slightly later
+removed some debug prints, fixed meat curse indicator
