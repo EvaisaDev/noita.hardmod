@@ -907,3 +907,10 @@ some small eperk stuff
 merge cleanup
 couple new eperks, couple of fixes, added origin to all spells/perks and author to a few
 removed debug stuff, slight tweaks
+QoL: bugs/flies from nests now drop gold
+Add chaotic and unstable poly gas
+make absolution not subtract use count
+upd*
+on 2nd thought just keep it close to vanilla lmao
+update absolution's description (smh imagine LYING)
+this is jank but at least its a biiit better
