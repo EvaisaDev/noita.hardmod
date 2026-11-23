@@ -62,7 +62,7 @@ local module_ids = {
 	"greed_curse_rework",
 
 	"vanilla_bugfixes",
-	"polymorph_gui",
+	"qol",
 	"snail",
 }
 

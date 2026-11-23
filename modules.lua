@@ -78,7 +78,7 @@ local modules = {
 			integral = true,
 		},
 		alternate_biomes = {},
-		polymorph_gui = {},
+		qol = {},
 		worse_digging = {},
 		vanilla_bugfixes = {},
 		spell_variety = {},
@@ -87,6 +87,7 @@ local modules = {
 		no_more_instant_recharge = {},
 		snail = {},
 		greed_curse_rework = {},
+		material_madness = {},
 	},
 	-- `true` to force enable, `false` to force disable
 	force_disable_modules = {
