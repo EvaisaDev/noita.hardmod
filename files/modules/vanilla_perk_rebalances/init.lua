@@ -196,6 +196,15 @@ hooks.mod_post_init = function()
 	end
 end
 
+hooks.new_eid = function(entity_id)
+	local spell_gems_enabled = tonumber(GlobalsGetValue("PERK_PICKED_HARDMOD_SPELL_GEMS_PICKUP_COUNT","0")) > 0
+	if spell_gems_enabled and EntityHasTag(entity_id, "enemy") then
+		EntityAddComponent2(entity_id, "LuaComponent", {
+			script_death = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/spell_gems_try_drop_on_death.lua",
+			execute_every_n_frame = -1,
+		})
+	end
+end
 
 -- Apotheosis fails to do nil checks for its target components, completely fails to load as a result, this disables the relevant code
 local f1,t1,f2,t2 =

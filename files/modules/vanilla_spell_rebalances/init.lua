@@ -8,27 +8,27 @@ ModMagicNumbersFileAdd("mods/noita.hardmod/files/modules/vanilla_spell_rebalance
 
 local mists = { "slime", "alcohol", "blood", "radioactive" }
 for _,mist in pairs(mists) do
-  for file in nxml.edit_file("data/entities/projectiles/deck/mist_"..mist..".xml") do
-    local comp = file:first_of("ProjectileComponent")
-    if comp then
-      comp:set("lifetime", 200)
-      comp:set("damage_every_x_frames", 30)
-      comp:set("collide_with_world", true)
-    end
-  end
+	for file in nxml.edit_file("data/entities/projectiles/deck/mist_"..mist..".xml") do
+		local comp = file:first_of("ProjectileComponent")
+		if comp then
+			comp:set("lifetime", 200)
+			comp:set("damage_every_x_frames", 30)
+			comp:set("collide_with_world", true)
+		end
+	end
 end
 
 for file in nxml.edit_file("data/entities/projectiles/deck/base_field.xml") do
-  local proj = file:first_of("ProjectileComponent")
-  if proj then
-    proj:set("collide_with_world", true)
-    proj:set("damage_every_x_frames", 30)
-  end
+	local proj = file:first_of("ProjectileComponent")
+	if proj then
+		proj:set("collide_with_world", true)
+		proj:set("damage_every_x_frames", 30)
+	end
 
-  local lifetime = file:first_of("LifetimeComponent")
-  if lifetime then
-    lifetime:set("lifetime", 900)
-  end
+	local lifetime = file:first_of("LifetimeComponent")
+	if lifetime then
+		lifetime:set("lifetime", 900)
+	end
 end
 
 for file in nxml.edit_file("data/entities/misc/area_damage.xml") do
@@ -60,6 +60,12 @@ for file in nxml.edit_file("data/entities/projectiles/darkflame.xml") do
 		if comp.attr.script_source_file == "data/scripts/projectiles/darkflame.lua" then
 			comp:set("execute_every_n_frame", 2)
 		end
+	end
+end
+
+for file in nxml.edit_file("data/entities/projectiles/deck/arrow.xml") do
+	for comp in file:each_of("ProjectileComponent") do
+		comp:set("friendly_fire", false)
 	end
 end
 
@@ -95,6 +101,51 @@ for _,thrower in pairs(personal_throwers) do
 	end
 end
 
+
+local torches = {
+	{
+		path = "data/entities/misc/custom_cards/torch.xml",
+		image = "data/particles/torch_fog_of_war_hole.xml",
+		size = 2.5,
+	},
+	{
+		path = "data/entities/misc/custom_cards/torch_electric.xml",
+		image = "data/particles/torch_electric_fog_of_war_hole.xml",
+		size = 3,
+	},
+}
+local torch_fow_template = nxml.new_element("SpriteComponent", {
+	_tags="enabled_in_hand,sound_pick_gold_sand",
+	alpha="1",
+	smooth_filtering="1",
+	fog_of_war_hole="1",
+	has_special_scale="1",
+})
+local torch_update_luacomp = nxml.new_element("LuaComponent", {
+	_tags="enabled_in_hand",
+	script_source_file="mods/noita.hardmod/files/modules/vanilla_spell_rebalances/scripts/torch_update.lua",
+})
+local spell_offset_luacomp = nxml.new_element("LuaComponent", {
+	_tags="enabled_in_hand",
+	script_enabled_changed="mods/noita.hardmod/files/modules/vanilla_spell_rebalances/scripts/set_spell_effect_offset.lua",
+	execute_every_n_frame="-1",
+})
+local inherit_transform_comp = nxml.new_element("InheritTransformComponent", {_tags="enabled_in_hand"})
+for _,torch in ipairs(torches) do
+	for xml in nxml.edit_file(torch.path) do
+		local torch_fow_hole = torch_fow_template
+		torch_fow_hole.attr.image_file = torch.image
+		torch_fow_hole.attr.special_scale_x = tostring(torch.size)
+		torch_fow_hole.attr.special_scale_y = tostring(torch.size)
+		xml:add_child(nxml.new_element("Entity", {name = "hardmod.torch_spotlight", tags="enabled_in_hand"}, {
+			inherit_transform_comp,
+			torch_fow_hole,
+			torch_update_luacomp,
+		}))
+		xml:add_child(spell_offset_luacomp)
+	end
+end
+
 utils.patchifile("data/scripts/gun/procedural/level_1_wand.lua", {
 	{ from = "BLACK_HOLE_BIG", to = "SLOW_BULLET" },
 	{ from = "BLACK_HOLE", to = "SLOW_BULLET" },
@@ -106,6 +157,23 @@ utils.patchifile("data/scripts/gun/procedural/level_1_wand.lua", {
 
 -- only one type of portal per run
 utils.modifile("data/scripts/magic/ocarina.lua", "ocarina_secret_00", "kantele_secret_00")
+
+-- Add Trigger spell rework
+utils.modifile(
+	"data/entities/animals/boss_wizard/death.lua",
+	[[local opts = { "ADD_TRIGGER", "ADD_TIMER", "ADD_DEATH_TRIGGER", "RESET", "DUPLICATE" }]],
+	[[local opts = { "RESET", "HARDMOD_SACRILEGE", "DUPLICATE" }]]
+)
+utils.modifile(
+	"data/entities/animals/boss_wizard/death.lua",
+	[[for i=1,5 do]],
+	[[for i=1,3 do]]
+)
+utils.modifile(
+	"data/entities/animals/boss_wizard/death.lua",
+	[[CreateItemActionEntity( opts[i], x - 8 * 4 + (i-1) * 16, y )]],
+	[[CreateItemActionEntity( opts[i], x - 8 * 2 + (i-1) * 16, y )]]
+)
 
 dofile_once("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/damage.lua")
 

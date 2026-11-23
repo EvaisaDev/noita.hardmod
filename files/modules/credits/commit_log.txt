@@ -786,6 +786,7 @@ add Anti-Teleportation Field eperk
 adapt new eperk attributes
 fix anti-tele aura destroying any projectile
 make anti-tele aura a bit less intense
+give Add Trigger spells their intended use only
 make Double Damage appear more early
 added shitty altar sacrifice secret, expanded HM item shop pool
 removed perks debug and ran split.lua_run
@@ -869,3 +870,40 @@ more knockback more oomph!!
 add Gem Collector eperk
 classic
 fix Gem Collector not always spawning gems
+pedestal_wand tag for wand pedestals
+changes to haunted wands
+restore the old chance
+make Tinker at Wand Pedestals use the new pedestal_wand tag
+spawn the inhibitor spell when you pick up a perk that adds shot effects, also change its desc
+Add types for spells.lua and perks.lua
+Ira's Ultra Radical Coolio Slick Groovenator 9000
+Update miniboss_creator.lua
+add ---@type hooks to all modules that were missing it
+babe wake up new splash text dropped
+rework Add Trigger spells
+make Giga Chainsaw appear later
+remove ff from arrow
+make AT etc unable to spawn for now
+add better Absolution sprite
+fix error !!!!
+clean up MoM spell drops
+give status indicator to Stinky Aura
+oblige to the Lua code police's orders :pensive:
+reroll Trial perks when leaving HM (instead of destroy)
+change some tooltips
+updated sprite for Inhibitor
+reworked torch passives again, tweaked values and made less buggy
+add Shield Breaker modifier
+make t2 Protector shield even smaller
+add torch wand tip y offset
+make Spell Gems more consistent
+make MoM drop AT spells for now
+Rework trigger spells
+improve the trigger system
+convert to vararg
+consistent hardmod_cannot_spawn flag
+make reworked AT spawn regularly, change MoM drops
+some small eperk stuff
+merge cleanup
+couple new eperks, couple of fixes, added origin to all spells/perks and author to a few
+removed debug stuff, slight tweaks

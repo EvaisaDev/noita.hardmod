@@ -6,6 +6,7 @@ local dir = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/"
 hooks.new_perks = {
 	{
 		id = "HARDMOD_SPELL_GEMS",
+		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_spell_gems_name",
 		ui_description = "$hardmod_perk_spell_gems_desc",
 		ui_icon = dir.."ui_gfx/perks/spell_gems_016.png",
@@ -20,6 +21,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_TINKER_AT_PEDESTALS",
+		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_tinker_at_pedestals_name",
 		ui_description = "$hardmod_perk_tinker_at_pedestals_desc",
 		ui_icon = dir.."ui_gfx/perks/tinker_at_pedestals_016.png",
@@ -34,6 +36,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_ITEM_IMMUNITIES",
+		author = "$modder.yui",
 		ui_name = "$hardmod_perk_item_immunities_name",
 		ui_description = "$hardmod_perk_item_immunities_desc",
 		ui_icon = dir.."ui_gfx/perks/item_immunities_016.png",
@@ -74,6 +77,7 @@ hooks.new_perks = {
 	},
 	{ --Nabbed from Apotheosis
 		id = "HARDMOD_OVERSIZED_SHIELD",
+		author = "$modder.conga",
 		ui_name = "$hardmod_perk_oversized_shield_name",
 		ui_description = "$hardmod_perk_oversized_shield_desc",
 		ui_icon = dir.."ui_gfx/perks/shield_oversized_016.png",
@@ -125,6 +129,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_SUMMON_TOOLBOX",
+		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_summon_toolbox_name",
 		ui_description = "$hardmod_perk_summon_toolbox_desc",
 		ui_icon = dir.."ui_gfx/perks/summon_toolbox_016.png",
@@ -146,6 +151,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_PYROMANIAC",
+		author = "$modder.yui",
 		ui_name = "$hardmod_perk_pyromaniac_name",
 		ui_description = "$hardmod_perk_pyromaniac_desc",
 		ui_icon = dir.."ui_gfx/perks/pyromaniac_016.png",
@@ -186,6 +192,7 @@ hooks.new_perks = {
 	-- },
 	{
 		id = "HARDMOD_GOLD_IS_DUST",
+		author = "$modder.userk",
 		ui_name = "$hardmod_gold_is_dust_perkname",
 		ui_description = "$hardmod_gold_is_dust_perkdesc",
 		perk_icon = dir.."gold_is_dust/perk.png",
@@ -205,6 +212,7 @@ hooks.perk_patches = {
 	["PROJECTILE_HOMING"] = {
 		-- Reimplement this as a ShotEffectComponent for the Inhibitor spell
 		-- (i am NOT making it support game effects)
+		-- lmaoooo -K
 		game_effect = "NONE",
 		func = function(perk, player)
 			EntityAddComponent2(player, "ShotEffectComponent", {

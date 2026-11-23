@@ -1,9 +1,14 @@
 <!-- this is actually not a proper projectile lmao i cba to finish this for now -->
 <Entity name="$projectile_default">
-	<Base file="data/entities/base_projectile.xml">
-		<VelocityComponent
-    		gravity_y="100">
-    	</VelocityComponent> 
+	<Base file="data/entities/base_item_projectile.xml">
+		<ProjectileComponent
+			on_collision_die="1"
+			penetrate_entities="0"
+			damage_scaled_by_speed="0"
+			never_hit_player="0"
+		>
+			<damage_by_type melee="0.1"></damage_by_type>
+		</ProjectileComponent>
 	</Base>
 
 	<PhysicsBodyComponent 
@@ -98,6 +103,11 @@
 		execute_on_removed="1"
 		script_source_file="mods/noita.hardmod/files/modules/bosses/hamis/projectile/hamis_throw.lua"
 	></LuaComponent>
+
+	<VariableStorageComponent
+		name="projectile_file"
+		value_string="mods/noita.hardmod/files/modules/bosses/hamis/projectile/hamis_throw.xml"
+	></VariableStorageComponent>
 
 	<AudioComponent
 		file="data/audio/Desktop/projectiles.bank"

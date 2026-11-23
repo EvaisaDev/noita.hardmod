@@ -4,6 +4,7 @@ local hooks = {}---@type perk_hooks
 hooks.new_perks = {
 	{
 		id = "HARDMOD_GOLD_SHIELD",
+		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_divine_shield_name",
 		ui_description = "$hardmod_perk_divine_shield_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/vanilla_bosses/gfx/ui_gfx/perks/gold_shield_016.png",

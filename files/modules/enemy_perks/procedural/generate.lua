@@ -14,6 +14,11 @@ for _,callback in ipairs(callback_data.callbacks) do
         "template_hit.xml",
         "template_explode.lua"
     }
+    if not callback.entity_on_hit then
+        templates[#templates+1] = "template_hit.xml"
+        callback.entity_on_hit = table.concat({dir,"generated/",id,"_hit.xml"})
+    end
+
     for _,template in ipairs(templates) do
         local file = ModTextFileGetContent(procedural_dir..template)
 

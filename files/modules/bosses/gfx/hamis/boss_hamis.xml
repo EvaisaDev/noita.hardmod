@@ -1,5 +1,5 @@
 <Sprite 
-  filename="mods/noita.hardmod/files/modules/bosses/gfx/hamis/boss.png" 
+  filename="mods/noita.hardmod/files/modules/bosses/gfx/hamis/boss_hamis.png" 
   offset_x="6" 
   offset_y="6.5"
   default_animation="stand" >

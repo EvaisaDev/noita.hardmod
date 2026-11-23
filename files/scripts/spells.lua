@@ -45,6 +45,7 @@ end
 
 local num_spells = #actions
 for i,spell in ipairs(new_spells) do
+	spell.origin = "$mod.noita.hardmod.name"
 	actions[num_spells+i] = spell
 end
 

@@ -3,6 +3,7 @@ local hooks = {}---@type perk_hooks
 hooks.new_perks = {
 	{
 		id = "HARDMOD_BETTER_CHESTS",
+		author = "$modder.yui",
 		ui_name = "$hardmod_perk_better_chests_name",
 		ui_description = "$hardmod_perk_better_chests_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/chest_tweaks/gfx/perks/better_chests_016.png",
@@ -16,6 +17,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_TREASURE_HUNTER",
+		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_treasure_hunter_name",
 		ui_description = "$hardmod_perk_treasure_hunter_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/chest_tweaks/gfx/perks/treasure_hunter_016.png",

@@ -1,9 +1,4 @@
-local hooks = {}---@type hooks
+-- This module does nothing on its own
+-- Its modifications are handled in core/appends/gun.lua
 
--- Note: Part of cheeseless_triggers is handled in core/gun.lua
-
-hooks.mod_init = function()
-	ModLuaFileAppend("data/scripts/gun/gun.lua", "mods/noita.hardmod/files/modules/cheeseless_triggers/scripts/gun_payload_cast_delay.lua")
-end
-
-return hooks
+return {}

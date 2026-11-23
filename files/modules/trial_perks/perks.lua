@@ -6,6 +6,7 @@ local hooks = {}---@type perk_hooks
 hooks.new_perks = {
 	{
 		id = "HARDMOD_TIME_TRIAL",
+		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_time_trial_name",
 		ui_description = "$hardmod_perk_time_trial_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/perks/time_trial_016.png",
@@ -16,7 +17,6 @@ hooks.new_perks = {
 		holy_mountain_exclusive = true,
 		func = function(entity_perk_item, entity_who_picked, item_name, pickup_count)
 			if reflecting then return end
-			dofile_once("data/scripts/lib/utilities.lua")
 
 			-- register the current y position to disqualify nearby hearts
 			local x, y = EntityGetTransform(entity_who_picked)
@@ -34,6 +34,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_GLASS_HEART",
+		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_glass_heart_name",
 		ui_description = "$hardmod_perk_glass_heart_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/perks/glass_heart_016.png",
@@ -44,7 +45,6 @@ hooks.new_perks = {
 		holy_mountain_exclusive = true,
 		func = function(entity_perk_item, entity_who_picked, item_name, pickup_count)
 			if reflecting then return end
-			dofile_once("data/scripts/lib/utilities.lua")
 
 			-- register the current y position to disqualify nearby hearts
 			local x, y = EntityGetTransform(entity_who_picked)

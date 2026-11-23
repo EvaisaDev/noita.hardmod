@@ -15,7 +15,7 @@
 ---@field name string
 ---@field sprite string
 ---@field sprite_unidentified string?
----@field related_projectiles string[]?
+---@field related_projectiles [string, integer?]?
 ---@field related_extra_entities string[]?
 ---@field type integer
 ---@field spawn_level string?
@@ -122,6 +122,7 @@ shot_effects = {}
 first_shot = true
 current_reload_time = 0
 reloading = false
+reflecting = false
 
 ACTION_TYPE_PROJECTILE = 0
 ACTION_TYPE_STATIC_PROJECTILE = 1

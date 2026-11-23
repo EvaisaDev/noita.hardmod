@@ -3,12 +3,13 @@ local hooks = {}---@type spell_hooks
 hooks.new_spells = {
 	{
 		id					= "HARDMOD_BLINK",
+		author				= "$modder.dani2d",
 		name				= "$hardmod_spell_blink_name",
 		description			= "$hardmod_spell_blink_desc",
 		sprite				= "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/spells/blink.png",
 		type				= ACTION_TYPE_UTILITY,
 		spawn_probability 	= "0",
-		spawn_requires_flag = "hardmod_impossible_spawn",
+		spawn_requires_flag = "hardmod_cannot_spawn",
 		price				= 400,
 		mana				= 200,
 		max_uses			= 10,
