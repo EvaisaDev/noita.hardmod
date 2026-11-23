@@ -701,6 +701,20 @@ function utils.SpawnPerkCircle(perks, x, y, radius)
 	return perk_eids
 end
 
+--- Function to find a child entity based on their filename (to spare tag overuse)
+---@param entity_id entity_id Entity ID of the parent
+---@param filename string Filename of the child to look for
+---@return entity_id Entity ID of the first match, or nil if none was found
+function utils.EntityGetChildByFilename(entity_id, filename)
+	local children = EntityGetAllChildren(entity_id)
+	for _,child in ipairs(children) do
+		if string.find(EntityGetFilename(child), filename) then
+			return child
+		end
+	end
+	return nil
+end
+
 
 utils.logging = false
 ---useful logger than can be enabled/disabled at will

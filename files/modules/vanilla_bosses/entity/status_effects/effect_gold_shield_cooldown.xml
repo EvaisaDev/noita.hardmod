@@ -1,4 +1,4 @@
-<Entity tags="hardmod_gold_shield,hardmod_gold_shield_cooldown">
+<Entity tags="hardmod_gold_shield">
 
     <InheritTransformComponent />
 
