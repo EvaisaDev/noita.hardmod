@@ -24,11 +24,27 @@ local dir = "mods/noita.hardmod/files/modules/enemy_perks/"
 local sprites_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_sprites/"
 local icons_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/"
 
+--TODO!!!! bake all of this into new eperk logic function
 local enemy_is_ranged_attack = function(self, data)
+	local summoners = {
+		["data/entities/animals/bigbat.xml"] = true,
+		["data/entities/animals/giant.xml"] = true,
+	}
+
+	if summoners[EntityGetFilename(data.target_enemy)] then return false end --even if a summoner has HANDY, they will inflict their summons with the status ailment, maybe fix?
+	if data.how_many_of_each_perk.HARDMOD_HANDY then return true end --this grants a ranged attack to enemies that wouldnt have it otherwise
 	local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
 	if animal_ai_comp
 	and ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
 	and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends") then
+		return true
+	end
+end
+
+local enemy_is_ranged_support = function(self, data)
+	local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
+	if animal_ai_comp
+	and ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends") then
 		return true
 	end
 end
@@ -156,19 +172,19 @@ enemy_perks = {
 			ComponentSetValue2(data.dmc, "hp", ComponentGetValue2(data.dmc, "hp") * 1.5)
 		end
 	},
-	{
-		id = "RECYCLE_HEALTH",
-		name = "$hardmod_eperk_recycle_health_name",
-		description = "$hardmod_eperk_recycle_health_desc",
-		weight = 6,
-		priority = 6,
-		max = 0, --this perk is a wasted entry as is, rework to be stronger (ie grant Max HP in addition to HP)
-		func = function(self, entity_id, data)
-			EntityAddComponent2(entity_id, "LuaComponent", {
-				script_damage_received = dir.."scripts/recycle_health.lua",
-			})
-		end
-	},
+	--{ --need to rework perk to be more impactful
+	--	id = "RECYCLE_HEALTH",
+	--	name = "$hardmod_eperk_recycle_health_name",
+	--	description = "$hardmod_eperk_recycle_health_desc",
+	--	weight = 6,
+	--	priority = 6,
+	--	max = 0, --this perk is a wasted entry as is, rework to be stronger (ie grant Max HP in addition to HP)
+	--	func = function(self, entity_id, data)
+	--		EntityAddComponent2(entity_id, "LuaComponent", {
+	--			script_damage_received = dir.."scripts/recycle_health.lua",
+	--		})
+	--	end
+	--},
 	{
 		id = "LEECH",
 		name = "$hardmod_eperk_leech_name",
@@ -216,7 +232,6 @@ enemy_perks = {
 		weight = 1,
 		max = 2,
 		min_level = 3,
-		requires_dmc = true,
 		-- unique_slot = "large_aura", -- has great synergy with other large_aura perks so I think we should keep it separate
 		biome_conditions = {
 			magical_temple = 2,
@@ -359,6 +374,21 @@ enemy_perks = {
 		end,
 	},
 	{
+		id = "HANDY",
+		name = "$hardmod_eperk_handy_name",
+		description = "$hardmod_eperk_handy_desc",
+		weight = 3,
+		max = 3,
+		biome_conditions = {
+			snowy_depths = 5,
+		},
+		condition = function(...) return not enemy_is_ranged_support(...) end,
+		func = function(self, entity_id, data)
+			local arms = EntityLoad("data/entities/misc/monk_arms_standalone.xml", data.x, data.y)
+			EntityAddChild(entity_id, arms)
+		end
+	},
+	{
 		id = "PYRELORD",
 		name = "$hardmod_eperk_pyrelord_name",
 		description = "$hardmod_eperk_pyrelord_desc",
@@ -476,6 +506,22 @@ enemy_perks = {
 			})
 		end
 	},
+	{
+		id = "TELEPORT_CURSER",
+		name = "$hardmod_eperk_teleport_curser_name",
+		description = "$hardmod_eperk_teleport_curser_desc",
+		weight = 3,
+		priority = 7,
+		max = 1,
+		min_level = 2,
+		condition = enemy_is_ranged_attack,
+		func = function(self, entity_id, data)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_shot = dir.."generated/teleport_curser_shot.lua",
+				execute_every_n_frame = -1,
+			})
+		end
+	},
 	--{
 	--	id = "BLINDING_CURSER",
 	--	name = "$hardmod_eperk_blinding_curser_name",
@@ -527,7 +573,6 @@ enemy_perks = {
 		priority = 0,
 		max = 1,
 		unique_slot = "large_aura",
-		requires_dmc = true,
 		conditions = function(self, data)
 			return string.find("blood,slime,sludge", ComponentGetValue2(data.dmc, "blood_material"))
 		end,
@@ -820,22 +865,22 @@ enemy_perks = {
 			})
 		end
 	},
-	{
-		id = "SPELL_GEMS",
-		name = "$hardmod_eperk_spell_gems_name",
-		description = "$hardmod_eperk_spell_gems_desc",
-		weight = 3,
-		priority = 14,
-		max = 1,
-		max_level = 8,
-		condition = spawn_on_death_blacklist,
-		func = function(self, entity_id, data)
-			EntityAddComponent2(entity_id, "LuaComponent", {
-				script_death = dir.."scripts/spell_gems_on_death.lua",
-				execute_every_n_frame = -1,
-			})
-		end
-	},
+	--{ --this eperk existing only serves to harm the existence of the holy mountain perk, and fails to benefit the enemy holder
+	--	id = "SPELL_GEMS",
+	--	name = "$hardmod_eperk_spell_gems_name",
+	--	description = "$hardmod_eperk_spell_gems_desc",
+	--	weight = 3,
+	--	priority = 14,
+	--	max = 1,
+	--	max_level = 8,
+	--	condition = spawn_on_death_blacklist,
+	--	func = function(self, entity_id, data)
+	--		EntityAddComponent2(entity_id, "LuaComponent", {
+	--			script_death = dir.."scripts/spell_gems_on_death.lua",
+	--			execute_every_n_frame = -1,
+	--		})
+	--	end
+	--},
 	{
 		id = "KAMIKAZE",
 		name = "$hardmod_eperk_kamikaze_name",
@@ -1060,6 +1105,22 @@ enemy_perks = {
 		end
 	},
 	{
+		id = "RIVAL",
+		name = "$hardmod_eperk_rival_name",
+		description = "$hardmod_eperk_rival_desc",
+		weight = 1,
+		priority = 19,
+		max = 1,
+		min_level = 8,
+		requires_dmc = true,
+		func = function(self, entity_id, data)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				execute_every_n_frame = -1,
+				script_damage_about_to_be_received = dir.."scripts/negate_nonplayer_damage.lua"
+			})
+		end
+	},
+	{
 		id = "BOUNTY",
 		name = "$hardmod_eperk_bounty_name",
 		description = "$hardmod_eperk_bounty_desc",
@@ -1070,9 +1131,13 @@ enemy_perks = {
 		unique_slot = "on_death",
 		func = function(self, entity_id, data)
 			if data.perks_to_give then data.perks_to_give = data.perks_to_give + 10 end
-			EntityAddComponent2(entity_id, "LuaComponent", {
-				script_death = dir.."scripts/drop_chest_on_death.lua"
-			})
+		end,
+		on_death = function(self, entity_id, ddata)
+    		if EntityHasTag(entity_id, "boss") then
+    		    EntityLoad("data/entities/items/pickup/chest_random_super.xml", ddata.x, ddata.y)
+    		else
+    		    EntityLoad("data/entities/items/pickup/chest_random.xml", ddata.x, ddata.y)
+    		end
 		end
 	},
 	{

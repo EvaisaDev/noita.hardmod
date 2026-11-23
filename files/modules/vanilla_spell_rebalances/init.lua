@@ -8,27 +8,27 @@ ModMagicNumbersFileAdd("mods/noita.hardmod/files/modules/vanilla_spell_rebalance
 
 local mists = { "slime", "alcohol", "blood", "radioactive" }
 for _,mist in pairs(mists) do
-  for file in nxml.edit_file("data/entities/projectiles/deck/mist_"..mist..".xml") do
-    local comp = file:first_of("ProjectileComponent")
-    if comp then
-      comp:set("lifetime", 200)
-      comp:set("damage_every_x_frames", 30)
-      comp:set("collide_with_world", true)
-    end
-  end
+	for file in nxml.edit_file("data/entities/projectiles/deck/mist_"..mist..".xml") do
+		local comp = file:first_of("ProjectileComponent")
+		if comp then
+			comp:set("lifetime", 200)
+			comp:set("damage_every_x_frames", 30)
+			comp:set("collide_with_world", true)
+		end
+	end
 end
 
 for file in nxml.edit_file("data/entities/projectiles/deck/base_field.xml") do
-  local proj = file:first_of("ProjectileComponent")
-  if proj then
-    proj:set("collide_with_world", true)
-    proj:set("damage_every_x_frames", 30)
-  end
+	local proj = file:first_of("ProjectileComponent")
+	if proj then
+		proj:set("collide_with_world", true)
+		proj:set("damage_every_x_frames", 30)
+	end
 
-  local lifetime = file:first_of("LifetimeComponent")
-  if lifetime then
-    lifetime:set("lifetime", 900)
-  end
+	local lifetime = file:first_of("LifetimeComponent")
+	if lifetime then
+		lifetime:set("lifetime", 900)
+	end
 end
 
 for file in nxml.edit_file("data/entities/misc/area_damage.xml") do
@@ -157,6 +157,23 @@ utils.patchifile("data/scripts/gun/procedural/level_1_wand.lua", {
 
 -- only one type of portal per run
 utils.modifile("data/scripts/magic/ocarina.lua", "ocarina_secret_00", "kantele_secret_00")
+
+-- Add Trigger spell rework
+utils.modifile(
+	"data/entities/animals/boss_wizard/death.lua",
+	[[local opts = { "ADD_TRIGGER", "ADD_TIMER", "ADD_DEATH_TRIGGER", "RESET", "DUPLICATE" }]],
+	[[local opts = { "RESET", "HARDMOD_SACRILEGE", "DUPLICATE" }]]
+)
+utils.modifile(
+	"data/entities/animals/boss_wizard/death.lua",
+	[[for i=1,5 do]],
+	[[for i=1,3 do]]
+)
+utils.modifile(
+	"data/entities/animals/boss_wizard/death.lua",
+	[[CreateItemActionEntity( opts[i], x - 8 * 4 + (i-1) * 16, y )]],
+	[[CreateItemActionEntity( opts[i], x - 8 * 2 + (i-1) * 16, y )]]
+)
 
 dofile_once("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/damage.lua")
 

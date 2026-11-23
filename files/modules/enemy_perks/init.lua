@@ -86,12 +86,12 @@ end
 
 hooks.new_eid = function(entity_id)
 	if ModIsEnabled("Apotheosis") then
-		if string.find(EntityGetFilename(entity_id), "mods/Apotheosis/data/entities/animals/psychotic/") then
-			EntityAddTag(entity_id, "no_enemy_perks")
+		if EntityGetFilename(entity_id):find("mods/Apotheosis/data/entities/animals/psychotic/") then
+			return
 		end
 	end
 
-	if EntityHasTag(entity_id, "enemy") and not (EntityHasTag(entity_id, "hardmod_blessed") or EntityHasTag(entity_id, "no_enemy_perks")) then
+	if (EntityHasTag(entity_id, "enemy") or EntityHasTag(entity_id, "polymorphed")) and not (EntityHasTag(entity_id, "hardmod_blessed") or EntityHasTag(entity_id, "no_enemy_perks")) then
 		local is_boss = EntityHasTag(entity_id, "boss")
 		local is_shop_guardian = EntityHasTag(entity_id, "necromancer_shop")
 		local x, y = EntityGetTransform(entity_id)
@@ -289,5 +289,12 @@ for file in nxml.edit_file("data/entities/projectiles/darkflame_stationary.xml")
 end
 
 dofile(dir.."procedural/generate.lua")
+
+
+if ModIsEnabled("grahamsdummy") then
+	for xml in nxml.edit_file("mods/grahamsdummy/files/dummy.xml") do
+		xml.attr.tags = xml.attr.tags .. ",no_enemy_perks"
+	end
+end
 
 return hooks

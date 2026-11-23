@@ -44,7 +44,7 @@ function SetTeleportLocation()
 
     did_hit, tele_x, tele_y = RaytracePlatforms(t_x, t_y, tele_x, tele_y)
     local currbiome = BiomeMapGetName(tele_x, tele_y)
-    if currbiome == "$biome_holymountain" then return end --Do not follow the player into the holy mountain, the gods wouldn't like that
+    if currbiome == "$biome_holymountain" or currbiome == "$biome_boss_arena" then return end --Do not follow the player into the holy mountain, the gods wouldn't like that
 
     local eid = EntityLoad("mods/noita.hardmod/files/modules/phantom_nemesis/files/entities/misc/fx/teleport_indicator.xml", tele_x, tele_y)
     local tele_vsc = EntityGetFirstComponentIncludingDisabled(eid, "VariableStorageComponent")

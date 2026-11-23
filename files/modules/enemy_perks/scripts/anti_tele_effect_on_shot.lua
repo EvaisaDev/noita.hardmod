@@ -1,24 +1,22 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
-local entity_id = GetUpdatedEntityID()
 local RADIUS = 220
-
-local x, y = EntityGetTransform(entity_id)
-local aura = EntityGetClosestWithTag(x, y, "hardmod_anti_tele_aura")
-if not aura then EntityKill(entity_id) return end
-local ax, ay = EntityGetTransform(aura)
-
-if utils.get_distance(x, y, ax, ay) > RADIUS then EntityKill(entity_id) return end
-
 
 -- ty Lamia
 function shot(projectile)
+	local entity_id = GetUpdatedEntityID()
+	--BACKWARDS COMPATIBILITY, LUACOMP USED TO BE DIRECTLY ON PLAYER
+	if EntityHasTag(entity_id, "player_unit") then
+		EntityRemoveComponent(entity_id, GetUpdatedComponentID())
+		return
+	end
+
 	--redefine here cuz callbacks are fuckin' jank
 	entity_id = GetUpdatedEntityID()
-	x, y = EntityGetTransform(entity_id)
-	aura = EntityGetClosestWithTag(x, y, "hardmod_anti_tele_aura")
-	if not aura then EntityKill(entity_id) return end
-	ax, ay = EntityGetTransform(aura)
+	local x, y = EntityGetTransform(entity_id)
+	local aura = EntityGetClosestWithTag(x, y, "hardmod_anti_tele_aura")
+	if aura == 0 then EntityKill(entity_id) return end
+	local ax, ay = EntityGetTransform(aura)
 	if not x or not ax then return end -- ok sure
 
 	if utils.get_distance(x, y, ax, ay) > RADIUS then EntityKill(entity_id) return end

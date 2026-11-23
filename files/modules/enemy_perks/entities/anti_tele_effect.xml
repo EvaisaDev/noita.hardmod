@@ -2,8 +2,8 @@
 	<InheritTransformComponent/>
 
 	<LuaComponent
-		script_source_file = "mods/noita.hardmod/files/modules/enemy_perks/scripts/anti_tele_aura_on_shot.lua"
-		script_shot = "mods/noita.hardmod/files/modules/enemy_perks/scripts/anti_tele_aura_on_shot.lua"
+		script_source_file = "mods/noita.hardmod/files/modules/enemy_perks/scripts/anti_tele_effect_update.lua"
+		script_shot = "mods/noita.hardmod/files/modules/enemy_perks/scripts/anti_tele_effect_on_shot.lua"
 		execute_every_n_frame = "25"
 	/>
 

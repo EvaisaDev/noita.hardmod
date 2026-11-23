@@ -122,6 +122,7 @@ shot_effects = {}
 first_shot = true
 current_reload_time = 0
 reloading = false
+reflecting = false
 
 ACTION_TYPE_PROJECTILE = 0
 ACTION_TYPE_STATIC_PROJECTILE = 1

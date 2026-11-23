@@ -49,6 +49,7 @@ end
 
 local num_perks = #perk_list
 for i,perk in ipairs(new_perks) do
+	perk.origin = "$mod.noita.hardmod.name"
 	perk_list[num_perks+i] = perk
 end
 

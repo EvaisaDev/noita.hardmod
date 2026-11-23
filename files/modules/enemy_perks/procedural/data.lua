@@ -31,6 +31,32 @@ local on_hit_callbacks = {
 			ComponentSetValue2(comp, "offset", -1, 0)
 			ComponentSetValue2(comp, "gravity", 0, 0)
 		end,
+	},
+	{
+		id = "teleport_curser",
+		script_on_hit = dir.."scripts/teleport_curser_apply.lua",
+		script_on_shot = function(projectile, x, y)
+			local comp = EntityAddComponent2(projectile, "SpriteParticleEmitterComponent", {
+				sprite_file="data/particles/teleparticle.xml",
+				lifetime=0.4,
+				emission_interval_min_frames=1,
+				emission_interval_max_frames=4,
+				count_min=1,
+				count_max=3,
+			})
+			--We can't set these values inherently when creating a new component via lua, so set them here instead
+			print("a")
+			print(table.concat({ComponentGetValue2(comp, "color_change")}, ", "))
+			print(table.concat({ComponentGetValue2(comp, "randomize_position")}, ", "))
+			print(table.concat({ComponentGetValue2(comp, "randomize_velocity")}, ", "))
+			ComponentSetValue2(comp, "color_change", 0, 0, 0, -.2)
+			ComponentSetValue2(comp, "gravity", 0, 0)
+			ComponentSetValue2(comp, "scale", 1, 0.2)
+			ComponentSetValue2(comp, "scale_velocity", -.2, 1)
+			ComponentSetValue2(comp, "randomize_position", -5, 0, 5, 0)
+			ComponentSetValue2(comp, "randomize_velocity", 0, -40, 0, 40)
+			ComponentSetValue2(comp, "randomize_lifetime", -0.45, 0.2)
+		end,
 	}
 }
 
