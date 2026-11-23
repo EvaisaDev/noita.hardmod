@@ -5,7 +5,7 @@
 	    <GameEffectComponent
 			_tags="effect_protection_all"
 	        effect="PROTECTION_ALL"
-	        frames="75"
+	        frames="60"
 	    ></GameEffectComponent >
 
 	</Base>
