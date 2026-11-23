@@ -920,3 +920,5 @@ removed <DMC/> from Houre
 fixed some formatting
 unnerfed plasma spells, made Plasma Beam and Plasma Cross appear slightly later
 removed some debug prints, fixed meat curse indicator
+ran build and split scripts
+made damage buffer able to appear slightly earlier
