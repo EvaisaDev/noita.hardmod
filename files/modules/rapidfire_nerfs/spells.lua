@@ -159,6 +159,7 @@ hooks.new_spells = {
 	},
 	{
 		id = "HARDMOD_MINI_CHAINSAW",
+		author = "modder.d2d",
 		name = "$hardmod_spell_mini_chainsaw_name",
 		description = "$hardmod_spell_mini_chainsaw_desc",
 		sprite = "mods/noita.hardmod/files/modules/rapidfire_nerfs/ui_gfx/mini_chainsaw.png",
@@ -178,6 +179,7 @@ hooks.new_spells = {
 	},
 	{
 		id = "HARDMOD_MANA_REGEN",
+		author = "modder.d2d",
 		name = "$hardmod_spell_mana_regen_name",
 		description = "$hardmod_spell_mana_regen_desc",
 		sprite = "mods/noita.hardmod/files/modules/rapidfire_nerfs/ui_gfx/mana_regen.png",
