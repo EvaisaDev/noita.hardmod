@@ -1,8 +1,21 @@
----@diagnostic disable: undefined-global
-
 local hooks = {}
 
 hooks.new_spells = {
+	{
+		id = "HARDMOD_INHIBITOR",
+		name = "$hardmod_spell_inhibitor_name",
+		description = "$hardmod_spell_inhibitor_desc",
+		sprite = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/inhibitor.png",
+		type = ACTION_TYPE_PASSIVE,
+		spawn_level = "1,2,3,4,5,6",
+		spawn_probability = "0.6,0.6,0.6,0.6,0.5,0.4",
+		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_inhibitor.xml",
+		price = 100,
+		mana = 5,
+		action = function()
+			draw_actions(1, true)
+		end
+	},
     {
         id                = "HARDMOD_PINPOINTER",
         name              = "$hardmod_spell_pinpointer_name",
@@ -13,7 +26,7 @@ hooks.new_spells = {
 		spawn_probability = "0.8,0.8,0.8,0.8,0.7,0.6", -- SPREAD_REDUCE
         custom_xml_file   = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_pinpointer.xml",
         price             = 100,
-        mana              = 2,
+        mana              = 7,
         action = function()
         	draw_actions(1, true)
         end,
@@ -25,7 +38,7 @@ hooks.new_spells = {
 	    sprite 		        = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/upgrade_capacity.png",
 	    type 		        = ACTION_TYPE_OTHER,
 		spawn_probability   = "0",
-		spawn_requires_flag = "hardmod_impossible_spawn",
+		spawn_requires_flag = "hardmod_cannot_spawn",
 		custom_xml_file 	= "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_upgrade_capacity.xml",
 	    price               = 100,
 	    mana                = 0,
@@ -40,7 +53,7 @@ hooks.new_spells = {
 	    sprite 		        = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/upgrade_fire_rate.png",
 	    type 		        = ACTION_TYPE_OTHER,
 		spawn_probability   = "0",
-		spawn_requires_flag = "hardmod_impossible_spawn",
+		spawn_requires_flag = "hardmod_cannot_spawn",
 		custom_xml_file 	= "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_upgrade_fire_rate.xml",
 	    price               = 100,
 	    mana                = 0,
@@ -55,7 +68,7 @@ hooks.new_spells = {
 	    sprite 		        = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/upgrade_max_mana.png",
 	    type 		        = ACTION_TYPE_OTHER,
 		spawn_probability   = "0",
-		spawn_requires_flag = "hardmod_impossible_spawn",
+		spawn_requires_flag = "hardmod_cannot_spawn",
 		custom_xml_file 	= "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_upgrade_max_mana.xml",
 	    price               = 100,
 	    mana                = 0,
@@ -70,7 +83,7 @@ hooks.new_spells = {
 	    sprite 		        = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/upgrade_mana_charge_speed.png",
 	    type 		        = ACTION_TYPE_OTHER,
 		spawn_probability   = "0",
-		spawn_requires_flag = "hardmod_impossible_spawn",
+		spawn_requires_flag = "hardmod_cannot_spawn",
 		custom_xml_file 	= "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_upgrade_mana_charge_speed.xml",
 	    price               = 100,
 	    mana                = 0,
@@ -85,7 +98,7 @@ hooks.new_spells = {
 	    sprite 		        = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/upgrade_remove_always_cast.png",
 	    type 		        = ACTION_TYPE_OTHER,
 		spawn_probability   = "0",
-		spawn_requires_flag = "hardmod_impossible_spawn",
+		spawn_requires_flag = "hardmod_cannot_spawn",
 		custom_xml_file 	= "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_upgrade_remove_always_cast.xml",
 	    price               = 100,
 	    mana                = 0,
@@ -100,7 +113,7 @@ hooks.new_spells = {
 	    sprite 		        = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/upgrade_spread.png",
 	    type 		        = ACTION_TYPE_OTHER,
 		spawn_probability   = "0",
-		spawn_requires_flag = "hardmod_impossible_spawn",
+		spawn_requires_flag = "hardmod_cannot_spawn",
 		custom_xml_file 	= "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/custom_cards/card_upgrade_spread.xml",
 	    price               = 100,
 	    mana                = 0,

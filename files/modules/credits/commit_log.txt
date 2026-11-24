@@ -722,6 +722,8 @@ fixed(?) Copi message newlines
 add special thanks to credits
 make wallhack eperk not show up too early
 make wallhack detection radius a bit smaller
+make Haunted Wands a bit more worthwhile
+haunted wand tweak
 Update homing_shoot.lua
 merpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerpmerp
 fixed incompatibility with fixnoita mod
@@ -730,3 +732,204 @@ polished master of blinding + ASE interaction
 working on on-hit callback generator  script
 changed CoG icon, added module to settings
 oops wrong name
+exclude AFA and WR from haunted wand spell gen
+enable No More Instant Recharge Trick module
+clarified some module descriptions
+dexter save me 🥺
+close to working but fails with multiple items existing..?
+add Tether eperk
+got the fucking shit working THANK YOU DEXTER
+fixed polymorph quantum cloning ending your run outright
+some Tether tweaks
+fix haunted wand spirit damaging itself
+make Stinky Aura smaller
+Soul Linked (WIP)
+prevent infinite fow hole spawning
+make blood eperks leak more "blood"
+make player's podf distinguishable from enemy's podf
+make Protector shield stronger
+electric torch -2 mana
+make Apoth illusions not have eperks
+add stylua ignore to splashes.lua
+asdasd
+guh?
+ok i wont delet
+give Torch spells cursor-ASE
+make original ASE a mt altar unlock
+make Magic Torch cost something
+converted some eperks to use on_death callback
+make Tether also (very rarely) spawn in Vault and Lukki Lair
+make haunted wand spell gen slightly more consistent?
+make haunted wands not deafening lmao
+make mana regen suck less hard
+make All-Seeing spawn more in sky/hell
+squeaky tweaky
+buff Blink (who'd skip biomes anyways)
+buff Squiddy
+added on_hit callback generator and loads of other bs too
+fixed weights
+fixed some broken stuff
+some spell rebalances
+fix warnings
+more warnings fixed
+TODO
+reduce mana cost of arcs
+fix wand experimenter circumvention on the toolbox
+fixed 0 0 eperk bug
+further buff Squiddy
+remove old files
+improved perk selection process (weights will be whack for a little while)
+finished setting up the unique slots
+imported itemlib
+add Untraceable perk
+add Anti-Teleportation Field eperk
+adapt new eperk attributes
+fix anti-tele aura destroying any projectile
+make anti-tele aura a bit less intense
+give Add Trigger spells their intended use only
+make Double Damage appear more early
+added shitty altar sacrifice secret, expanded HM item shop pool
+removed perks debug and ran split.lua_run
+harharmod
+update biome map & fix guiding powder
+remove instant recharge msg
+add the Notla spell
+fix wand ghost thingy
+make taika not trigger instant recharge msg
+some Tether eperk changes
+sneak in some changes rq
+write globla definitions globals.lua
+Fix warnings and get rid of diagnostic disable undefined-global
+todo i guess
+fixing some stuff
+fix redefined local
+fix: trailing-whitespace
+h
+fixed Amplified Items quest from mountain altar
+format (zptr1): remove spaces between brackets
+format (zptr1): remove brackets from if
+tweaks
+format (zptr1): spaces after comma (except in for loops)
+why did it show a trailing-space warning only now??
+change blue ghosts's status effect name and add a splash text
+some more tweaks
+finishing touches
+added Vuoksikivi to altar sacrificable items
+surprised that got left in
+G I G A    C H A I N S A W .
+fix some xml errors
+Delete potion.xml
+formatting nonsense
+Make CD/spread *truly* global
+make pinpointer passive actually reduce spread and increase speed, bit exploitable rn tho
+remove unused gun.lua
+move all `gun.lua` stuff to `core`
+Improvements to modifile/patchifile
+forgor to remove debug thingy
+improve giga chainsaw
+makeit cost 50 mana instead of 60
+change spell names
+HP multipliers my belovehated (we had to do it, sorry) (dw its not as bad as nightmare mode) (pinky promise)
+buff freeze field and poly field slightly (less mana ,more uses, remove never_unlimited) but make it spawn later and rarer
+buff cabbage boss
+todo
+lotta shit
+made aura visuals from anti-teleport aura and shield sapper eperks more tolerable
+Update eperk_utilities.lua
+forgot to push this
+wand experimenter QoL
+fix custom wand gen stuff
+remove vanilla pickup effect in HM shop potions/pouches/etc
+show tinker hint in orbrooms (opens inventory when u enter em)
+dont spawn squiddy if the orb hasn't been taken
+fix (btw did you know you can do `pairs(thing or {})` without having a giant ass nested if statement)
+no fun allowed apparently
+mini library for the tower diamond quests
+vanilla_quests: make so that you can do all tower quests in a single run without peaceful reset
+Tower cheese is no more.
+cleanup game flags after tower_visited_all
+update description of torch and electric torch
+make matter eater cost only 60 mana
+rework parth of dark flame
+updat todo
+nerf PERSONALRUNTHROWER
+change potion to sea to have 3 max uses instead of 2
+Add BiomeID type to biome_index.lua
+add a `player_biome_changed` hook
+make Treasure Hunter stack exponentially
+fix stinky aura visuals mismatch
+fix(???)
+add Inhibitor spell
+make haunted wand gen seed dependent
+fix duplicate vscs
+bring torches to wand tip
+disable Emergency Recall until a better implementation pops up
+undo oopsie
+why was Spell Gems disabled lol
+more knockback more oomph!!
+add Gem Collector eperk
+classic
+fix Gem Collector not always spawning gems
+pedestal_wand tag for wand pedestals
+changes to haunted wands
+restore the old chance
+make Tinker at Wand Pedestals use the new pedestal_wand tag
+spawn the inhibitor spell when you pick up a perk that adds shot effects, also change its desc
+Add types for spells.lua and perks.lua
+Ira's Ultra Radical Coolio Slick Groovenator 9000
+Update miniboss_creator.lua
+add ---@type hooks to all modules that were missing it
+babe wake up new splash text dropped
+rework Add Trigger spells
+make Giga Chainsaw appear later
+remove ff from arrow
+make AT etc unable to spawn for now
+add better Absolution sprite
+fix error !!!!
+clean up MoM spell drops
+give status indicator to Stinky Aura
+oblige to the Lua code police's orders :pensive:
+reroll Trial perks when leaving HM (instead of destroy)
+change some tooltips
+updated sprite for Inhibitor
+reworked torch passives again, tweaked values and made less buggy
+add Shield Breaker modifier
+make t2 Protector shield even smaller
+add torch wand tip y offset
+make Spell Gems more consistent
+make MoM drop AT spells for now
+Rework trigger spells
+improve the trigger system
+convert to vararg
+consistent hardmod_cannot_spawn flag
+make reworked AT spawn regularly, change MoM drops
+some small eperk stuff
+merge cleanup
+couple new eperks, couple of fixes, added origin to all spells/perks and author to a few
+removed debug stuff, slight tweaks
+QoL: bugs/flies from nests now drop gold
+Add chaotic and unstable poly gas
+make absolution not subtract use count
+upd*
+on 2nd thought just keep it close to vanilla lmao
+update absolution's description (smh imagine LYING)
+this is jank but at least its a biiit better
+small tweaks
+refactored polymorph_gui module into qol module, added new qol to it
+removed <DMC/> from Houre
+fixed some formatting
+unnerfed plasma spells, made Plasma Beam and Plasma Cross appear slightly later
+removed some debug prints, fixed meat curse indicator
+ran build and split scripts
+made damage buffer able to appear slightly earlier
+added back update to eperk handler
+make anti tele field less common
+improve Absolution desc
+no all-seeing monkeys
+make *giant* eperks (tether/anti-tele) spawn more sparsely
+(and remove a one-off tag somewhere to compensate)
+fix Divine Shield cooldown vfx
+add Homing Curser eperk
+>w< typo
+pee pee poo poo
+add Overclock spell

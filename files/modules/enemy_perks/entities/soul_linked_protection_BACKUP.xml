@@ -1,10 +1,10 @@
 
 <Entity>
 
-    <GameEffectComponent
+	<GameEffectComponent
 		_tags="effect_protection_all"
-        effect="PROTECTION_ALL"
-        frames="-1"
-    ></GameEffectComponent >
+		effect="PROTECTION_ALL"
+		frames="-1"
+	></GameEffectComponent >
 
 </Entity>

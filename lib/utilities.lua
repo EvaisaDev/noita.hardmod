@@ -10,16 +10,22 @@ utils.module_dir = "mods/noita.hardmod/files/modules/"
 ---@return integer
 function utils.escape(str) return str:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1") end
 
--- Convenient function to simplify modifying files, gsub \r\n to \n to edit multiple lines at a time.
+-- Same as utils.escape but for the replacement string (only escapes %)
+function utils.escape_replacement(str) return str and str:gsub("%%", "%%%%") end
+
+-- Convenient function to simplify modifying files. Any spaces/newlines in `from` are converted to `%s*`, so you don't have to worry about keeping original spaces.
 ---@param file string filepath
----@param target string target you wish to replace
----@param sub string what you wish to replace it with
-function utils.modifile(file, target, sub)
-	ModTextFileSetContent(file, ModTextFileGetContent(file):gsub("\r\n", "\n"):gsub(utils.escape(target), sub))
+---@param from string target you wish to replace
+---@param to string what you wish to replace it with
+function utils.modifile(file, from, to)
+	from = utils.escape(from):gsub("%s+", "%%s*")
+	to = utils.escape_replacement(to)
+
+	ModTextFileSetContent(file, ModTextFileGetContent(file):gsub(from, to))
 end
 
 ---@class ModifileReplacement
----@field from string Search string
+---@field from string Search string. Any spaces/newlines are replaced with `%s*`, so you do not have to worry about keeping original spaces.
 ---@field to string? String to replace to (defaults to `from` if you use `insert_before`/`insert_after`)
 ---@field insert_before string? String to insert before the result
 ---@field insert_after string? String to insert after the result
@@ -30,13 +36,22 @@ end
 ---@param file string filepath
 ---@param replacements ModifileReplacement[] Array of replacements to apply to the file
 function utils.patchifile(file, replacements)
-	local content = ModTextFileGetContent(file):gsub("\r\n", "\n")
+	local content = ModTextFileGetContent(file)
+
 	for _,replacement in pairs(replacements) do
 		local from = replacement.pattern and replacement.from or utils.escape(replacement.from)
-		local to = replacement.to or replacement.from
+		local to = utils.escape_replacement(replacement.to or "")
 
-		if replacement.insert_before then to = replacement.insert_before..to end
-		if replacement.insert_after then to = to..replacement.insert_after end
+		if not replacement.pattern then
+			from = from:gsub("%s+", "%%s*")
+		end
+
+		if replacement.insert_before or replacement.insert_after then
+			to = utils.escape_replacement(replacement.insert_before or "") .. "%1" .. utils.escape_replacement(replacement.insert_after or "")
+			from = "("..from..")"
+		elseif not replacement.to then
+			error("Missing to or insert_before/insert_after in a replacement")
+		end
 
 		content = content:gsub(from, to, replacement.count)
 	end
@@ -78,7 +93,7 @@ function utils.dumpf(o, q, r)
 			elseif q then
 				k = '["'..k..'"]'
 			end
-			s = s .. _t .. '    '..k..' = ' .. utils.dumpf(v,q,r+1) .. ',\n'
+			s = s .. _t .. '    '..k..' = ' .. utils.dumpf(v, q, r+1) .. ',\n'
 		end
 		if table_is_empty then
 			return s:sub(1, -2) .. '}'
@@ -191,25 +206,33 @@ function utils.ShootProjectile(shooter, entity_file, x, y, vel_x, vel_y, send_me
 	---@type entity_id
 	---@diagnostic disable-next-line: assign-type-mismatch
 	shooter = shooter or 0
-	local entity_id = EntityLoad(entity_file, x, y)
+	local projectile = EntityLoad(entity_file, x, y)
 	vel_x = vel_x or 0
 	vel_y = vel_y or 0
 	send_message =  send_message or true
 
 	local herd_id = utils.GetHerdID(shooter)
 
-	GameShootProjectile(shooter, x, y, x+vel_x, y+vel_y, entity_id, send_message)
+	GameShootProjectile(shooter, x, y, x+vel_x, y+vel_y, projectile, send_message)
 
-	for _,proj_comp in ipairs(EntityGetComponent(entity_id, "ProjectileComponent") or {}) do
+	local friendly_fire = EntityHasTag(shooter, "friendly_fire_enabled")
+	if friendly_fire then EntityAddTag(projectile, "friendly_fire_enabled") end
+
+	for _,proj_comp in ipairs(EntityGetComponent(projectile, "ProjectileComponent") or {}) do
 		ComponentSetValue2(proj_comp, "mWhoShot", shooter)
 		ComponentSetValue2(proj_comp, "mShooterHerdId", herd_id) --should be fine if nil..?
+
+		if friendly_fire then
+			ComponentSetValue2(proj_comp, "friendly_fire", true)
+			ComponentSetValue2(proj_comp, "collide_with_shooter_frames", 6)
+		end
 	end
 
-	for _,vel_comp in ipairs(EntityGetComponent(entity_id, "VelocityComponent") or {}) do
+	for _,vel_comp in ipairs(EntityGetComponent(projectile, "VelocityComponent") or {}) do
 		ComponentSetValue2(vel_comp, "mVelocity", vel_x, vel_y)
 	end
 
-	return entity_id
+	return projectile
 end
 
 ---Shorthand for quickly getting the int value of a VSC
@@ -246,7 +269,7 @@ end
 ---@param new_value int New value of the variable (or initial value, if VSC did not exist)
 function utils.SetInternalInt(entity_id, variable_name, new_value)
 	local variable_found = false
-	local vscomps = EntityGetComponent(entity_id, "VariableStorageComponent")
+	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
 	if vscomps ~= nil then
 		for key,comp_id in pairs(vscomps) do
 			local var_name = ComponentGetValue2(comp_id, "name")
@@ -324,7 +347,7 @@ end
 ---@param distance number?
 ---@returns entity_id?
 function utils.GetPlayerEntity(x, y, distance)
-  local tags = {"player_unit", "polymorphed_player", "polymorphed_cessation"}
+	local tags = {"player_unit", "polymorphed_player", "polymorphed_cessation"}
 	for _,tag in pairs(tags) do
 		local player
 
@@ -339,7 +362,7 @@ function utils.GetPlayerEntity(x, y, distance)
 		end
 	end
 
-  return nil
+	return nil
 end
 
 ---Remaps a value between (a1,b1) to (a2,b2)
@@ -366,7 +389,6 @@ end
 function utils.GetPerkPickupCount(perk_id)
 	dofile_once("data/scripts/perks/perk_list.lua")
 
-	---@diagnostic disable-next-line: undefined-global
 	local flag_name = get_perk_picked_flag_name(perk_id)
 	local pickup_count = tonumber(GlobalsGetValue(flag_name .. "_PICKUP_COUNT", "0"))
 
@@ -607,7 +629,7 @@ function utils.WandAddAlwaysCast(entity_id, action_id)
 	end
 
 	local item_component = EntityGetFirstComponentIncludingDisabled(action_entity_id, "ItemComponent")
-	if item_component then 
+	if item_component then
 		ComponentSetValue2(item_component, "permanently_attached", true)
 	end
 
@@ -653,6 +675,86 @@ function utils.LinebreakString(str, max_width, font)
 	end
 
 	return table.concat(lines, "\n")
+end
+
+---Function to spawn perks in a circle formation
+---@param perks table list of perks
+---@param x any
+---@param y any
+---@param radius any
+---@return table
+function utils.SpawnPerkCircle(perks, x, y, radius)
+	radius = radius or 0
+	local radian = 2*math.pi
+	radius = math.max(radius, #perks*20/(radian))
+
+	local step = 1/#perks
+	local random_rot = Randomf(0, step)
+	local perk_eids = {}
+	for i,perk in ipairs(perks) do
+		local perk_id =  type(perk) == "table" and perk.id or perk
+		local x_pos = x + radius * math.cos((i * step * radian)+random_rot)
+		local y_pos = y + radius * math.sin((i * step * radian)+random_rot)
+		perk_eids[#perk_eids+1] = perk_spawn(x_pos, y_pos, perk_id, true)
+	end
+
+	return perk_eids
+end
+
+--- Function to find a child entity based on their entity name
+---@param entity_id entity_id Entity ID of the parent
+---@param name string Name of the child to look for
+---@return entity_id? Entity ID of the first match, or nil if none was found
+function utils.EntityGetChildByName(entity_id, name)
+	local children = EntityGetAllChildren(entity_id)
+	for _,child in ipairs(children) do
+		if EntityGetName(child) == name then
+			return child
+		end
+	end
+	return nil
+end
+
+local function entity_is_wand(entity_id)
+	local acomp = EntityGetFirstComponentIncludingDisabled(entity_id, "AbilityComponent")
+	if not acomp then return false end
+	return ComponentGetValue2(acomp, "use_gun_script") == true
+end
+
+--- Function to get an entity's held wand, if any
+---@param entity_id entity_id Entity ID of the entity to check
+---@return entity_id entity_id? Entity ID of the wand, or nil if the entity is not holding a wand
+function GetHeldWand(entity_id)
+	if entity_id ~= nil then
+		local inv2_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "Inventory2Component")
+		if not inv2_comp then return end
+		local active_item = ComponentGetValue2(inv2_comp, "mActiveItem")
+		if entity_is_wand(active_item) then
+			return active_item
+		end
+	end
+	return nil
+end
+
+utils.logging = false
+---useful logger than can be enabled/disabled at will
+---@param ... any all parameters are concatenated into one string
+function utils.log(...)
+	if utils.logging then
+		local t = {...}
+		for i,v in ipairs(t) do t[i] = tostring(v) end
+		print(table.concat(t))
+	end
+end
+
+---get distance between two points
+---@param x1 number
+---@param y1 number
+---@param x2 number
+---@param y2 number
+---@return number
+function utils.get_distance(x1, y1, x2, y2)
+	return ((x2-x1)^2 + (y2-y1)^2)^.5
 end
 
 return utils

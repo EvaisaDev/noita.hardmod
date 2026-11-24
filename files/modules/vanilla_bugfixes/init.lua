@@ -177,12 +177,12 @@ if not fixnoita then
 			value_int = "0",
 		}))
 	end
-	
+
 	-- Prepend with our new function.
 	ModTextFileSetContent("data/entities/animals/boss_alchemist/key_music.lua",
 		ModTextFileGetContent("mods/noita.hardmod/files/modules/vanilla_bugfixes/key_script_prepend.lua") .. ModTextFileGetContent("data/entities/animals/boss_alchemist/key_music.lua")
 	)
-	
+
 	-- Replace flag check with our function.
 	utils.modifile("data/entities/animals/boss_alchemist/key_music.lua",
 		[[GameHasFlagRun( mm_flag ) and ( GameHasFlagRun( mm_flag .. "_done" ) == false )]],
@@ -477,6 +477,7 @@ utils.modifile("data/entities/misc/area_damage.xml", [["$damage_rock_curse"]], [
 utils.modifile("data/entities/misc/custom_cards/propane_tank.xml", [["Propane tank"]], [["$action_propane_tank"]])
 
 -- Fix "bzzt!" death message from sawblades not being translatable, "bzzt!" -> "$hardmod_damage_sawblade"
+-- Translators should at least have the option to transliterate.
 local sawblade_targets = {
 	"data/entities/projectiles/deck/disc_bullet_big.xml",
 	"data/entities/projectiles/deck/disc_bullet_bigger.xml",
@@ -484,6 +485,13 @@ local sawblade_targets = {
 }
 for _,file in ipairs(sawblade_targets) do
 	utils.modifile(file, [["bzzt!"]], [["$hardmod_damage_sawblade"]])
+end
+
+
+--remove <DMC/> from Houre 
+for xml in nxml.edit_file("data/entities/animals/ghost.xml") do
+	local dmc = xml:first_of("DamageModelComponent")
+	if dmc then xml:remove_child(dmc) end
 end
 
 
@@ -518,7 +526,6 @@ function hooks.world_init()
 end
 --This approach might theoretically be undesirable for a mod that intentionally has things discovered "this run" while not permanently marking them as discovered.
 -- If such a case were to occur, I may end up taking out this fix and relegating it to my Extended Fixes mod, we shall see.
-
 
 function hooks.player_changed(...)
 	fix_NB5(...)

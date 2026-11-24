@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 local function apply_freeze()
 	if reflecting then return end
 
@@ -17,11 +15,147 @@ local function apply_freeze()
 	end
 end
 
-local hooks = {}
+local hooks = {}---@type spell_hooks
 
-hooks.new_spells = {}
+local sacrilege_blacklisted_spells = {
+	ADD_TRIGGER = true,
+	ADD_TIMER = true,
+	ADD_DEATH_TRIGGER = true,
+	HARDMOD_SACRILEGE = true,
+}
+
+hooks.new_spells = {
+	{
+		id = "HARDMOD_SACRILEGE",
+		name = "$hardmod_spell_sacrilege_name",
+		description = "$hardmod_spell_sacrilege_desc",
+		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/sacrilege.png",
+		type = ACTION_TYPE_OTHER,
+		spawn_probability = "0",
+		spawn_requires_flag = "hardmod_cannot_spawn",
+		price = 400,
+		mana = 80,
+		action = function()
+			-- original Add Trigger function (i.e. copies modifiers for free), except it doesn't add a trigger
+			local data = deck[1]
+			local how_many = 1
+
+			if not data then return end
+
+			while #deck >= how_many and data and (data.type == ACTION_TYPE_MODIFIER or data.type == ACTION_TYPE_PASSIVE or data.type == ACTION_TYPE_OTHER or data.type == ACTION_TYPE_DRAW_MANY) do
+				if (data.uses_remaining or data.uses_remaining ~= 0) and not sacrilege_blacklisted_spells[data.id] then
+					if data.type == ACTION_TYPE_MODIFIER then
+						dont_draw_actions = true
+						data.action()
+						dont_draw_actions = false
+					end
+				end
+
+				how_many = how_many + 1
+				data = deck[how_many]
+			end
+
+			if not data or not data.related_projectiles then return end
+			if data.uses_remaining and data.uses_remaining == 0 then return end
+
+			local target = data.related_projectiles[1]
+			local count = data.related_projectiles[2] or 1
+
+			for _=1,how_many do
+				data = deck[1]
+				table.insert(discarded, data)
+				table.remove(deck, 1)
+			end
+
+			local valid = false
+			for _,check in pairs(deck) do
+				if check and (check.type == ACTION_TYPE_PROJECTILE or check.type == ACTION_TYPE_STATIC_PROJECTILE or check.type == ACTION_TYPE_MATERIAL or check.type == ACTION_TYPE_UTILITY) then
+					valid = true
+					break
+				end
+			end
+
+			if data.uses_remaining and data.uses_remaining > 0 then
+				data.uses_remaining = data.uses_remaining - 1
+
+				local reduce_uses = ActionUsesRemainingChanged(data.inventoryitem_id, data.uses_remaining)
+				if not reduce_uses then
+					data.uses_remaining = data.uses_remaining + 1 -- cancel the reduction
+				end
+			end
+
+			if valid then
+				for _=1,count do
+					add_projectile(target)
+				end
+			else
+				dont_draw_actions = true
+				data.action()
+				dont_draw_actions = false
+			end
+		end,
+	},
+	{
+		id = "HARDMOD_TORCH_MAGIC",
+		name = "$hardmod_spell_torch_magic_name",
+		description = "$hardmod_spell_torch_magic_desc",
+		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/magic_torch.png",
+		type = ACTION_TYPE_PASSIVE,
+		spawn_level = "5,6,10",
+		spawn_probability = "0.8,0.6,0.4",
+		price = 200,
+		mana = 8,
+		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/cards/card_torch_magic.xml",
+		action = function()
+			draw_actions(1, true)
+		end,
+	},
+}
 
 hooks.spell_patches = {
+	["ADD_TRIGGER"] = {
+		type = ACTION_TYPE_MODIFIER, mana = 20,
+		description = "$hardmod_spell_add_trigger_desc",
+		spawn_level = "1,2,3,4,5,6,10",
+		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4,0.5",
+		action = function()
+			EnqueueTrigger({
+				type = TRIGGER_HIT_WORLD,
+				draw_count = 1
+			})
+
+			draw_actions(1, true)
+		end,
+	},
+	["ADD_TIMER"] = {
+		type = ACTION_TYPE_MODIFIER, mana = 20,
+		description = "$hardmod_spell_add_timer_desc",
+		spawn_level = "1,2,3,4,5,6,10",
+		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4,0.5",
+		action = function()
+			EnqueueTrigger({
+				type = TRIGGER_TIMER,
+				delay_frames = 20,
+				draw_count = 1
+			})
+
+			draw_actions(1, true)
+		end,
+	},
+	["ADD_DEATH_TRIGGER"] = {
+		type = ACTION_TYPE_MODIFIER, mana = 20,
+		description = "$hardmod_spell_add_death_trigger_desc",
+		spawn_level = "1,2,3,4,5,6,10",
+		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4,0.5",
+		action = function()
+			EnqueueTrigger({
+				type = TRIGGER_DEATH,
+				draw_count = 1
+			})
+
+			draw_actions(1, true)
+		end,
+	},
 	["BOMB"] = { max_uses = 5 },
 	["MINE"] = { max_uses = 20 },
 	["GRENADE"] = { max_uses = 30 },
@@ -31,18 +165,6 @@ hooks.spell_patches = {
 		never_unlimited = true,
 		spawn_level = "10",
 		spawn_probability = "0"
-	},
-	["ADD_TRIGGER"] = {
-		spawn_level = "3,4,5,6,10",
-		spawn_probability = "0.3,0.6,0.6,0.6,1",
-	},
-	["ADD_TIMER"] = {
-		spawn_level = "3,4,5,6,10",
-		spawn_probability = "0.3,0.6,0.6,0.6,1",
-	},
-	["ADD_DEATH_TRIGGER"] = {
-		spawn_level = "3,4,5,6,10",
-		spawn_probability = "0.3,0.6,0.6,0.6,1",
 	},
 	["PIERCING_SHOT"] = {
 		spawn_level = "5,6", -- PIERCING_SHOT
@@ -95,16 +217,14 @@ hooks.spell_patches = {
 		end
 	},
 	["FREEZE_FIELD"] = {
-		mana = 75,
-		max_uses = 3,
-		never_unlimited = true,
+		mana = 50, max_uses = 5,
 		action = function()
 			apply_freeze()
 			add_projectile("data/entities/projectiles/deck/freeze_field.xml")
 			c.fire_rate_wait = c.fire_rate_wait + 15
 		end
 	},
-	["POLYMORPH_FIELD"] = { mana = 90, max_uses = 3, never_unlimited = true },
+	["POLYMORPH_FIELD"] = { mana = 75, max_uses = 5 }, --no need to nerf so hard imo, polymorph immunity exists -K
 	["ELECTROCUTION_FIELD"] = { mana = 50, max_uses = 10 },
 	["CHAOS_POLYMORPH_FIELD"] = { mana = 50 },
 	["AREA_DAMAGE"] = { mana = 60 },
@@ -158,11 +278,12 @@ hooks.spell_patches = {
 	},
 	["DARKFLAME"] = {
 		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/darkflame_player.png",
-		max_uses = -1,
 		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/card_darkflame_player.xml",
+		max_uses = -1,
+		mana = 40,
 		action = function()
 			add_projectile("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/darkflame_player.xml")
-			c.fire_rate_wait = c.fire_rate_wait + 20
+			c.fire_rate_wait = c.fire_rate_wait + 14
 		end,
 	},
 	["FLAMETHROWER"] = { -- damage is also changed in damage.lua
@@ -175,7 +296,7 @@ hooks.spell_patches = {
 		end,
 	},
 	["BUCKSHOT"] = {
-		action 		= function()
+		action = function()
 			add_projectile("data/entities/projectiles/deck/buckshot_player.xml")
 			add_projectile("data/entities/projectiles/deck/buckshot_player.xml")
 			add_projectile("data/entities/projectiles/deck/buckshot_player.xml")
@@ -204,25 +325,31 @@ hooks.spell_patches = {
 		never_unlimited = true,
 		action = function()
 			c.fire_rate_wait = c.fire_rate_wait + 60
-			add_projectile( "data/entities/projectiles/deck/bomb_detonator.xml" )
+			add_projectile("data/entities/projectiles/deck/bomb_detonator.xml")
 		end,
 		-- 	if reflecting then return end
 
-		-- 	local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
-		-- 	local prev_cast_frame = utils.GetInternalInt( GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame" ) or 0
+		-- 	local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")
+		-- 	local prev_cast_frame = utils.GetInternalInt(GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame") or 0
 		-- 	local current_frame = GameGetFrameNum()
-		-- 	local x, y = EntityGetTransform( GetUpdatedEntityID() )
+		-- 	local x, y = EntityGetTransform(GetUpdatedEntityID())
 		-- 	if current_frame - prev_cast_frame > 30 then
-		-- 		add_projectile( "data/entities/projectiles/deck/bomb_detonator.xml" )
-		-- 		GamePlaySound( "data/audio/Desktop/misc.bank", "misc/beam_from_sky_kick", x, y )
-		-- 		utils.SetInternalInt( GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame", current_frame )
+		-- 		add_projectile("data/entities/projectiles/deck/bomb_detonator.xml")
+		-- 		GamePlaySound("data/audio/Desktop/misc.bank", "misc/beam_from_sky_kick", x, y)
+		-- 		utils.SetInternalInt(GetUpdatedEntityID(), "hardmod_bomb_detonator_prev_cast_frame", current_frame)
 		-- 	else
-        --         GamePlaySound( "data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y )
-        --         add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
+        --         GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+        --         add_projectile("data/entities/projectiles/deck/fizzle.xml")
 		-- 	end
 		-- end,
 	},
-	["TORCH_ELECTRIC"] = { mana = -2 },
+	["TORCH"] = {
+		description = "$hardmod_spell_torch_desc",
+	},
+	["TORCH_ELECTRIC"] = {
+		description = "$hardmod_spell_torch_electric_desc",
+		mana = -2,
+	},
 }
 
 local mats = { "MATERIAL_WATER", "MATERIAL_OIL", "MATERIAL_BLOOD", "MATERIAL_CEMENT", "WATER_TRAIL" }

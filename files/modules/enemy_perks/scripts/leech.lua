@@ -6,7 +6,7 @@ local min_hp_drain_to = 0.04
 
 local dmc = EntityGetFirstComponent(root, "DamageModelComponent")
 if not dmc then return end
-local hp,max_hp = ComponentGetValue2(dmc, "hp"),ComponentGetValue2(dmc, "max_hp")
+local hp, max_hp = ComponentGetValue2(dmc, "hp"), ComponentGetValue2(dmc, "max_hp")
 local missing_hp = max_hp - hp
 if missing_hp <= 0 then return end
 
@@ -37,10 +37,10 @@ local required_budget_percent = math.min(1, missing_hp / total_budget)
 
 
 for _,victim in ipairs(victims) do
-	EntityInflictDamage(victim.eid, victim.budget * required_budget_percent, "NONE", "blood tax", "BLOOD_SPRAY", 0, 0, root)
+	EntityInflictDamage(victim.eid, victim.budget * required_budget_percent, "NONE", "$hardmod_eperk_leech_blood_tax", "BLOOD_SPRAY", 0, 0, root)
 	EntityAddChild(victim.eid, EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/leech_animation.xml", x, y))
 	--ComponentSetValue2(victim.dmc, "hp", victim.hp - (victim.budget * required_budget_percent))
 end
 
-EntityInflictDamage(root, -total_budget, "DAMAGE_HEALING", "blood tax", "BLOOD_SPRAY", 0, 0)
+EntityInflictDamage(root, -total_budget, "DAMAGE_HEALING", "$hardmod_eperk_leech_blood_tax", "BLOOD_SPRAY", 0, 0)
 GamePlaySound("data/audio/Desktop/animals.bank", "animals/worm/attack_bite", x, y)

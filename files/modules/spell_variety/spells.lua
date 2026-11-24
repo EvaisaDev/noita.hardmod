@@ -1,14 +1,34 @@
----@diagnostic disable: undefined-global
-local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" ) ---@type utils
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
+
+local root = "mods/noita.hardmod/files/modules/spell_variety/"
 
 return {
 	new_spells = {
 		{
+			id = "HARDMOD_NOTLA",
+			author = "modder.yui",
+			name = "$hardmod_spell_notla_name",
+			description = "$hardmod_spell_notla_desc",
+			sprite = root.."gfx/ui_gfx/spells/notla.png",
+			related_extra_entities = { root.."entities/spells/notla.xml" },
+			type = ACTION_TYPE_MODIFIER,
+			spawn_level= "2,4,5,6,10",
+			spawn_probability = "0.2,0.2,0.5,0.5,1",
+			price = 50,
+			mana = 3,
+			action = function()
+				c.extra_entities = c.extra_entities .. root.."entities/spells/notla.xml,"
+				c.fire_rate_wait = c.fire_rate_wait - 10
+				draw_actions(1, true)
+			end
+		},
+		{
 			id                  = "HARDMOD_ECHO_SHOT",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_echo_shot_name",
 			description         = "$hardmod_spell_echo_shot_desc",
-			sprite              = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/echo_shot.png",
-			related_projectiles	= { "mods/noita.hardmod/files/modules/spell_variety/entities/spells/echo_shot.xml" },
+			sprite              = root.."gfx/ui_gfx/spells/echo_shot.png",
+			related_projectiles	= { root.."entities/spells/echo_shot.xml" },
 			type 		        = ACTION_TYPE_PROJECTILE,
 			spawn_level         = "2,3,4",
 			spawn_probability   = "0.4,0.6,0.6",
@@ -19,15 +39,16 @@ return {
 				c.screenshake = c.screenshake + 1
 				shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
 
-				add_projectile("mods/noita.hardmod/files/modules/spell_variety/entities/spells/echo_shot.xml")
+				add_projectile(root.."entities/spells/echo_shot.xml")
 			end,
 		},
 		{
 			id                  = "HARDMOD_ECHO_SHOT_TIMER",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_echo_shot_timer_name",
 			description         = "$hardmod_spell_echo_shot_timer_desc",
-			sprite              = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/echo_shot_timer.png",
-			related_projectiles	= { "mods/noita.hardmod/files/modules/spell_variety/entities/spells/echo_shot.xml" },
+			sprite              = root.."gfx/ui_gfx/spells/echo_shot_timer.png",
+			related_projectiles	= { root.."entities/spells/echo_shot.xml" },
 			type 		        = ACTION_TYPE_PROJECTILE,
 			spawn_level         = "2,3,4",
 			spawn_probability   = "0.3,0.5,0.5",
@@ -38,51 +59,48 @@ return {
 				c.screenshake = c.screenshake + 1
 				shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
 
-				add_projectile_trigger_timer("mods/noita.hardmod/files/modules/spell_variety/entities/spells/echo_shot.xml", 9, 1)
+				add_projectile_trigger_timer(root.."entities/spells/echo_shot.xml", 9, 1)
 			end,
 		},
 	    {
 		    id                  = "HARDMOD_CONTROLLED_REACH",
+			author 				= "modder.dani2d",
 		    name 		        = "$hardmod_controlled_reach_name",
 		    description         = "$hardmod_controlled_reach_desc",
-		    sprite 		        = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/controlled_reach.png",
+		    sprite 		        = root.."gfx/ui_gfx/spells/controlled_reach.png",
 		    type 		        = ACTION_TYPE_MODIFIER,
 			spawn_level         = "1,2,3,4,5",
 			spawn_probability   = "0.2,0.4,0.4,0.3,0.5",
-			related_extra_entities = { "mods/noita.hardmod/files/modules/spell_variety/entities/spells/controlled_reach.xml" },
+			related_extra_entities = { root.."entities/spells/controlled_reach.xml" },
 		    price               = 165,
 		    mana                = 4,
 		    action = function()
 				-- for the tooltip
-				c.fire_rate_wait = c.fire_rate_wait - 10
-				current_reload_time = current_reload_time - 20
+				if reflecting then
+					c.fire_rate_wait = c.fire_rate_wait - 10
+					current_reload_time = current_reload_time - 20
+					return
+				end
 
 				-- add entity that controls the spell's reach
-				c.extra_entities = c.extra_entities .. "mods/noita.hardmod/files/modules/spell_variety/entities/spells/controlled_reach.xml,"
-
-				if reflecting then return end
-				-- reset; initial -10 -20 was just for the tooltip, pls no delet this
-				c.fire_rate_wait = c.fire_rate_wait + 10
-				current_reload_time = current_reload_time + 20
+				c.extra_entities = c.extra_entities .. root.."entities/spells/controlled_reach.xml,"
 
 				-- determine the distance
-				dofile_once("data/scripts/lib/utilities.lua")
 				local ox, oy = EntityGetTransform(GetUpdatedEntityID())
 				local mx, my = DEBUG_GetMouseWorld()
-				local dist = get_distance(ox, oy, mx, my)
+				local dist = utils.get_distance(ox, oy, mx, my)
 
 				-- if this spell is part of a trigger payload, don't raise the wand's fire rate
-				-- (there might be more performant ways to do this)
+				-- (there might be better ways to do this)
 				local apply_boost = true
-				for _,card in ipairs( hand ) do
+				for _,card in ipairs(hand) do
 					if card.type == ACTION_TYPE_PROJECTILE
-						and ( string.find( card.id, "TRIGGER" ) or string.find( card.id, "TIMER" ) ) then
+						and (string.find(card.id, "TRIGGER") or string.find(card.id, "TIMER")) then
 						apply_boost = false
 					end
 				end
 				-- increase fire rate and projectile speed based on distance
 				if apply_boost then
-					local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")
 					local buff_ratio = utils.Remap(dist, 180, 65, 0.1, 1.0)
 					c.fire_rate_wait = c.fire_rate_wait - (10 * buff_ratio)
 					current_reload_time = current_reload_time - (20 * buff_ratio)
@@ -93,22 +111,75 @@ return {
 				draw_actions(1, true)
 			end,
 	    },
+	    {
+		    id                  = "HARDMOD_OVERCLOCK",
+			author 				= "modder.dani2d",
+		    name 		        = "$hardmod_spell_overclock_name",
+		    description         = "$hardmod_spell_overclock_desc",
+		    sprite 		        = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/overclock.png",
+		    type 		        = ACTION_TYPE_MODIFIER,
+			spawn_level         = "1,2,3",
+			spawn_probability   = "0.4,0.3,0.2",
+		    price               = 240,
+		    mana                = 6,
+		    custom_xml_file 	= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_overclock.xml",
+		    action              = function()
+                c.fire_rate_wait    = c.fire_rate_wait - 10
+                current_reload_time = current_reload_time - 20
+                c.spread_degrees = c.spread_degrees - 6
+
+	            if reflecting then return end
+
+	            local entity_id = GetUpdatedEntityID()
+                local x, y = EntityGetTransform( entity_id )
+
+			    local rand = Random( 0, 200 )
+			    local chance = 1
+                if( rand <= chance ) then
+                    c.fire_rate_wait = c.fire_rate_wait + 40
+                    current_reload_time = current_reload_time + 40
+                    shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+                    GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+
+                    local rand2 = Random( 1, 8 )
+                    if rand2 == 1 then -- 1/8 chance
+	                    c.fire_rate_wait = c.fire_rate_wait + 140
+	                    current_reload_time = current_reload_time + 140
+                    	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 400.0
+                    	add_projectile( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_explode.xml" )
+                    	EntityAddComponent2( entity_id, "LuaComponent", {
+                    		script_source_file = "mods/noita.hardmod/files/modules/spell_variety/scripts/spells/overclock_explode.lua",
+                    		execute_on_added = true,
+                    		remove_after_executed = true,
+                    	})
+                    elseif rand2 <= 3 then -- 1/4 chance
+                    	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+                        EntityLoad( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_fire.xml", x, y )
+                    else
+                        add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
+                    end
+                end
+                
+                draw_actions( 1, true )
+            end,
+	    },
 		{
 			id					= "HARDMOD_BIG_SHOT",
+			author 				= "modder.dani2d",
 			name				= "$hardmod_spell_big_shot_name",
 			description			= "$hardmod_spell_big_shot_desc",
-			sprite				= "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/big_shot.png",
+			sprite				= root.."gfx/ui_gfx/spells/big_shot.png",
 			type				= ACTION_TYPE_MODIFIER,
 			spawn_level         = "3,4,5,6",
 			spawn_probability   = "0.3,0.4,0.5,0.6",
 			price				= 200,
 			mana				= 50,
-			custom_xml_file		= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_big_shot.xml",
+			custom_xml_file		= root.."entities/cards/card_big_shot.xml",
 			action = function()
 				current_reload_time = current_reload_time + 25
 				shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
 
-				c.extra_entities = c.extra_entities .. "mods/noita.hardmod/files/modules/spell_variety/entities/spells/big_shot.xml,"
+				c.extra_entities = c.extra_entities .. root.."entities/spells/big_shot.xml,"
 				c.extra_entities = c.extra_entities .. "data/entities/particles/tinyspark_yellow.xml,"
 
 				draw_actions(1, true)
@@ -116,21 +187,42 @@ return {
 		},
 		{
 			id                  = "HARDMOD_RECHARGE_SHIELD",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_recharge_shield_name",
 			description         = "$hardmod_spell_recharge_shield_desc",
-			sprite              = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/recharge_shield.png",
+			sprite              = root.."gfx/ui_gfx/spells/recharge_shield.png",
 			type 		        = ACTION_TYPE_PASSIVE,
 			spawn_level         = "1,2,3,4,5,6",
 			spawn_probability   = "0.3,0.4,0.6,0.4,0.5,0.7",
 			price               = 220,
 			mana                = 20,
-			custom_xml_file 	= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_recharge_shield.xml",
+			custom_xml_file 	= root.."entities/cards/card_recharge_shield.xml",
 			action = function()
 				draw_actions(1, true)
 			end,
 		},
 		{
+			id = "HARDMOD_SHIELD_BREAKER",
+			author = "modder.dani2d",
+			name = "$harmdod_spell_shield_breaker_name",
+			description = "$harmdod_spell_shield_breaker_desc",
+			sprite = root.."gfx/ui_gfx/spells/shield_breaker.png",
+			type = ACTION_TYPE_MODIFIER,
+			spawn_level = "2,3,4,5,6", -- CLIPPING_SHOT
+			spawn_probability = "0.2,0.3,0.6,0.4,0.6", -- CLIPPING_SHOT
+			price = 165,
+			mana = 40,
+			action = function()
+				c.fire_rate_wait = c.fire_rate_wait + 25
+				current_reload_time = current_reload_time + 20
+
+				c.extra_entities = c.extra_entities .. root.."entities/spells/shield_breaker.xml,"
+				draw_actions(1, true)
+			end
+		},
+		{
 			id					= "HARDMOD_PARRY",
+			author 				= "modder.dani2d",
 			name				= "$hardmod_spell_parry_name",
 			description			= "$hardmod_spell_parry_desc",
 			sprite				= "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/spells/parry.png",
@@ -146,18 +238,36 @@ return {
 				c.fire_rate_wait = c.fire_rate_wait + 48
 				if reflecting then return end
 
-				local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" )
-				local prev_cast_frame = utils.GetInternalInt( GetUpdatedEntityID(), "hardmod_parry_prev_cast_frame" ) or 0
+				local prev_cast_frame = utils.GetInternalInt(GetUpdatedEntityID(), "hardmod_parry_prev_cast_frame") or 0
 				local current_frame = GameGetFrameNum()
 				if current_frame - prev_cast_frame > 48 then
-					add_projectile( "mods/noita.hardmod/files/modules/trial_perks/entities/spells/parry.xml" )
-					utils.SetInternalInt( GetUpdatedEntityID(), "hardmod_parry_prev_cast_frame", current_frame )
+					add_projectile("mods/noita.hardmod/files/modules/trial_perks/entities/spells/parry.xml")
+					utils.SetInternalInt(GetUpdatedEntityID(), "hardmod_parry_prev_cast_frame", current_frame)
 				else
-					local x, y = EntityGetTransform( GetUpdatedEntityID() )
-                    GamePlaySound( "data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y )
-                    add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
+					local x, y = EntityGetTransform(GetUpdatedEntityID())
+                    GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+                    add_projectile("data/entities/projectiles/deck/fizzle.xml")
 				end
 			end,
+		},
+		{
+			id = "HARDMOD_GIGA_CHAINSAW",
+			author = "modder.yui",
+			name = "$harmdod_spell_giga_chainsaw_name",
+			description = "$harmdod_spell_giga_chainsaw_desc",
+			sprite = root.."gfx/ui_gfx/spells/giga_chainsaw.png",
+			related_projectiles = { root.."entities/spells/giga_chainsaw.xml" },
+			type = ACTION_TYPE_PROJECTILE,
+			spawn_level	= "4,5,6",
+			spawn_probability = "0.4,0.4,0.5",
+			price = 130,
+			mana = 50,
+			action = function()
+				c.fire_rate_wait, current_reload_time = current_reload_time, c.fire_rate_wait
+				c.spread_degrees = c.spread_degrees + 16
+
+				add_projectile(root.."entities/spells/giga_chainsaw.xml")
+			end
 		},
 	}
 }

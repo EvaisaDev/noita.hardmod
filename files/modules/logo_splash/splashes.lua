@@ -33,7 +33,9 @@ local evil_level = (year * 31469 + month * 929 + day * 541) % 100 + 1
 
 local months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
 
-local lines_of_code = "26,446"---Updated by `scripts/build.js`, do not edit or format
+-- stylua: ignore start
+local lines_of_code = "29,004"---Updated by `scripts/build.js`, do not edit or format
+-- stylua: ignore end
 
 ---@type (splash_entry | string)[]
 local splashes = {
@@ -113,7 +115,6 @@ local splashes = {
 	"We have so much left to sing!",
 	"More updates to come!!",
 	"We even threw in a few vanilla bugfixes",
-	"",
 	"They said we could never make a good mod after Fairmod!\n...inb4 we fairmodify hardmod",
 	"N\no\nw\n \nw\ni\nt\nh\n \nv\ne\nr\nt\ni\nc\na\nl\ni\nt\ny\n!",
 	"We killed your faves!",
@@ -123,25 +124,54 @@ local splashes = {
 	"*drops 12 enemies 10 hours before release*",
 	"You will die, for I am eba, and I will end you.",
 	"She is defrosting as we speak.",
-	"ITS A BRIMSTONE, ITS NOT A PENIS",
 	'"tablet is kil."\nno...',
 	"no yui, don't go to the fairside!",
 	"claude, make me a good noita difficulty mod",
+	"This splash is awaiting analysis by our automated content check system.",
+	"filler splash to bloat the list",
+	"Working hard at hardly working!",
+	"It's MISTER Squidward to you",
+	"It's MISS Master of Masters to you",
+	"It's a lovely morning in the mines, and you are a horrible witch",
+	"Grand Theft Sampo",
+	"Ira's Ultra Radical Coolio Slick Groovenator 9000",
 }
 
---local seed = second*minute*hour/day*year
---math.randomseed(seed)
+local function add_splashes(tbl, fmt)
+	for _,splash in pairs(tbl) do
+		table.insert(splashes, fmt and fmt:format(splash) or splash)
+	end
+end
 
-local cool_mods = {
+local locked_splashes = {
+	hardmod_game_completed = {
+		"I Won Hard Mod and All I Got Was This Lousy Splash Text",
+		"God Gamer?",
+		"If you won Hard Mod, surely you can win Fair Mod too!",
+		"Impressive!!!",
+		"Enjoy your golden starter wands",
+		"There's more to explore here",
+		"time for harharmod",
+	},
+	hardmod_unlocked_indulgence = {
+		"ITS A BRIMSTONE, ITS NOT A PENIS",
+	},
+	hardmod_found_spirit_weaken = {
+		"They're vulnerability ghosts, not weakness ghosts!"
+	},
+}
+
+for flag,list in pairs(locked_splashes) do
+	if HasFlagPersistent(flag) then add_splashes(list) end
+end
+
+add_splashes({
 	"Fairmod",
 	"Perkageddon",
 	"Apotheosis",
 	"D2D Content Pack",
 	"Fungal Pain",
-}
-for _,coolmod in ipairs(cool_mods) do
-	splashes[#splashes+1] = "Also try "..coolmod.."!"
-end
+}, "Also try %s!")
 
 if month == 11 and day == 15 then
 	for _=1,5 do
@@ -149,7 +179,6 @@ if month == 11 and day == 15 then
 	end
 end
 
--- Splashes with custom settings; a text only needs to be here if it has any. For example:
 -- { "Dunk is bald", color = { r = 1, g = 0.2, b = 0.2 }, scale = 1.5, speed = 2, angle = math.rad(45) },
 -- { "Evil Level: ", { evil_level .. "%", color = { r = 1, g = 0, b = 0 }, font = "data/fonts/font_pixel_big.xml" } },
 -- { "Hämis ", { image = "data/ui_gfx/hud/health.png", scale = 0.5 }, " :+1:" },
@@ -171,25 +200,12 @@ local custom_splashes = {
 		{"r",color={r=1,g=0.2,b=0.65}},
 		{"!",color={r=1,g=0.2,b=0.2}},
 	},
-	{"", { image = "mods/noita.hardmod/files/modules/logo_splash/gfx/hardmod_logo.png"}},
+	{"", { image = "mods/noita.hardmod/files/modules/logo_splash/gfx/hardmod_logo.png", scale = 0.5 }},
 	--{"", { image = "mods/noita.hardmod/files/modules/logo_splash/gfx/fairmod_logo.png"}}, --maybe not lmao
 }
 
-for _,splash in pairs(custom_splashes) do
-	table.insert(splashes, splash)
-end
+add_splashes(custom_splashes)
 
-local win_splashes = {
-	"I Won Hard Mod and All I Got Was This Lousy Splash Text",
-	"God Gamer?",
-	"If you won Hard Mod, surely you can win Fair Mod too!",
-	"Impressive!!!",
-	"Enjoy your golden starter wands",
-	"There's more to explore here",
-}
-
-if HasFlagPersistent("hardmod_game_completed") then
-	for _,splash in pairs(win_splashes) do table.insert(splashes, splash) end
-end
+table.insert(splashes, ("With %s unique splash texts!"):format(#splashes+1))
 
 return splashes

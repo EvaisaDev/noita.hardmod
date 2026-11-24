@@ -1,7 +1,7 @@
-dofile_once( "data/scripts/lib/utilities.lua" )
-local utils = dofile_once( "mods/noita.hardmod/lib/utilities.lua" ) ---@type utils
+dofile_once("data/scripts/lib/utilities.lua")
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
-local MAX_LINKED_RADIUS = 220
+local MAX_LINKED_RADIUS = 300
 local factions = {
 	"slimes", "ant", "robot", "fly", "boss_dragon", "crawler", "helpless",
 	"eel", "fire", "fungus", "ghoul", "giant", "ice", "spider", "orcs",
@@ -14,6 +14,9 @@ local x, y = EntityGetTransform( owner )
 local ally = utils.GetInternalInt( owner, "hardmod_soul_linked_ally" ) or 0
 
 local function seek_new_ally()
+	-- check if the ally is not dying within 5 frames
+	if (utils.GetInternalInt(owner, "hardmod_soul_linked_death") or 0) == 1 then return end
+
 	-- find an enemy to soul link with
 	local nearby_enemies = EntityGetInRadiusWithTag( x, y, 150, "enemy" )
 	if not nearby_enemies or #nearby_enemies == 0 then return end
@@ -28,7 +31,6 @@ local function seek_new_ally()
 		--- ...add them as a candidate
 			table.insert( candidates, nearby_enemy )
 		end
-		--
 	end
 	if not candidates or #candidates == 0 then return end
 	ally = random_from_array( candidates )
@@ -65,13 +67,17 @@ local function seek_new_ally()
 	EntityAddChild( ally, EntityLoad( "mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_vfx.xml", x, y ) )
 
 	-- enable the owner's particles
-	EntitySetComponentsWithTagEnabled( owner, "hardmod_soul_link_active", true )
+	for _,child in ipairs(EntityGetAllChildren(owner, "hardmod_soul_linked") or {}) do
+        EntitySetComponentsWithTagEnabled(child, "hardmod_soul_link_active", true)
+    end
 end
 
 local function check_ally_distance()
 	if ally == 0 then return end
 	
 	local ax, ay = EntityGetTransform( ally )
+	if (not ax) or (not ay) then return end
+
 	local dx = ax - x
     local dy = ay - y
     local dist = math.sqrt( dx * dx + dy * dy )
@@ -80,8 +86,8 @@ local function check_ally_distance()
     if dist > MAX_LINKED_RADIUS then
 		utils.SetInternalInt( ally, "hardmod_soul_linked_ally", 0 )
 		utils.SetInternalInt( owner, "hardmod_soul_linked_ally", 0 )
-
     	utils.EntityRemoveAllByTag( ally, "hardmod_soul_linked" )
+    	EntityKill(utils.EntityGetChildByName(owner, "hardmod_soul_linked_protection"))
 
 		-- for _,cbc in ipairs(EntityGetComponentIncludingDisabled( ally, "CameraBoundComponent" ) or {}) do
 		-- 	EntitySetComponentIsEnabled( ally, cbc, true )
@@ -89,7 +95,9 @@ local function check_ally_distance()
 		-- end
 
 		-- disable the owner's particles
-		EntitySetComponentsWithTagEnabled( owner, "hardmod_soul_link_active", false )
+	    for _,child in ipairs(EntityGetAllChildren(owner, "hardmod_soul_linked") or {}) do
+	        EntitySetComponentsWithTagEnabled(child, "hardmod_soul_link_active", false)
+	    end
     end
 end
 

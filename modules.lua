@@ -2,6 +2,7 @@
 local modules = {
 	-- List of all module IDs to load, in order
 	index = {
+		core = {},
 		test_module_dont_run = {
 			disabled = true,
 		},
@@ -77,15 +78,23 @@ local modules = {
 			integral = true,
 		},
 		alternate_biomes = {},
-		polymorph_gui = {},
-		worse_digging = {},
+		qol = {},
+		worse_digging = {
+			integral = true,
+		},
 		vanilla_bugfixes = {},
 		spell_variety = {},
 		haunted_wands = {},
 		for_the_worthy = {},
-		no_more_instant_recharge = {},
+		no_more_instant_recharge = {
+			integral = true,
+		},
 		snail = {},
 		greed_curse_rework = {},
+		--material_madness = {},
+		materials = {
+			integral = true,
+		},
 	},
 	-- `true` to force enable, `false` to force disable
 	force_disable_modules = {

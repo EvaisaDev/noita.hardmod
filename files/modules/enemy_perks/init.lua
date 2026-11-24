@@ -34,7 +34,9 @@ local icon_size = 16 --the xy size of the perk icons
 
 --utils.modifile("data/biome_impl/spliced/boss_arena.xml", [[data/biome_impl/spliced/boss_arena/8.plz]], [[]])
 
+---@diagnostic disable-next-line: assign-type-mismatch
 hooks.player_spawned = function()
+	SetRandomSeed(GameGetRealWorldTimeSinceStarted(), 5)
 	for _,perk in ipairs(enemy_perks) do
 		AddFlagPersistent("perk_picked_enemyperk_"..perk.id:lower())
 		if Random() <= .2 then GameAddFlagRun("new_perk_picked_enemyperk_"..perk.id:lower()) end
@@ -84,14 +86,15 @@ end
 
 hooks.new_eid = function(entity_id)
 	if ModIsEnabled("Apotheosis") then
-		if string.find( EntityGetFilename(entity_id), "mods/Apotheosis/data/entities/animals/psychotic/") then
-			EntityAddTag(entity_id, "no_enemy_perks")
+		if EntityGetFilename(entity_id):find("mods/Apotheosis/data/entities/animals/psychotic/") then
+			return
 		end
 	end
 
-	if EntityHasTag(entity_id, "enemy") and not (EntityHasTag(entity_id, "hardmod_blessed") or EntityHasTag(entity_id, "no_enemy_perks")) then
+	if (EntityHasTag(entity_id, "enemy") or EntityHasTag(entity_id, "polymorphed")) and not (EntityHasTag(entity_id, "hardmod_blessed") or EntityHasTag(entity_id, "no_enemy_perks")) then
 		local is_boss = EntityHasTag(entity_id, "boss")
-		local x,y = EntityGetTransform(entity_id)
+		local is_shop_guardian = EntityHasTag(entity_id, "necromancer_shop")
+		local x, y = EntityGetTransform(entity_id)
 		local biome = biome_index[DebugBiomeMapGetFilename(x, y)]
 		local num = 0
 
@@ -103,7 +106,7 @@ hooks.new_eid = function(entity_id)
 
 		local level = (is_boss and 5 or biome_data.level) --if is_boss, override biome level
 			+ (tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT")) or 0)*2 -- + NG+ iteration
-			+ (GetParallelWorldPosition(x, y) * 3) -- +3 per PW
+			+ (math.abs(GetParallelWorldPosition(x, y)) * 3) -- +3 per PW
 		if biome_data.do_recursive_roll ~= false then
 			for _=1, level do
 				local function plus_one_perk()
@@ -131,7 +134,9 @@ hooks.new_eid = function(entity_id)
 			player = _g.player,
 			player_poly_identity = _g.player_poly_identity,
 			is_boss = is_boss,
+			is_shop_guardian = is_shop_guardian,
 		}
+
 		eperk_utils.give_enemy_perks(entity_id, num, data)
 	end
 end
@@ -166,9 +171,9 @@ function hooks.post_update(frame)
 
 
 	if InputIsKeyJustDown(inspect_bind) then
-		local x,y = DEBUG_GetMouseWorld()
+		local x, y = DEBUG_GetMouseWorld()
 		selected_creature = EntityGetClosestWithTag(x, y, "hardmod_blessed")
-		local creature_x,creature_y = EntityGetTransform(selected_creature)
+		local creature_x, creature_y = EntityGetTransform(selected_creature)
 		if not creature_x then return end
 		if (creature_x-x)^2 + (creature_y-y)^2 > 16^2 then selected_creature = nil end
 		print("selected creature: "..tostring(selected_creature))
@@ -283,8 +288,13 @@ for file in nxml.edit_file("data/entities/projectiles/darkflame_stationary.xml")
 	file:set("tags", "hardmod_darkflame")
 end
 
-function hooks.world_init()
-	EntityLoad(dir.."nothing_to_see_here.xml", 0, 0)
+dofile(dir.."procedural/generate.lua")
+
+
+if ModIsEnabled("grahamsdummy") then
+	for xml in nxml.edit_file("mods/grahamsdummy/files/dummy.xml") do
+		xml.attr.tags = xml.attr.tags .. ",no_enemy_perks"
+	end
 end
 
 return hooks

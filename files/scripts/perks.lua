@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 local new_perks = {}
 local perk_patches = {}
 local edit_perk_hooks = {}
@@ -21,6 +19,12 @@ local function add_patches(path)
 			if curr_value ~= nil and value ~= curr_value then print(('[%s] COLLISION at "%s": %s -> %s'):format(perk_id, key, curr_value, value)) end
 			perk_patches[perk_id][key] = value
 		end
+
+		-- idk why was it not working otherwise
+		if perk_patch.remove_game_effect then
+			perk_patches[perk_id].game_effect = nil
+			perk_patches[perk_id].game_effect2 = nil
+		end
 	end
 	if hooks.edit_perk then
 		edit_perk_hooks[#edit_perk_hooks+1] = hooks.edit_perk
@@ -39,12 +43,13 @@ end
 for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__perk_appends.lua")) do
 	local succ, res = pcall(add_patches, path)
 	if not succ then
-		print("[Hardmod] Patching perks failed: "..tostring(res))
+		print("[Hardmod] Patching perks failed from "..path..": "..tostring(res))
 	end
 end
 
 local num_perks = #perk_list
 for i,perk in ipairs(new_perks) do
+	perk.origin = "$mod.noita.hardmod"
 	perk_list[num_perks+i] = perk
 end
 

@@ -8,7 +8,9 @@ function death(damage_type_bit_field, message, attacker, drop_items)
     if ally ~= 0 then
         utils.SetInternalInt( ally, "hardmod_soul_linked_ally", 0 )
         utils.EntityRemoveAllByTag( ally, "hardmod_soul_linked" )
-        EntitySetComponentsWithTagEnabled( ally, "hardmod_soul_link_active", false )
+        for _,child in ipairs(EntityGetAllChildren(ally, "hardmod_soul_linked") or {}) do
+	        EntitySetComponentsWithTagEnabled(child, "hardmod_soul_link_active", false)
+	    end
     end
 end
 
@@ -16,61 +18,31 @@ function damage_received( damage, desc, entity_who_caused, is_fatal )
     local owner = GetUpdatedEntityID()
     local ally = utils.GetInternalInt( owner, "hardmod_soul_linked_ally" ) or 0
     if ally == 0 then return end
-    if ( utils.GetInternalInt( owner, "hardmod_soul_linked_death" ) or 0 ) == 1 then return end
+    if ( utils.GetInternalInt( owner, "hardmod_soul_linked_death" ) or 0 ) == 1 then return end -- to prevent stack overflows
 
-    local dmg_comp_self = EntityGetFirstComponentIncludingDisabled( owner, "DamageModelComponent" )
-    local dmg_comp_ally = EntityGetFirstComponentIncludingDisabled( ally, "DamageModelComponent" )
-    if dmg_comp_self and dmg_comp_ally then
-        local hp_self = ComponentGetValue2( dmg_comp_self, "hp" )
-        local hp_ally = ComponentGetValue2( dmg_comp_ally, "hp" )
+	local dmg_comp_self = EntityGetFirstComponentIncludingDisabled(owner, "DamageModelComponent")
+	local dmg_comp_ally = EntityGetFirstComponentIncludingDisabled(ally, "DamageModelComponent")
+	if dmg_comp_self and dmg_comp_ally then
+		local hp_self = ComponentGetValue2(dmg_comp_self, "hp")
+		local hp_ally = ComponentGetValue2(dmg_comp_ally, "hp")
+	    if damage > hp_self and hp_ally >= 0.05 then
+	        ComponentSetValue2(dmg_comp_self, "hp", 0.04 + damage)
 
-        if damage > hp_self and hp_ally >= 0.05 then
-            ComponentSetValue2( dmg_comp_self, "hp", 0.04 )
-            GamePrint( "hp is now: " .. ComponentGetValue2( dmg_comp_self, "hp" ) )
+	        if not utils.EntityGetChildByName(owner, "hardmod_soul_linked_protection") then
+	            LoadGameEffectEntityTo( owner, "mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_protection.xml" )
+	        end
+	    -- if both enemies have <1(.25) hp, they both die
+	    elseif hp_self <= 0.05 and hp_ally <= 0.05 then
+	    	-- remove the soul linked protection entity so that the ally can take damage again
+	    	local prot_entity = utils.EntityGetChildByName(ally, "hardmod_soul_linked_protection")
+	    	if prot_entity then EntityKill(prot_entity) end
 
-            if ( utils.GetInternalInt( owner, "hardmod_soul_linked_immunity_given" ) or 0 ) == 0 then
-                utils.SetInternalInt( owner, "hardmod_soul_linked_immunity_given", 1 )
-                LoadGameEffectEntityTo( owner, "mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_protection.xml" )
-            end
-        -- if both enemies have <1(.25) hp, they both die
-        elseif hp_self <= 0.05 and hp_ally <= 0.05 then
-            utils.SetInternalInt( owner, "hardmod_soul_linked_death", 1 )
-            utils.SetInternalInt( ally, "hardmod_soul_linked_death", 1 )
-            EntityInflictDamage( ally, 39.96, "DAMAGE_CURSE", "soul linked", "NORMAL", 0, 0 )
-        end
-    end
-end
+	    	-- prevent infinite loops and the owner from immediately finding a new ally
+	        utils.SetInternalInt(owner, "hardmod_soul_linked_death", 1)
+	        utils.SetInternalInt(ally, "hardmod_soul_linked_death", 1)
 
-function damage_about_to_be_received( damage, x, y, entity_thats_responsible, critical_hit_chance )
-    local owner = GetUpdatedEntityID()
-    local ally = utils.GetInternalInt( owner, "hardmod_soul_linked_ally" ) or 0
-
-    if ally > 0 then
-        local dmg_comp_self = EntityGetFirstComponentIncludingDisabled( owner, "DamageModelComponent" )
-        local dmg_comp_ally = EntityGetFirstComponentIncludingDisabled( ally, "DamageModelComponent" )
-        if dmg_comp_self and dmg_comp_ally then
-            local hp_self = ComponentGetValue2( dmg_comp_self, "hp" )
-            local hp_ally = ComponentGetValue2( dmg_comp_ally, "hp" )
-
-            -- if the owner would die from the damage and its ally has more than 1 hp remaining, prevent death
-            -- GamePrint( "hp self: " .. hp_self .. " / hp ally: " .. hp_ally )
-            if damage > hp_self and hp_ally > 0.04 then
-                if ( utils.GetInternalInt( owner, "hardmod_soul_linked_immunity_given" ) or 0 ) == 0 then
-                    utils.SetInternalInt( owner, "hardmod_soul_linked_immunity_given", 1 )
-
-                    -- local x, y = EntityGetTransform( owner )
-                    -- local particles = EntityLoad( "mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_shield.xml", x, y )
-                    -- EntityAddChild( owner, particles )
-                    LoadGameEffectEntityTo( owner, "mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_protection.xml" )
-                end
-
-                return hp_self - 0.04, critical_hit_chance
-            -- if both enemies have 1 HP, they both die
-            elseif hp_self <= 0.04 and hp_ally <= 0.04 then
-                EntityInflictDamage( ally, hp_ally * 1.1, "DAMAGE_CURSE", "soul linked", "NORMAL", 0, 0 )
-            end
-        end
-    end
-
-    return damage, critical_hit_chance
+	        -- kill the ally after a short delay (technical reasons)
+	        utils.TriggerScriptDelayed(ally, "mods/noita.hardmod/files/modules/enemy_perks/scripts/soul_linked_kill_ally.lua", 5)
+	    end
+	end
 end

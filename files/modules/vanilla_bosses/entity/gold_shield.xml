@@ -96,7 +96,7 @@
 		file="data/audio/Desktop/projectiles.bank"
 		event_root="player_projectiles/shield"
 		set_latest_event_position="1" >
-	</AudioComponent -->>
+	</AudioComponent -->
 
 	<AudioComponent
 		_tags="hardmod_gold_shield_inactive"
@@ -119,7 +119,7 @@
 
 	<VariableStorageComponent
 		name="hardmod_gold_shield_duration"
-		value_int="75"
+		value_int="60"
 	></VariableStorageComponent>
 
 	<!-- for when the shield is down -->

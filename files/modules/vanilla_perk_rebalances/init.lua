@@ -1,4 +1,4 @@
-local hooks = {}
+local hooks = {}---@type hooks
 local dir = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/"
 
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
@@ -38,12 +38,12 @@ end
 
 local function modify_xray()
 	local path = "data/entities/projectiles/deck/xray.xml"
-	local xml = nxml.parse( ModTextFileGetContent( path ) )
+	local xml = nxml.parse(ModTextFileGetContent(path))
 	local proj_comp = xml:first_of("ProjectileComponent")
 	if proj_comp then
-		proj_comp:set( "lifetime", 30 )
+		proj_comp:set("lifetime", 30)
 	end
-	ModTextFileSetContent( path, tostring(xml) )
+	ModTextFileSetContent(path, tostring(xml))
 end
 
 local function modify_wand_experimenter()
@@ -119,20 +119,28 @@ for xml in nxml.edit_file("data/entities/player_base.xml") do
 end
 --#endregion
 
+local update_amp_item_scr = dir.."scripts/perks/update_amplified_item.lua"
+local amplified_items_lua_comp = nxml.new_element("LuaComponent", {
+	_tags = "enabled_in_hand",
+	--script_source_file = update_amp_item_scr,
+	--execute_every_n_frame = "300",
+	execute_every_n_frame = "-1",
+	script_enabled_changed = update_amp_item_scr,
+	--script_item_picked_up = update_amp_item_scr,
+})
 
-local ase_items = {
+local amplified_item_targets = {
+	"data/entities/items/pickup/brimstone.xml",
+	"data/entities/items/pickup/waterstone.xml",
+	"data/entities/items/pickup/thunderstone.xml",
+	"mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/cheese.xml",
 	"data/entities/items/pickup/sun/sunseed.xml",
 	"data/entities/items/pickup/sun/sunstone.xml",
+	"data/entities/items/pickup/evil_eye.xml",
 }
-local ase_entity = nxml.parse_file("mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/perks/all_seeing_eye.xml")
-for _,path in ipairs(ase_items) do
+for _,path in ipairs(amplified_item_targets) do
 	for xml in nxml.edit_file(path) do
-		for game_effect in xml:each_of("GameEffectComponent") do
-			if game_effect.attr.effect == "REMOVE_FOG_OF_WAR" then
-				xml:remove_child(game_effect)
-				xml:add_child(ase_entity)
-			end
-		end
+		xml:add_child(amplified_items_lua_comp)
 	end
 end
 
@@ -152,14 +160,13 @@ hooks.mod_post_init = function()
 	ModLuaFileAppend("data/scripts/gun/gun_extra_modifiers.lua", dir.."scripts/appends/gun_extra_modifiers.lua")
 	ModLuaFileAppend("data/scripts/item_spawnlists.lua", dir.."scripts/appends/item_spawnlists.lua")
 	ModLuaFileAppend("data/scripts/biomes/snowcastle_hourglass_chamber.lua", dir.."scripts/appends/hourglass_chamber.lua")
-	-- ModLuaFileAppend( "data/scripts/gun/gun.lua", dir.."/scripts/appends/gun.lua" )
-	-- ModLuaFileAppend( "data/scripts/gun/procedural/gun_procedural.lua", dir.."/scripts/appends/gun_procedural.lua" )
+	-- ModLuaFileAppend("data/scripts/gun/gun.lua", dir.."/scripts/appends/gun.lua")
+	-- ModLuaFileAppend("data/scripts/gun/procedural/gun_procedural.lua", dir.."/scripts/appends/gun_procedural.lua")
 
 	-- ModLuaFileAppend("data/scripts/perks/perk.lua", root.."scripts/appends/perk.lua")
 	-- ModLuaFileAppend("data/scripts/magic/altar_tablet_magic.lua", root.."scripts/appends/altar_tablet_magic.lua")
 
 	dofile_once("data/scripts/gun/gun_actions.lua")
-	---@diagnostic disable-next-line:undefined-global
 	for _,action in pairs(actions) do
 		if action.custom_xml_file then
 			spell_card_append_targets[action.custom_xml_file] = true
@@ -189,6 +196,15 @@ hooks.mod_post_init = function()
 	end
 end
 
+hooks.new_eid = function(entity_id)
+	local spell_gems_enabled = tonumber(GlobalsGetValue("PERK_PICKED_HARDMOD_SPELL_GEMS_PICKUP_COUNT","0")) > 0
+	if spell_gems_enabled and EntityHasTag(entity_id, "enemy") then
+		EntityAddComponent2(entity_id, "LuaComponent", {
+			script_death = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/spell_gems_try_drop_on_death.lua",
+			execute_every_n_frame = -1,
+		})
+	end
+end
 
 -- Apotheosis fails to do nil checks for its target components, completely fails to load as a result, this disables the relevant code
 local f1,t1,f2,t2 =

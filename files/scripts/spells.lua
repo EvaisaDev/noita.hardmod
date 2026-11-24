@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 local new_spells = {}
 local spell_patches = {}
 local edit_spell_hooks = {}
@@ -41,12 +39,13 @@ end
 for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__spell_appends.lua")) do
 	local succ, res = pcall(add_patches, path)
 	if not succ then
-		print("[Hardmod] Patching spells failed: "..tostring(res))
+		print("[Hardmod] Patching spells from "..path.." failed: "..tostring(res))
 	end
 end
 
 local num_spells = #actions
 for i,spell in ipairs(new_spells) do
+	spell.origin = "$mod.noita.hardmod"
 	actions[num_spells+i] = spell
 end
 

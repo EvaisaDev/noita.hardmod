@@ -5,13 +5,13 @@ local blood_heal = function(d)
 	local damage_comp = EntityGetFirstComponent(d.pdata.owner, "DamageModelComponent")
 	if not damage_comp then return end
 	local heal_amount = d.amount * d.worth * 2^d.pdata.greed_stacks * 0.004
-	EntityInflictDamage(d.pdata.owner, -heal_amount, "DAMAGE_HEALING", "blood money", "NONE", 0, 0)
+	EntityInflictDamage(d.pdata.owner, -heal_amount, "DAMAGE_HEALING", "$hardmod_bloodmoney_heal", "NONE", 0, 0)
 end
 
 GoldFunctions = {
 	default = function(d)
 		local wallet = d.pdata.wallet
-		if not wallet then print("fail") return end
+		if not wallet then print("GID fail, no wallet") return end
 		local income = d.amount * d.worth * 2^d.pdata.greed_stacks
 		ComponentSetValue2(wallet, "money", ComponentGetValue2(wallet, "money") + income)
 		GameEntityPlaySoundLoop(d.pdata.owner, "sound_pick_gold_sand", 1)
