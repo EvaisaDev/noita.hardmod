@@ -126,6 +126,7 @@ return {
 		    action              = function()
                 c.fire_rate_wait    = c.fire_rate_wait - 10
                 current_reload_time = current_reload_time - 20
+                c.spread_degrees = c.spread_degrees - 6
 
 	            if reflecting then return end
 
