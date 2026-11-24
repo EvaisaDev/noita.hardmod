@@ -111,6 +111,52 @@ return {
 				draw_actions(1, true)
 			end,
 	    },
+	    {
+		    id                  = "HARDMOD_OVERCLOCK",
+			author 				= "modder.dani2d",
+		    name 		        = "$hardmod_spell_overclock_name",
+		    description         = "$hardmod_spell_overclock_desc",
+		    sprite 		        = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/overclock.png",
+		    type 		        = ACTION_TYPE_MODIFIER,
+			spawn_level         = "2,3,4",
+			spawn_probability   = "0.4,0.4,0.3",
+		    price               = 240,
+		    mana                = 6,
+		    -- custom_xml_file 	= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_overclock.xml",
+		    action              = function()
+                c.fire_rate_wait    = c.fire_rate_wait - 10
+                current_reload_time = current_reload_time - 20
+
+	            if reflecting then return end
+
+	            local entity_id = GetUpdatedEntityID()
+                local x, y = EntityGetTransform( entity_id )
+
+			    local rand = Random( 0, 200 )
+			    local chance = 1
+                if( rand <= chance ) then
+                    c.fire_rate_wait = c.fire_rate_wait + 40
+                    current_reload_time = current_reload_time + 40
+                    shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+                    GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+
+                    local rand2 = Random( 1, 8 )
+                    if rand2 == 1 then
+	                    c.fire_rate_wait = c.fire_rate_wait + 140
+	                    current_reload_time = current_reload_time + 140
+                    	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 400.0
+                    	add_projectile( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_explode.xml" )
+                    elseif rand2 <= 3 and GameGetGameEffectCount( entity_id, "PROTECTION_FIRE" ) == 0 then
+                    	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+                        EntityLoad( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_fire.xml", x, y )
+                    else
+                        add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
+                    end
+                end
+                
+                draw_actions( 1, true )
+            end,
+	    },
 		{
 			id					= "HARDMOD_BIG_SHOT",
 			author 				= "modder.dani2d",
