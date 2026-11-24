@@ -542,3 +542,5 @@ hardmod_setting_module_polymorph_gui_name,"Polymorph GUI","Интерфейс п
 hardmod_setting_module_polymorph_gui_desc,"Baa","Баа",,,,,,,,,,,,
 hardmod_eperk_homing_curser_name,Homing Curser,,,,,,,,,,,,,
 hardmod_eperk_homing_curser_desc,This enemy's projectiles create a personal gravity field when they hit you.,,,,,,,,,,,,,
+hardmod_spell_overclock_name,Overclock,,,,,,,,,,,,,
+hardmod_spell_overclock_desc,"Pushes your wand to its limits, but may cause overheating",,,,,,,,,,,,,

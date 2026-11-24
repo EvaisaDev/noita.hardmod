@@ -1,0 +1,13 @@
+<Entity>
+
+	<Base file="data/entities/projectiles/deck/tnt.xml" >
+	    <ProjectileComponent
+	    	lifetime="0"
+			><config_explosion
+				damage="0.01"
+				max_durability_to_destroy="8"
+			></config_explosion>
+	    </ProjectileComponent>
+	</Base>
+
+</Entity>
