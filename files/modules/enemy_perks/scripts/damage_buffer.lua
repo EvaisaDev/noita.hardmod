@@ -10,7 +10,7 @@ for _,entity in ipairs(EntityGetInRadiusWithTag(x, y, 100, "enemy")) do
 		end
 
 		local buff = EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/small_damage_buff.xml", x, y)
-		EntitySetName(buff, "hardmod.damage_buff."..component)
+		EntitySetName(buff, table.concat({"hardmod.damage_buff",entity_id,component}, "."))
 		EntityAddChild(entity, buff)
 	end
 end
