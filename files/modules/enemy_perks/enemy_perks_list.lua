@@ -75,6 +75,11 @@ local function is_projectile_immune(self, data)
 		and GameGetGameEffectCount(data.target_enemy, "PROTECTION_PROJECTILE") == 0)
 end
 
+local function no_nearby_giant_auras(self, data)
+	local x, y = EntityGetTransform(data.target_enemy)
+	return #EntityGetInRadiusWithTag(x, y, 500, "hardmod_giant_eperk_aura") == 0
+end
+
 local function spawn_on_death_blacklist(self, data)
 	local banned_creatures = {
 		["data/entities/animals/wizard_swapper.xml"] = true,
@@ -537,6 +542,21 @@ enemy_perks = {
 	--		})
 	--	end
 	--},
+	{
+		id = "HOMING_CURSER",
+		name = "$hardmod_eperk_homing_curser_name",
+		description = "$hardmod_eperk_homing_curser_desc",
+		weight = 3,
+		priority = 7,
+		max = 1,
+		condition = enemy_is_ranged_attack,
+		func = function(self, entity_id, data)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_shot = dir.."generated/homing_curser_shot.lua",
+				execute_every_n_frame = -1,
+			})
+		end
+	},
 	{
 		id = "DAMAGE_BUFFER",
 		name = "$hardmod_eperk_damage_buffer_name",
@@ -1289,7 +1309,7 @@ enemy_perks = {
 		condition = function(self, data)
 			-- this perk can only appear on mages, ghosts (excl. wand ghosts) and some select enemies
 			local factions = "mage,mage_swapper,ghost,"
-			local creatures = { "monk", }
+			local creatures = { "/monk.xml", }
 
 			local strparts = split_string(EntityGetFilename(data.target_enemy), "/")
 			local filename = strparts[#strparts]
@@ -1343,9 +1363,9 @@ enemy_perks = {
 			hell = 4,
 			tower = 4,
 		},
+		requires_dmc = true,
 		condition = function(self, data)
-			if not data.dmc then return end
-			return ComponentGetValue2(data.dmc, "max_hp") >= 3
+			return ComponentGetValue2(data.dmc, "max_hp") >= 4 and no_nearby_giant_auras(self, data)
 		end,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
@@ -1366,6 +1386,7 @@ enemy_perks = {
 		max = 1,
 		min_level = 6,
 		unique_slot = "large_aura",
+		condition = no_nearby_giant_auras,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/anti_tele_aura.xml", x, y))

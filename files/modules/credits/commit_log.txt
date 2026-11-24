@@ -923,3 +923,12 @@ removed some debug prints, fixed meat curse indicator
 ran build and split scripts
 made damage buffer able to appear slightly earlier
 added back update to eperk handler
+make anti tele field less common
+improve Absolution desc
+no all-seeing monkeys
+make *giant* eperks (tether/anti-tele) spawn more sparsely
+(and remove a one-off tag somewhere to compensate)
+fix Divine Shield cooldown vfx
+add Homing Curser eperk
+>w< typo
+pee pee poo poo

@@ -116,8 +116,8 @@ hooks.spell_patches = {
 	["ADD_TRIGGER"] = {
 		type = ACTION_TYPE_MODIFIER, mana = 20,
 		description = "$hardmod_spell_add_trigger_desc",
-		spawn_level = "2,3,4,5,6",
-		spawn_probability = "0.1,0.2,0.3,0.4,0.4",
+		spawn_level = "1,2,3,4,5,6",
+		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4",
 		action = function()
 			EnqueueTrigger({
 				type = TRIGGER_HIT_WORLD,

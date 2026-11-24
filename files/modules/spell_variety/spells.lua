@@ -6,6 +6,7 @@ return {
 	new_spells = {
 		{
 			id = "HARDMOD_NOTLA",
+			author = "modder.yui",
 			name = "$hardmod_spell_notla_name",
 			description = "$hardmod_spell_notla_desc",
 			sprite = root.."gfx/ui_gfx/spells/notla.png",
@@ -23,6 +24,7 @@ return {
 		},
 		{
 			id                  = "HARDMOD_ECHO_SHOT",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_echo_shot_name",
 			description         = "$hardmod_spell_echo_shot_desc",
 			sprite              = root.."gfx/ui_gfx/spells/echo_shot.png",
@@ -42,6 +44,7 @@ return {
 		},
 		{
 			id                  = "HARDMOD_ECHO_SHOT_TIMER",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_echo_shot_timer_name",
 			description         = "$hardmod_spell_echo_shot_timer_desc",
 			sprite              = root.."gfx/ui_gfx/spells/echo_shot_timer.png",
@@ -61,6 +64,7 @@ return {
 		},
 	    {
 		    id                  = "HARDMOD_CONTROLLED_REACH",
+			author 				= "modder.dani2d",
 		    name 		        = "$hardmod_controlled_reach_name",
 		    description         = "$hardmod_controlled_reach_desc",
 		    sprite 		        = root.."gfx/ui_gfx/spells/controlled_reach.png",
@@ -109,6 +113,7 @@ return {
 	    },
 		{
 			id					= "HARDMOD_BIG_SHOT",
+			author 				= "modder.dani2d",
 			name				= "$hardmod_spell_big_shot_name",
 			description			= "$hardmod_spell_big_shot_desc",
 			sprite				= root.."gfx/ui_gfx/spells/big_shot.png",
@@ -130,6 +135,7 @@ return {
 		},
 		{
 			id                  = "HARDMOD_RECHARGE_SHIELD",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_recharge_shield_name",
 			description         = "$hardmod_spell_recharge_shield_desc",
 			sprite              = root.."gfx/ui_gfx/spells/recharge_shield.png",
@@ -145,6 +151,7 @@ return {
 		},
 		{
 			id = "HARDMOD_SHIELD_BREAKER",
+			author = "modder.dani2d",
 			name = "$harmdod_spell_shield_breaker_name",
 			description = "$harmdod_spell_shield_breaker_desc",
 			sprite = root.."gfx/ui_gfx/spells/shield_breaker.png",
@@ -163,6 +170,7 @@ return {
 		},
 		{
 			id					= "HARDMOD_PARRY",
+			author 				= "modder.dani2d",
 			name				= "$hardmod_spell_parry_name",
 			description			= "$hardmod_spell_parry_desc",
 			sprite				= "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/spells/parry.png",
@@ -192,6 +200,7 @@ return {
 		},
 		{
 			id = "HARDMOD_GIGA_CHAINSAW",
+			author = "modder.yui",
 			name = "$harmdod_spell_giga_chainsaw_name",
 			description = "$harmdod_spell_giga_chainsaw_desc",
 			sprite = root.."gfx/ui_gfx/spells/giga_chainsaw.png",
