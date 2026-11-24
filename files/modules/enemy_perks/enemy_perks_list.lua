@@ -1106,6 +1106,46 @@ enemy_perks = {
 		end
 	},
 	{
+		id = "INVISIBLE",
+		name = "$hardmod_eperk_invisible_name",
+		description = "$hardmod_eperk_invisible_desc",
+		weight = 2,
+		max = 1,
+		biome_conditions = {
+			magical_temple = 4,
+			temple_of_the_art = 4,
+			wizards_den = 4,
+		},
+		-- condition = enemy_is_ranged_attack,
+		func_handler = function(self, entity_id, root, spr_comps)
+			local invis_gec = GameGetGameEffect(root, "INVISIBILITY")
+			if not invis_gec or invis_gec == 0 then return end
+
+			for _,spr_comp in ipairs(spr_comps) do
+				ComponentSetValue2(spr_comp, "visible", not ComponentGetValue2(invis_gec, "mInvisible"))
+				EntityRefreshSprite(entity_id, spr_comp)
+			end
+		end,
+		func = function(self, entity_id, data)
+			GetGameEffectLoadTo(entity_id, "INVISIBILITY", true)
+
+			local x, y = EntityGetTransform(entity_id)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_damage_received = "mods/noita.hardmod/files/modules/enemy_perks/scripts/invisible_show_perk_icons.lua",
+				script_shot = "mods/noita.hardmod/files/modules/enemy_perks/scripts/invisible_show_perk_icons.lua",
+				execute_every_n_frame = -1,
+			})
+
+			-- below happens when an entity gets the Invisibility (player) perk
+			-- local sprites = EntityGetComponent(entity_id, "SpriteComponent")
+			-- if sprites then
+			-- 	for _,sprite in ipairs(sprites) do
+			-- 		ComponentSetValue2(sprite, "alpha", 1.0)
+			-- 	end
+			-- end
+		end
+	},
+	{
 		id = "OBFUSCATION",
 		name = "$hardmod_eperk_obfuscation_name",
 		description = "$hardmod_eperk_obfuscation_desc",
