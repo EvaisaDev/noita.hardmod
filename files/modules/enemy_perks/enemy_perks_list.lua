@@ -543,6 +543,21 @@ enemy_perks = {
 	--	end
 	--},
 	{
+		id = "HOMING_CURSER",
+		name = "$hardmod_eperk_homing_curser_name",
+		description = "$hardmod_eperk_homing_curser_desc",
+		weight = 3,
+		priority = 7,
+		max = 1,
+		condition = enemy_is_ranged_attack,
+		func = function(self, entity_id, data)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_shot = dir.."generated/homing_curser_shot.lua",
+				execute_every_n_frame = -1,
+			})
+		end
+	},
+	{
 		id = "DAMAGE_BUFFER",
 		name = "$hardmod_eperk_damage_buffer_name",
 		description = "$hardmod_eperk_damage_buffer_desc",

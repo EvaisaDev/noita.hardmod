@@ -539,3 +539,5 @@ hardmod_mat_chaotic_poly_gas,Chaotic Polymorphine Gas,RU_MISSING,,,,,,,,,,,,
 ,,,,,,,,,,,,,"unused translations, the following are strings that are not currently used and thus do not require translation"
 hardmod_setting_module_polymorph_gui_name,"Polymorph GUI","Интерфейс полиморфина",,,,,,,,,,,,
 hardmod_setting_module_polymorph_gui_desc,"Baa","Баа",,,,,,,,,,,,
+hardmod_eperk_homing_curser_name,Homing Curser,,,,,,,,,,,,,
+hardmod_eperk_homing_curser_desc,This enemy's projectiles create a personal gravity field when they hit you.,,,,,,,,,,,,,
