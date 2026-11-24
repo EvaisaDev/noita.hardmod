@@ -243,10 +243,10 @@ return {
 				if current_frame - prev_cast_frame > 48 then
 					add_projectile("mods/noita.hardmod/files/modules/trial_perks/entities/spells/parry.xml")
 					utils.SetInternalInt(GetUpdatedEntityID(), "hardmod_parry_prev_cast_frame", current_frame)
-				else
-					local x, y = EntityGetTransform(GetUpdatedEntityID())
-                    GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
-                    add_projectile("data/entities/projectiles/deck/fizzle.xml")
+				-- else
+					-- local x, y = EntityGetTransform(GetUpdatedEntityID())
+                    -- GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+                    -- add_projectile("data/entities/projectiles/deck/fizzle.xml")
 				end
 			end,
 		},

@@ -782,12 +782,13 @@ end
 
 --- Replaces vanilla utilities' random_from_array function
 ---@param array table Array to get a random element from
----@param seed_x int? Seed value for x (defaults to GameGetFrameNum() if nil)
----@param seed_y int? Seed value for y (defaults to GameGetFrameNum() if nil)
+---@param seed_a int? Seed value a (defaults to GameGetFrameNum() if nil)
+---@param seed_b int? Seed value b (defaults to GameGetFrameNum() if nil)
 ---@return int A random element from the array
 function utils.RandomFromArray(array, seed_x, seed_y)
 	seed_x = seed_x or GameGetFrameNum()
 	seed_y = seed_y or GameGetFrameNum()
+	SetRandomSeed(seed_a, seed_b)
 	return array[Random(1, #array)]
 end
 
