@@ -1,4 +1,4 @@
-<Entity tags="hardmod_gold_shield">
+<Entity name="hardmod_gold_shield_cd" tags="hardmod_gold_shield">
 
     <InheritTransformComponent />
 
