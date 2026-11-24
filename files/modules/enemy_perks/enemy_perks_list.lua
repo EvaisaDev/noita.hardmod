@@ -258,6 +258,25 @@ enemy_perks = {
 		end
 	},
 	{
+		id = "ATTACK_SPEED",
+		name = "$hardmod_eperk_attack_speed_name",
+		description = "$hardmod_eperk_attack_spaeed_desc",
+		weight = 5,
+		max = 3,
+		biome_conditions = {
+			sandcave = 10,
+		},
+		requires_dmc = true,
+		condition = enemy_is_ranged_attack,
+		func = function(self, entity_id, data)
+			local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
+			if animal_ai_comp then
+				local old_attack_speed = ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between")
+				ComponentSetValue2( animal_ai_comp, "attack_ranged_frames_between", old_attack_speed * 0.67 )
+			end
+		end
+	},
+	{
 		id = "DRY_SPELL",
 		name = "$hardmod_eperk_dry_spell_name",
 		description = "$hardmod_eperk_dry_spell_desc",
