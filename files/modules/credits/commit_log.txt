@@ -951,3 +951,6 @@ improve giant aura eperk sparsity
 make Obfuscation and Invisible hide eperk auras
 make Invisible eperk spawn later
 improve Soul Linked desc
+check entitygetisalive
+ignore wand y offset for torches
+missed some
