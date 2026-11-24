@@ -750,6 +750,8 @@ make player's podf distinguishable from enemy's podf
 make Protector shield stronger
 electric torch -2 mana
 make Apoth illusions not have eperks
+more Soul Linked attempts
+Add Trigger unnerf (depends on Lamia fix)
 add stylua ignore to splashes.lua
 asdasd
 guh?
@@ -934,3 +936,8 @@ add Homing Curser eperk
 pee pee poo poo
 add Overclock spell
 oops, double translations
+Overclock tweaks
+moar
+MOAR
+improve Soul Linked eperk logic
+ye olde eperk weight fix
