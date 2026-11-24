@@ -10,6 +10,7 @@
 	></LuaComponent>
 
 	<ParticleEmitterComponent
+		_tags="aura_can_be_invis"
 		emitted_material_name="spark_white"
 		gravity.y="0.0"
 		lifetime_min="0.02"
@@ -31,6 +32,7 @@
 	</ParticleEmitterComponent>
 	
 	<ParticleEmitterComponent 
+		_tags="aura_can_be_invis"
 		emitted_material_name="spark_white"
 		gravity.y="0.0"
 		lifetime_min="0.4"
@@ -56,5 +58,10 @@
 		is_emitting="1" 
 		velocity_always_away_from_center="-110">
 	</ParticleEmitterComponent>
+
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/eperk_aura_update_visibility.lua"
+		execute_every_n_frame="15"
+	></LuaComponent>
 
 </Entity>

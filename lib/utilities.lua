@@ -341,6 +341,50 @@ function utils.SetInternalString(entity_id, variable_name, new_value)
 	end
 end
 
+---Shorthand for quickly getting the bool value of a VSC
+---@param entity_id entity_id ID of the entity
+---@param variable_name string Name of the variable
+---@return bool Value that matches the given VSC name
+function utils.GetInternalBool(entity_id, variable_name)
+	local value = nil
+	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
+	if vscomps ~= nil then
+		for key,comp_id in pairs(vscomps) do
+			local var_name = ComponentGetValue2(comp_id, "name")
+			if var_name == variable_name then
+				value = ComponentGetValue2(comp_id, "value_bool")
+			end
+		end
+	end
+
+	return value
+end
+
+---Shorthand for quickly setting a VSC's bool value, or creating one if a VSC with the same name doesn't exist yet
+---@param entity_id entity_id ID of the entity
+---@param variable_name string Name of the variable
+---@param new_value bool New value of the variable (or initial value, if VSC did not exist)
+function utils.SetInternalBool(entity_id, variable_name, new_value)
+	local variable_found = false
+	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
+	if vscomps ~= nil then
+		for key,comp_id in pairs(vscomps) do
+			local var_name = ComponentGetValue2(comp_id, "name")
+			if var_name == variable_name then
+				ComponentSetValue2(comp_id, "value_bool", new_value)
+				variable_found = true
+			end
+		end
+	end
+
+	if not variable_found then
+		EntityAddComponent2(entity_id, "VariableStorageComponent", {
+			name = variable_name,
+			value_bool  = new_value
+		})
+	end
+end
+
 ---Returns the player, polymorphed or not. Pass x, y and distance for a distance check.
 ---@param x number?
 ---@param y number?
@@ -741,7 +785,7 @@ end
 ---@param seed_x int? Seed value for x (defaults to GameGetFrameNum() if nil)
 ---@param seed_y int? Seed value for y (defaults to GameGetFrameNum() if nil)
 ---@return int A random element from the array
-function RandomFromArray(array, seed_x, seed_y)
+function utils.RandomFromArray(array, seed_x, seed_y)
 	seed_x = seed_x or GameGetFrameNum()
 	seed_y = seed_y or GameGetFrameNum()
 	return array[Random(1, #array)]

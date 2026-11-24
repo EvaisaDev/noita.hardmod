@@ -1092,22 +1092,22 @@ enemy_perks = {
 		description = "$hardmod_eperk_invisible_desc",
 		weight = 2,
 		max = 1,
+		unique_slot = "obscures_perks",
 		biome_conditions = {
 			magical_temple = 4,
 			temple_of_the_art = 4,
 			wizards_den = 4,
 		},
-		-- condition = function(self, data)
-		-- 	return data.how_many_of_each_perk["HARDMOD_WET_AURA"] == 0
-		-- end,
 		func_handler = function(self, entity_id, root, spr_comps)
 			local invis_gec = GameGetGameEffect(root, "INVISIBILITY")
 			if not invis_gec or invis_gec == 0 then return end
+			local is_owner_visible = not ComponentGetValue2(invis_gec, "mInvisible")
 
 			for _,spr_comp in ipairs(spr_comps) do
-				ComponentSetValue2(spr_comp, "visible", not ComponentGetValue2(invis_gec, "mInvisible"))
+				ComponentSetValue2(spr_comp, "visible", is_owner_visible)
 				EntityRefreshSprite(entity_id, spr_comp)
 			end
+			utils.SetInternalBool(entity_id, "hardmod_hide_eperk_auras", not is_owner_visible)
 		end,
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "INVISIBILITY", true)
@@ -1119,6 +1119,9 @@ enemy_perks = {
 				script_shot = "mods/noita.hardmod/files/modules/enemy_perks/scripts/invisible_show_perk_icons.lua",
 				execute_every_n_frame = -1,
 			})
+
+			-- this makes eperk auras invisible while the player is not near
+			utils.SetInternalBool(entity_id, "hardmod_hide_eperk_auras", true)
 
 			-- below happens when an entity gets the Invisibility (player) perk
 			-- local sprites = EntityGetComponent(entity_id, "SpriteComponent")
@@ -1137,6 +1140,7 @@ enemy_perks = {
 		priority = 100,
 		max = 1,
 		min_level = 3,
+		unique_slot = "obscures_perks",
 		condition = function(self, data)
 			return (#data.already_held_perks + data.perks_to_give) > 1
 		end,
@@ -1156,6 +1160,9 @@ enemy_perks = {
 			for _,perk in ipairs(perks) do
 				if perk ~= self then perk.sprite = dir.."perk_sprites/missing.png" end
 			end
+		end,
+		func = function(self, entity_id, data)
+			utils.SetInternalBool(entity_id, "hardmod_hide_eperk_auras", true)
 		end
 	},
 	{
@@ -1209,7 +1216,9 @@ enemy_perks = {
 			sky = 6,
 			hell = 6,
 		},
-		condition = increment_weight_with_level,
+		condition = function(self, data)
+			return increment_weight_with_level(self, data) and no_nearby_giant_auras(self, data)
+		end,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/shield_sapper_aura.xml", x, y))
@@ -1318,6 +1327,7 @@ enemy_perks = {
 		priority = 10,
 		max = 1,
 		min_level = 3,
+		requires_dmc = true,
 		func = function(self, entity_id, data)
 			EntityRemoveTag(entity_id, "homing_target")
 		end
@@ -1400,7 +1410,7 @@ enemy_perks = {
 		description = "$hardmod_eperk_tether_desc",
 		weight = 1,
 		priority = 25,
-		max = 2,
+		max = 1,
 		min_level = 6,
 		unique_slot = "large_aura",
 		biome_conditions = {
@@ -1418,10 +1428,10 @@ enemy_perks = {
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/tether_aura_dormant.xml", x, y))
 
-			local stacks = (data.how_many_of_each_perk[self.id] or 0) + 1
-			if stacks == 2 then
-				utils.SetInternalInt(entity_id, "hardmod_tether_stacks", stacks)
-			end
+			-- local stacks = (data.how_many_of_each_perk[self.id] or 0) + 1
+			-- if stacks == 2 then
+			-- 	utils.SetInternalInt(entity_id, "hardmod_tether_stacks", stacks)
+			-- end
 		end
 	},
 	{
