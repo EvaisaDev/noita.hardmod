@@ -538,6 +538,8 @@ hardmod_eperk_homing_curser_name,Homing Curser,RU_MISSING,,,,,,,,,,,,
 hardmod_eperk_homing_curser_desc,This enemy's projectiles create a personal gravity field when they hit you.,RU_MISSING,,,,,,,,,,,,
 hardmod_spell_overclock_name,Overclock,RU_MISSING,,,,,,,,,,,,
 hardmod_spell_overclock_desc,"Pushes your wand to its limits, but may cause overheating",RU_MISSING,,,,,,,,,,,,
+hardmod_eperk_attack_speed_name,Rapidfire,,,,,,,,,,,,,
+hardmod_eperk_attack_speed_desc,This enemy fires projectiles faster,,,,,,,,,,,,,
 ,,,,,,,,,,,,,
 ,,,,,,,,,,,,,
 ,,,,,,,,,,,,,"unused translations, the following are strings that are not currently used and thus do not require translation"
