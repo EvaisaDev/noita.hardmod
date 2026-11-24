@@ -21,7 +21,6 @@ function enabled_changed(entity_id, is_enabled)
 	local _,_,_w,_h,_r = ComponentGetValue2(itx_comp, "Transform")
 	ComponentSetValue2(itx_comp, "Transform",
 		hs_x + spr_x - 1,
-		hs_y + spr_y - 2,
-		_w, _h, _r
+		0, _w, _h, _r
 	)
 end
