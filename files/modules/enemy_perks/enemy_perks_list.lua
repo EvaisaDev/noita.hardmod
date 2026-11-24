@@ -11,6 +11,12 @@ local biomes = dofile_once("mods/noita.hardmod/lib/biome_index.lua")
 ---@field icon string? path to the perk's icon
 ---@field not_progress boolean? if true, perk won't show up in progress menu
 ---@field weight number? probability of the perk being pulled, default 10
+---@field stack_multiplier number? the multiplier applied to the perk weight for each stack already held, default 1.15
+---@field min_level number the lower level limit for this perk to be selected
+---@field max_level number the upper level limit for this perk to be selected
+---@field unique_slot string if set, will disallow other enemy perks with the same unique_slot value to be selected
+---@field not_boss bool blacklists bosses from gaining this perk
+---@field not_shop_guardian bool blacklists stevari and skoude from gaining this perk
 ---@field biome_conditions table? custom condition functions that run if the target_enemy is in the keyed biome, if value is a number it will set the perk weight to that value
 ---@field priority number? priority for the order its shown above enemies' heads or in the inspect window, default 10
 ---@field max integer? max number of this perk an enemy can have
@@ -1213,8 +1219,9 @@ enemy_perks = {
 		name = "$hardmod_eperk_bounty_name",
 		description = "$hardmod_eperk_bounty_desc",
 		weight = 1,
+		stack_multiplier = 0.8,
 		priority = 30,
-		max = 5,
+		max = 10,
 		min_level = 0,
 		unique_slot = "on_death",
 		func = function(self, entity_id, data)
@@ -1535,6 +1542,7 @@ for i,perk in ipairs(enemy_perks) do
 	perk.id = "HARDMOD_"..perk.id
 	perk.name = perk.name or perk.id
 	perk.weight = perk.weight or 10
+	perk.stack_multiplier = perk.stack_multiplier or 1.15 --default 15% stack multiplier, eg 10 stacks would multiply the base weight by ~4x
 	perk.priority = (perk.priority or 0) + i*0.001
 	perk.sprite = ModDoesFileExist(perk.sprite or "") and perk.sprite
 		or ModDoesFileExist(sprites_path..id:lower()..".png") and sprites_path..id:lower()..".png"

@@ -81,7 +81,7 @@ function utilities.select_random_perk(t, data)
 		if entry.requires_dmc and not data.dmc then goto continue end
 		if data.is_boss and entry.not_boss then goto continue end
 		if data.is_shop_guardian and entry.not_shop_guardian then goto continue end
-		if data.how_many_of_each_perk[id] then entry.weight = entry.weight * 1.15^data.how_many_of_each_perk[id] end
+		if data.how_many_of_each_perk[id] then entry.weight = entry.weight * entry.stack_multiplier^data.how_many_of_each_perk[id] end
 		local unique_slot = entry.unique_slot
 		if unique_slot then
 			local taken_by = data.unique_slots[unique_slot]
@@ -189,12 +189,6 @@ function utilities.give_enemy_perks(entity_id, perks_to_give, data)
 
 			data.perks_to_give = data.perks_to_give - 1
 		end
-		if #already_held_perks > 20 then
-			for _,eperk in ipairs(already_held_perks) do
-				print(eperk)
-			end
-		end
-		EntitySetTransform(HARDMOD_GLOBAL_DATA.player, x, y)
 	elseif perks_to_give_type == "table" then
 		for _,perk in ipairs(perks_to_give) do
 			if type(perk) == "string" then
