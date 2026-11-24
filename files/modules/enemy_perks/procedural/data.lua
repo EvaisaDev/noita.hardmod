@@ -57,10 +57,6 @@ local on_hit_callbacks = {
 	{
 		id = "homing_curser",
 		script_on_shot = function(projectile, x, y)
-			local comp = EntityAddComponent2(projectile, "HitEffectComponent", {
-				effect_hit = "LOAD_UNIQUE_CHILD_ENTITY",
-        		value_string = "data/entities/misc/gravity_field_enemy_short.xml",
-			})
 			local comp = EntityAddComponent2(projectile, "ParticleEmitterComponent", {
 				emitted_material_name = "spark_purple_bright",
 				lifetime_min = 0.5,
@@ -84,6 +80,7 @@ local on_hit_callbacks = {
 			ComponentSetValue2(comp, "gravity", 0, 0)
 			ComponentSetValue2(comp, "area_circle_radius", 0, 32)
 		end,
+		script_on_hit = dir.."scripts/homing_curser_apply.lua",
 	}
 }
 
