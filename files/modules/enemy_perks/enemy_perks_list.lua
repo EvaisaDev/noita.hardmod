@@ -78,7 +78,7 @@ end
 
 local function no_nearby_giant_auras(self, data)
 	local x, y = EntityGetTransform(data.target_enemy)
-	return #EntityGetInRadiusWithTag(x, y, 500, "hardmod_giant_eperk_aura") == 0
+	return #EntityGetInRadiusWithTag(x, y, 300, "hardmod_giant_eperk_aura") == 0
 end
 
 local function spawn_on_death_blacklist(self, data)
