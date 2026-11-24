@@ -81,7 +81,7 @@ function utilities.select_random_perk(t, data)
 		if entry.requires_dmc and not data.dmc then goto continue end
 		if data.is_boss and entry.not_boss then goto continue end
 		if data.is_shop_guardian and entry.not_shop_guardian then goto continue end
-		if data.how_many_of_each_perk[id] then entry.weight = entry.weight * 1.15^data.how_many_of_each_perk[id] end
+		if data.how_many_of_each_perk[id] then entry.weight = entry.weight * entry.stack_multiplier^data.how_many_of_each_perk[id] end
 		local unique_slot = entry.unique_slot
 		if unique_slot then
 			local taken_by = data.unique_slots[unique_slot]

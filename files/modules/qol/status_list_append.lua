@@ -4,17 +4,17 @@ local polymorphs = {
 	POLYMORPH = {
 		ui_name = "$hardmod_status_polymorph_name",
 		ui_description = "$hardmod_status_polymorph_desc",
-		ui_icon = "mods/noita.hardmod/files/modules/qol/polymorphed.png",
+		ui_icon = "mods/noita.hardmod/files/modules/qol/status_icons/polymorphed.png",
 	},
 	POLYMORPH_RANDOM = {
 		ui_name = "$hardmod_status_chaotic_polymorph_name",
 		ui_description = "$hardmod_status_chaotic_polymorph_desc",
-		ui_icon = "mods/noita.hardmod/files/modules/qol/chaotic_polymorphed.png",
+		ui_icon = "mods/noita.hardmod/files/modules/qol/status_icons/chaotic_polymorphed.png",
 	},
 	POLYMORPH_UNSTABLE = {
 		ui_name = "$hardmod_status_unstable_polymorph_name",
 		ui_description = "$hardmod_status_unstable_polymorph_desc",
-		ui_icon = "mods/noita.hardmod/files/modules/qol/chaotic_polymorphed.png",
+		ui_icon = "mods/noita.hardmod/files/modules/qol/status_icons/chaotic_polymorphed.png",
 	},
 }
 
