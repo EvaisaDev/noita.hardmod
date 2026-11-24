@@ -5,7 +5,7 @@ function death(damage_type_bit_field, message, attacker, drop_items)
     local owner = GetUpdatedEntityID()
     local ally = utils.GetInternalInt( owner, "hardmod_soul_linked_ally" ) or 0
 
-    if ally ~= 0 then
+    if ally ~= 0 and EntityGetIsAlive(ally) then
         utils.SetInternalInt( ally, "hardmod_soul_linked_ally", 0 )
         utils.EntityRemoveAllByTag( ally, "hardmod_soul_linked" )
         for _,child in ipairs(EntityGetAllChildren(ally, "hardmod_soul_linked") or {}) do
@@ -17,7 +17,7 @@ end
 function damage_received( damage, desc, entity_who_caused, is_fatal )
     local owner = GetUpdatedEntityID()
     local ally = utils.GetInternalInt( owner, "hardmod_soul_linked_ally" ) or 0
-    if ally == 0 then return end
+    if ally == 0 or not EntityGetIsAlive(ally) then return end
     if ( utils.GetInternalInt( owner, "hardmod_soul_linked_death" ) or 0 ) == 1 then return end -- to prevent stack overflows
 
 	local dmg_comp_self = EntityGetFirstComponentIncludingDisabled(owner, "DamageModelComponent")

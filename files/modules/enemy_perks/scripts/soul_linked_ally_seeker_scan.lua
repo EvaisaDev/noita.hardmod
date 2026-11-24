@@ -57,11 +57,9 @@ local function seek_new_ally()
 end
 
 local function check_ally_distance()
-	if ally == 0 then return end
+	if ally == 0 or not EntityGetIsAlive(ally) then return end
 	
-	local ax, ay = EntityGetTransform( ally )
-	if (not ax) or (not ay) then return end
-
+	local ax, ay = EntityGetTransform(ally)
 	local dx = ax - x
     local dy = ay - y
     local dist = math.sqrt( dx * dx + dy * dy )
@@ -85,7 +83,7 @@ local function check_ally_distance()
     end
 end
 
-if ally == 0 then
+if ally == 0 or not EntityGetIsAlive(ally) then
 	seek_new_ally()
 else
 	check_ally_distance()
