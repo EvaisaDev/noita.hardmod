@@ -934,6 +934,7 @@ fix Divine Shield cooldown vfx
 add Homing Curser eperk
 >w< typo
 pee pee poo poo
+slight tweaks to translation stuff
 add Overclock spell
 oops, double translations
 Overclock tweaks
@@ -954,3 +955,6 @@ improve Soul Linked desc
 check entitygetisalive
 ignore wand y offset for torches
 missed some
+working on new eperks
+added custom stack multipliers to eperks
+final tweaks, ran split.lua_run
