@@ -118,11 +118,11 @@ return {
 		    description         = "$hardmod_spell_overclock_desc",
 		    sprite 		        = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/overclock.png",
 		    type 		        = ACTION_TYPE_MODIFIER,
-			spawn_level         = "2,3,4",
-			spawn_probability   = "0.4,0.4,0.3",
+			spawn_level         = "1,2,3",
+			spawn_probability   = "0.4,0.3,0.2",
 		    price               = 240,
 		    mana                = 6,
-		    -- custom_xml_file 	= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_overclock.xml",
+		    custom_xml_file 	= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_overclock.xml",
 		    action              = function()
                 c.fire_rate_wait    = c.fire_rate_wait - 10
                 current_reload_time = current_reload_time - 20
@@ -141,12 +141,17 @@ return {
                     GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
 
                     local rand2 = Random( 1, 8 )
-                    if rand2 == 1 then
+                    if rand2 == 1 then -- 1/8 chance
 	                    c.fire_rate_wait = c.fire_rate_wait + 140
 	                    current_reload_time = current_reload_time + 140
                     	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 400.0
                     	add_projectile( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_explode.xml" )
-                    elseif rand2 <= 3 and GameGetGameEffectCount( entity_id, "PROTECTION_FIRE" ) == 0 then
+                    	EntityAddComponent2( entity_id, "LuaComponent", {
+                    		script_source_file = "mods/noita.hardmod/files/modules/spell_variety/scripts/spells/overclock_explode.lua",
+                    		execute_on_added = true,
+                    		remove_after_executed = true,
+                    	})
+                    elseif rand2 <= 3 then -- 1/4 chance
                     	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
                         EntityLoad( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_fire.xml", x, y )
                     else
