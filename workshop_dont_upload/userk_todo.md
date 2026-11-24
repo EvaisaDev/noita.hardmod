@@ -54,6 +54,7 @@
     Did a mod restart. Wands didn't come back. Was 1 left in the storage, ate it too. Then I tried to take out a potion, which disappeared as well. Instead got like 3 sets of those floating hands that killed me this time, was much less funny.
 
     Also, met the infected hamis, it has "fair mod" written all over it. 
+- Make on-hit effects explosion stuff support not trigger on entities not hit by the explosion (account for FF accordingly)
 
 ## Compatibility
 - Apply Glimmer changes to modded glimmers

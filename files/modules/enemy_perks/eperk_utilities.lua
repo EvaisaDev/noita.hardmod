@@ -189,6 +189,12 @@ function utilities.give_enemy_perks(entity_id, perks_to_give, data)
 
 			data.perks_to_give = data.perks_to_give - 1
 		end
+		if #already_held_perks > 20 then
+			for _,eperk in ipairs(already_held_perks) do
+				print(eperk)
+			end
+		end
+		EntitySetTransform(HARDMOD_GLOBAL_DATA.player, x, y)
 	elseif perks_to_give_type == "table" then
 		for _,perk in ipairs(perks_to_give) do
 			if type(perk) == "string" then
