@@ -260,7 +260,7 @@ enemy_perks = {
 	{
 		id = "ATTACK_SPEED",
 		name = "$hardmod_eperk_attack_speed_name",
-		description = "$hardmod_eperk_attack_spaeed_desc",
+		description = "$hardmod_eperk_attack_speed_desc",
 		weight = 6,
 		max = 3,
 		biome_conditions = {
