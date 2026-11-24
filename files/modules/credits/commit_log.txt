@@ -941,3 +941,6 @@ moar
 MOAR
 improve Soul Linked eperk logic
 ye olde eperk weight fix
+add Rapidfire eperk
+?
+spaeed
