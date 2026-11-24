@@ -933,3 +933,4 @@ add Homing Curser eperk
 >w< typo
 pee pee poo poo
 add Overclock spell
+oops, double translations
