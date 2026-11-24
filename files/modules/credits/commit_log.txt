@@ -944,3 +944,10 @@ ye olde eperk weight fix
 add Rapidfire eperk
 ?
 spaeed
+run periodic checks to see if the target is still alive
+add Invisible eperk
+fix some stuff
+improve giant aura eperk sparsity
+make Obfuscation and Invisible hide eperk auras
+make Invisible eperk spawn later
+improve Soul Linked desc

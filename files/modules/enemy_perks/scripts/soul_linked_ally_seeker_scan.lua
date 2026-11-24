@@ -1,13 +1,6 @@
-dofile_once("data/scripts/lib/utilities.lua")
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
 
 local MAX_LINKED_RADIUS = 300
-local factions = {
-	"slimes", "ant", "robot", "fly", "boss_dragon", "crawler", "helpless",
-	"eel", "fire", "fungus", "ghoul", "giant", "ice", "spider", "orcs",
-	"rat", "electricity", "wolf", "worm", "zombie", "nest", "mage", "mage_swapper",
-	"flower", "ghost", "healer", "apparition", "bat", "curse", "trap",
-}
 
 local owner = EntityGetRootEntity( GetUpdatedEntityID() )
 local x, y = EntityGetTransform( owner )
@@ -33,7 +26,7 @@ local function seek_new_ally()
 		end
 	end
 	if not candidates or #candidates == 0 then return end
-	ally = random_from_array( candidates )
+	ally = utils.RandomFromArray(candidates, x, y)
 
 	-- give the enemy's new soul linked ally the perk, too - but only visually
 	-- eperk_utils.give_enemy_perks(ally, "SOUL_LINKED", data)
@@ -53,15 +46,6 @@ local function seek_new_ally()
 		script_death = "mods/noita.hardmod/files/modules/enemy_perks/scripts/soul_linked_on_damage.lua",
 		execute_every_n_frame = -1,
 	})
-
-	-- remove cbcs
-	-- for _,cbc in ipairs(EntityGetComponentIncludingDisabled( owner, "CameraBoundComponent" ) or {}) do
-	-- 	EntityRemoveComponent( owner, cbc )
-	-- end
-	-- for _,cbc in ipairs(EntityGetComponentIncludingDisabled( ally, "CameraBoundComponent" ) or {}) do
-	-- 	EntitySetComponentIsEnabled( ally, cbc, false )
-		-- EntityRemoveComponent( ally, cbc )
-	-- end
 
 	-- give the ally the vfx entity, to draw a particle line
 	EntityAddChild( ally, EntityLoad( "mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_vfx.xml", x, y ) )

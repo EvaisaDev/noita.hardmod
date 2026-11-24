@@ -9,7 +9,8 @@
 		execute_every_n_frame="3"
 	></LuaComponent>
 
-	<ParticleEmitterComponent 
+	<ParticleEmitterComponent
+		_tags="aura_can_be_invis"
 		emitted_material_name="magic_gas_teleport"
 		gravity.y="0.0"
 		lifetime_min="0.05"
@@ -33,7 +34,8 @@
 		is_emitting="1">
 	</ParticleEmitterComponent>
 	
-	<ParticleEmitterComponent 
+	<ParticleEmitterComponent
+		_tags="aura_can_be_invis"
 		emitted_material_name="magic_gas_teleport"
 		gravity.y="0.0"
 		lifetime_min="0.7"
@@ -72,4 +74,9 @@
 		kill_when_finished="0" >
 	</MagicConvertMaterialComponent> -->
 
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/eperk_aura_update_visibility.lua"
+		execute_every_n_frame="15"
+	></LuaComponent>
+	
 </Entity>
