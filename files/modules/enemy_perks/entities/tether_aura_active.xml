@@ -1,4 +1,4 @@
-<Entity tags="perk_entity">
+<Entity tags="perk_entity,hardmod_giant_eperk_aura">
 
 	<LuaComponent
 		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/tether_aura_active_update.lua"
