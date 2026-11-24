@@ -10,8 +10,7 @@
 - remove item immunities perk if apotheosis is enabled?
 - fix zerk strat (i have a plan :> (concrete))
 - move food poisoning immunity to EYV and make sure it works with vomit eperk
-- make icon on anti-tele status better
-- add sort after fields for perks and spells
+- add sort_after fields for perks and spells
 - make shit perk border chunkier?
 
 ## Enemy Perk Ideas
@@ -40,6 +39,7 @@
 - projectile-attracting projectiles
 - status ailment projectile summon
 - "untethered" eperk for houre
+- sum fuckin larpa bullshit
 
 ## bugs
 - 2nd and 3rd hand statue kicked drops summon portal spell
