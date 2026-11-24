@@ -958,3 +958,5 @@ missed some
 working on new eperks
 added custom stack multipliers to eperks
 final tweaks, ran split.lua_run
+remove redundant script pickup logic
+icons for on the wiki
