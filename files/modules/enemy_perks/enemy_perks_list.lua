@@ -1092,6 +1092,7 @@ enemy_perks = {
 		description = "$hardmod_eperk_invisible_desc",
 		weight = 2,
 		max = 1,
+		min_level = 3,
 		unique_slot = "obscures_perks",
 		biome_conditions = {
 			magical_temple = 4,
