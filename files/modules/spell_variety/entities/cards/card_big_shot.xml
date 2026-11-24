@@ -50,4 +50,10 @@
 		is_emitting="1" >
 	</ParticleEmitterComponent>
 
+	<LuaComponent
+		_tags="enabled_in_hand"
+		script_enabled_changed="mods/noita.hardmod/files/modules/vanilla_spell_rebalances/scripts/set_spell_effect_offset.lua"
+		execute_every_n_frame="-1"
+	></LuaComponent>
+
 </Entity>

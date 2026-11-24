@@ -23,6 +23,7 @@ local time = GameGetFrameNum()
 
 	-- "shoulder" position
 	local ax, ay = EntityGetTransform(ally)
+	if (not ax) or (not ay) then return end -- sigh
 	local offset_y = 0
 	for _,hitbox in ipairs(EntityGetComponent(ally, "HitboxComponent") or {}) do
 		offset_y = math.max(offset_y, -0.5 * ComponentGetValue2(hitbox, "aabb_min_y"))
