@@ -539,7 +539,7 @@ hardmod_eperk_homing_curser_desc,This enemy's projectiles create a personal grav
 hardmod_spell_overclock_name,Overclock,RU_MISSING,,,,,,,,,,,,
 hardmod_spell_overclock_desc,"Pushes your wand to its limits, but may cause overheating",RU_MISSING,,,,,,,,,,,,
 hardmod_eperk_soul_linked_name,Soul Linked,RU_MISSING,,,,,,,,,,,,
-hardmod_eperk_soul_linked_desc,This enemy cannot die while its ally is alive.,RU_MISSING,,,,,,,,,,,,
+hardmod_eperk_soul_linked_desc,This enemy and its ally cannot die while the other is alive.,RU_MISSING,,,,,,,,,,,,
 hardmod_eperk_attack_speed_name,Rapidfire,,,,,,,,,,,,,
 hardmod_eperk_attack_speed_desc,This enemy fires projectiles faster,,,,,,,,,,,,,
 hardmod_eperk_invisible_name,Invisible,,,,,,,,,,,,,
