@@ -116,8 +116,8 @@ hooks.spell_patches = {
 	["ADD_TRIGGER"] = {
 		type = ACTION_TYPE_MODIFIER, mana = 20,
 		description = "$hardmod_spell_add_trigger_desc",
-		spawn_level = "1,2,3,4,5,6,10",
-		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4,0.5",
+		spawn_level = "1,2,3,4,5,6",
+		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4",
 		action = function()
 			EnqueueTrigger({
 				type = TRIGGER_HIT_WORLD,
@@ -130,8 +130,8 @@ hooks.spell_patches = {
 	["ADD_TIMER"] = {
 		type = ACTION_TYPE_MODIFIER, mana = 20,
 		description = "$hardmod_spell_add_timer_desc",
-		spawn_level = "1,2,3,4,5,6,10",
-		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4,0.5",
+		spawn_level = "1,2,3,4,5,6",
+		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4",
 		action = function()
 			EnqueueTrigger({
 				type = TRIGGER_TIMER,
@@ -145,8 +145,8 @@ hooks.spell_patches = {
 	["ADD_DEATH_TRIGGER"] = {
 		type = ACTION_TYPE_MODIFIER, mana = 20,
 		description = "$hardmod_spell_add_death_trigger_desc",
-		spawn_level = "1,2,3,4,5,6,10",
-		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4,0.5",
+		spawn_level = "1,2,3,4,5,6",
+		spawn_probability = "0.05,0.1,0.2,0.3,0.4,0.4",
 		action = function()
 			EnqueueTrigger({
 				type = TRIGGER_DEATH,
