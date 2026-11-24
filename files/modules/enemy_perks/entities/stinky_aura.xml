@@ -5,6 +5,7 @@
 	/>
 
 	<ParticleEmitterComponent
+		_tags="aura_can_be_invis"
 		emitted_material_name="vomit"
 		gravity.y="0.0"
 		lifetime_min="1.6"
@@ -27,6 +28,7 @@
 	/>
 
 	<ParticleEmitterComponent
+		_tags="aura_can_be_invis"
 		emitted_material_name="vomit"
 		gravity.y="0.0"
 		lifetime_min="1.0"
@@ -68,5 +70,10 @@
 		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/stinky_aura.lua"
 		execute_every_n_frame="10"
 	/>
+
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/eperk_aura_update_visibility.lua"
+		execute_every_n_frame="15"
+	></LuaComponent>
 
 </Entity>
