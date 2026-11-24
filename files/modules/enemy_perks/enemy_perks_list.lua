@@ -1116,7 +1116,9 @@ enemy_perks = {
 			temple_of_the_art = 4,
 			wizards_den = 4,
 		},
-		-- condition = enemy_is_ranged_attack,
+		condition = function(self, data)
+			return data.how_many_of_each_perk["HARDMOD_WET_AURA"] == 0
+		end,
 		func_handler = function(self, entity_id, root, spr_comps)
 			local invis_gec = GameGetGameEffect(root, "INVISIBILITY")
 			if not invis_gec or invis_gec == 0 then return end

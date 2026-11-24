@@ -542,6 +542,8 @@ hardmod_eperk_soul_linked_name,Soul Linked,RU_MISSING,,,,,,,,,,,,
 hardmod_eperk_soul_linked_desc,This enemy cannot die while its ally is alive.,RU_MISSING,,,,,,,,,,,,
 hardmod_eperk_attack_speed_name,Rapidfire,,,,,,,,,,,,,
 hardmod_eperk_attack_speed_desc,This enemy fires projectiles faster,,,,,,,,,,,,,
+hardmod_eperk_invisible_name,Invisible,,,,,,,,,,,,,
+hardmod_eperk_invisible_desc,This enemy blends in with the environment.,,,,,,,,,,,,,
 ,,,,,,,,,,,,,
 ,,,,,,,,,,,,,
 ,,,,,,,,,,,,,"unused translations, the following are strings that are not currently used and thus do not require translation"
