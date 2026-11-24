@@ -25,7 +25,7 @@ local sprites_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_sprites/
 local icons_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/"
 
 --TODO!!!! bake all of this into new eperk logic function
-local enemy_is_ranged_attack = function(self, data)
+local enemy_is_ranged_attack = function(self, data, min_attack_delay)
 	local summoners = {
 		["data/entities/animals/bigbat.xml"] = true,
 		["data/entities/animals/giant.xml"] = true,
@@ -36,7 +36,8 @@ local enemy_is_ranged_attack = function(self, data)
 	local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
 	if animal_ai_comp
 	and ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
-	and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends") then
+	and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends")
+	and (not min_attack_delay or ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between") >= min_attack_delay) then
 		return true
 	end
 end
@@ -434,14 +435,7 @@ enemy_perks = {
 			sky = 8,
 		},
 		condition = function(self, data)
-			if EntityHasTag(data.target_enemy, "thundermage") then return end
-			local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-			if animal_ai_comp
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
-			and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends")
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between") >= 60 then -- only on slow shooters
-				return true
-			end
+			return enemy_is_ranged_attack(self, data, 60) and not EntityHasTag(data.target_enemy, "thundermage")
 		end,
 		func = function(self, entity_id, data)
 			if not is_projectile_immune(self, data) then GetGameEffectLoadTo(entity_id, "PROTECTION_ELECTRICITY", false) else print("not eimmune :)") end
@@ -481,13 +475,7 @@ enemy_perks = {
 			wizards_den = 8,
 		},
 		condition = function(self, data)
-			local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-			if animal_ai_comp
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
-			and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends")
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between") >= 60 then -- only on slow shooters
-				return true
-			end
+			return enemy_is_ranged_attack(self, data, 60)
 		end,
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
@@ -1345,6 +1333,22 @@ enemy_perks = {
 					value_int = 150,
 				})
 			end
+		end
+	},
+	{
+		id = "SOUL_LINKED",
+		name = "$hardmod_eperk_soul_linked_name",
+		description = "$hardmod_eperk_soul_linked_desc",
+		weight = 2,
+		priority = 23,
+		max = 1,
+		biome_conditions = {
+			sandcave = 4,
+		},
+		func = function(self, entity_id, data)
+			local x, y = EntityGetTransform(data.target_enemy)
+			EntityAddChild(data.target_enemy,
+				EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_ally_seeker.xml", x, y))
 		end
 	},
 	{
