@@ -258,25 +258,6 @@ enemy_perks = {
 		end
 	},
 	{
-		id = "ATTACK_SPEED",
-		name = "$hardmod_eperk_attack_speed_name",
-		description = "$hardmod_eperk_attack_speed_desc",
-		weight = 6,
-		max = 3,
-		biome_conditions = {
-			sandcave = 10,
-		},
-		requires_dmc = true,
-		condition = enemy_is_ranged_attack,
-		func = function(self, entity_id, data)
-			local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-			if animal_ai_comp then
-				local old_attack_speed = ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between")
-				ComponentSetValue2( animal_ai_comp, "attack_ranged_frames_between", old_attack_speed * 0.67 )
-			end
-		end
-	},
-	{
 		id = "DRY_SPELL",
 		name = "$hardmod_eperk_dry_spell_name",
 		description = "$hardmod_eperk_dry_spell_desc",
@@ -1116,9 +1097,9 @@ enemy_perks = {
 			temple_of_the_art = 4,
 			wizards_den = 4,
 		},
-		condition = function(self, data)
-			return data.how_many_of_each_perk["HARDMOD_WET_AURA"] == 0
-		end,
+		-- condition = function(self, data)
+		-- 	return data.how_many_of_each_perk["HARDMOD_WET_AURA"] == 0
+		-- end,
 		func_handler = function(self, entity_id, root, spr_comps)
 			local invis_gec = GameGetGameEffect(root, "INVISIBILITY")
 			if not invis_gec or invis_gec == 0 then return end
@@ -1130,6 +1111,7 @@ enemy_perks = {
 		end,
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "INVISIBILITY", true)
+			GetGameEffectLoadTo(entity_id, "STAINLESS_ARMOUR", true)
 
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddComponent2(entity_id, "LuaComponent", {

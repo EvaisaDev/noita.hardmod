@@ -26,8 +26,7 @@ local function seek_new_ally()
 		end
 	end
 	if not candidates or #candidates == 0 then return end
-	SetRandomSeed(x, y)
-	ally = random_from_array( candidates )
+	ally = utils.RandomFromArray(candidates, x, y)
 
 	-- give the enemy's new soul linked ally the perk, too - but only visually
 	-- eperk_utils.give_enemy_perks(ally, "SOUL_LINKED", data)

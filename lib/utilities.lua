@@ -736,6 +736,17 @@ function GetHeldWand(entity_id)
 	return nil
 end
 
+--- Replaces vanilla utilities' random_from_array function
+---@param array table Array to get a random element from
+---@param seed_x int? Seed value for x (defaults to GameGetFrameNum() if nil)
+---@param seed_y int? Seed value for y (defaults to GameGetFrameNum() if nil)
+---@return int A random element from the array
+function RandomFromArray(array, seed_x, seed_y)
+	seed_x = seed_x or GameGetFrameNum()
+	seed_y = seed_y or GameGetFrameNum()
+	return array[Random(1, #array)]
+end
+
 utils.logging = false
 ---useful logger than can be enabled/disabled at will
 ---@param ... any all parameters are concatenated into one string
