@@ -267,7 +267,7 @@ end
 ---@param entity_id entity_id ID of the entity
 ---@param variable_name string Name of the variable
 ---@param new_value int New value of the variable (or initial value, if VSC did not exist)
----@return new_value int Returns the given value for convenience
+---@return int new_value Returns the given value for convenience
 function utils.SetInternalInt(entity_id, variable_name, new_value)
 	local variable_found = false
 	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
@@ -753,7 +753,7 @@ end
 ---@param name string Name of the child to look for
 ---@return entity_id? Entity ID of the first match, or nil if none was found
 function utils.EntityGetChildByName(entity_id, name)
-	local children = EntityGetAllChildren(entity_id)
+	local children = EntityGetAllChildren(entity_id) or {}
 	for _,child in ipairs(children) do
 		if EntityGetName(child) == name then
 			return child
@@ -770,11 +770,11 @@ end
 
 --- Function to get an entity's held wand, if any
 ---@param entity_id entity_id Entity ID of the entity to check
----@return entity_id entity_id? Entity ID of the wand, or nil if the entity is not holding a wand
+---@return entity_id? entity_id Entity ID of the wand, or nil if the entity is not holding a wand
 function GetHeldWand(entity_id)
 	if entity_id ~= nil then
 		local inv2_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "Inventory2Component")
-		if not inv2_comp then return end
+		if not inv2_comp then return nil end
 		local active_item = ComponentGetValue2(inv2_comp, "mActiveItem")
 		if entity_is_wand(active_item) then
 			return active_item
@@ -788,9 +788,9 @@ end
 ---@param seed_a int? Seed value a (defaults to GameGetFrameNum() if nil)
 ---@param seed_b int? Seed value b (defaults to GameGetFrameNum() if nil)
 ---@return int A random element from the array
-function utils.RandomFromArray(array, seed_x, seed_y)
-	seed_x = seed_x or GameGetFrameNum()
-	seed_y = seed_y or GameGetFrameNum()
+function utils.RandomFromArray(array, seed_a, seed_b)
+	seed_a = seed_a or GameGetFrameNum()
+	seed_b = seed_b or GameGetFrameNum()
 	SetRandomSeed(seed_a, seed_b)
 	return array[Random(1, #array)]
 end
