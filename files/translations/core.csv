@@ -358,7 +358,7 @@ hardmod_spell_upgrade_remove_always_cast_desc,"Drag onto a wand to eject a rando
 hardmod_spell_upgrade_spread_name,Upgrade: Spread,Улучшение: Разброс,,,,,,,,,,,,
 hardmod_spell_upgrade_spread_desc,"Drag onto a wand to reduce its spread","Перетащите в жезл, чтобы уменьшить его разброс",,,,,,,,,,,,
 hardmod_perk_extra_shop_item_name,Extra Item in Shops,,,,,,,,,,,,,
-hardmod_perk_extra_shop_item_desc,There will be an additional item or spell in every shop you haven't discovered yet.,,,,,,,,,,,,,
+hardmod_perk_extra_shop_item_desc,There will be an additional item in any shop you haven't discovered yet.,,,,,,,,,,,,,
 hardmod_perk_promote_random_spell_name,Promote Random Spell (One-off),Повышение случайного заклинания,,,,,,,,,,,,
 hardmod_perk_promote_random_spell_desc,"For each unique spell in your inventory, 25% chance to promote one of them\nto an always-cast on your held wand, up to a maximum of 4.","Для каждого уникального заклинания в вашем инвентаре есть 25% шанс повысить одно\nдо постоянного заклинания на жезле в руке, максимум до 4.",,,,,,,,,,,,
 hardmod_promot_ac_success,'$0' was promoted to an always-cast!,'$0' было повышено до постоянного заклинания!,,,,,,,,,,,,
