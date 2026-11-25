@@ -967,3 +967,4 @@ some Soul Linked tweaks
 some Overclock tweaks
 this probably fixes something somewhere
 nvm lol
+limit Soul Linked to a few late-game biomes
