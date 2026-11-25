@@ -1438,7 +1438,7 @@ enemy_perks = {
 			sky = 2,
 			hell = 2,
 			meat_realm = 2,
-		}
+		},
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(data.target_enemy)
 			EntityAddChild(data.target_enemy,
