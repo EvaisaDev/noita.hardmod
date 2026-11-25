@@ -1429,9 +1429,7 @@ enemy_perks = {
 		weight = 2,
 		priority = 23,
 		max = 1,
-		biome_conditions = {
-			sandcave = 4,
-		},
+		min_level = 4,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(data.target_enemy)
 			EntityAddChild(data.target_enemy,
