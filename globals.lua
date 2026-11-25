@@ -206,6 +206,7 @@ move_discarded_to_deck = nil
 ---@field usable_by_enemies boolean?
 ---@field max_in_perk_pool integer?
 ---@field not_in_default_perk_pool boolean?
+---@field insert_after string? Custom field, same as spells insert_after but for perks. Does not work on custom perks added by us.
 ---@field not_progress boolean? Hardmod's custom field, hides the perk from the progress menu
 ---@field holy_mountain_exclusive boolean? Hardmod's custom field
 ---@field func fun(perk_entity: entity_id, picked_by_entity: entity_id, item_name: string, pickup_count: integer)?

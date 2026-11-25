@@ -47,10 +47,32 @@ for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__perk_appen
 	end
 end
 
-local num_perks = #perk_list
-for i,perk in ipairs(new_perks) do
+local indexes = {}
+local offsets = {}
+for idx,perk in ipairs(perk_list) do
+	indexes[perk.id] = idx
+end
+
+for _,perk in ipairs(new_perks) do
 	perk.origin = "$mod.noita.hardmod"
-	perk_list[num_perks+i] = perk
+
+	local idx = indexes[perk.insert_after]
+	if idx then
+		local offset = offsets[perk.insert_after] or 1
+		idx = idx + offset
+
+		table.insert(perk_list, idx, perk)
+		offsets[perk.insert_after] = offset + 1
+
+		-- shift
+		for key,value in pairs(indexes) do
+			if value >= idx then
+				indexes[key] = value + 1
+			end
+		end
+	else
+		table.insert(perk_list, perk)
+	end
 end
 
 for _,perk in ipairs(perk_list) do
