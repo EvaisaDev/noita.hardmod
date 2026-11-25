@@ -3,6 +3,7 @@ local hooks = {}---@type perk_hooks
 hooks.new_perks = {
 	{
 		id = "HARDMOD_BETTER_CHESTS",
+		insert_after = "EXTRA_SHOP_ITEM",
 		author = "$modder.yui",
 		ui_name = "$hardmod_perk_better_chests_name",
 		ui_description = "$hardmod_perk_better_chests_desc",
@@ -17,6 +18,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_TREASURE_HUNTER",
+		insert_after = "EXTRA_SHOP_ITEM",
 		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_treasure_hunter_name",
 		ui_description = "$hardmod_perk_treasure_hunter_desc",

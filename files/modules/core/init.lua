@@ -1,7 +1,10 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
+local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua") ---@type nxml
 
-ModLuaFileAppend("data/scripts/gun/gun.lua", "mods/noita.hardmod/files/modules/core/appends/gun.lua")
-ModLuaFileAppend("data/scripts/biome_scripts.lua", "mods/noita.hardmod/files/modules/core/appends/biome_scripts.lua")
+local root = "mods/noita.hardmod/files/modules/core/"
+
+ModLuaFileAppend("data/scripts/gun/gun.lua", root.."appends/gun.lua")
+ModLuaFileAppend("data/scripts/biome_scripts.lua", root.."appends/biome_scripts.lua")
 
 -- remove perks with not_progress from progress menu
 utils.patchifile("data/scripts/perks/perk_reflect.lua", {{
@@ -28,6 +31,18 @@ if ModIsEnabled("Apotheosis") then
 		[[do c = perk_list[z]],
 		[[do local c = perk_list[z]]
 	)
+end
+
+-- don't mind this
+local helpless_death = root.."scripts/misc/helpless_death.lua"
+local track_animals = { "longleg.xml", "fish.xml" }
+
+ModLuaFileAppend("data/scripts/animals/helpless_death.lua", helpless_death)
+
+for _,animal in pairs(track_animals) do
+	for file in nxml.edit_file("data/entities/animals/"..animal) do
+		file:create_child("LuaComponent", { script_death = helpless_death })
+	end
 end
 
 return {}

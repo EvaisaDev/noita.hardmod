@@ -3,7 +3,7 @@ local hooks = {}---@type spell_hooks
 hooks.new_spells = {
 	{
 		id					= "HARDMOD_SEA_POISON",
-		add_before			= "SEA_MIMIC",
+		insert_after		= "SEA_ACID_GAS",
 		name				= "$hardmod_spell_sea_poison_name",
 		description			= "$hardmod_spell_sea_poison_desc",
 		spawn_requires_flag	= "card_unlocked_hardmod_sea_poison",

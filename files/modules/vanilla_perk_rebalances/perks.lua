@@ -6,6 +6,7 @@ local dir = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/"
 hooks.new_perks = {
 	{
 		id = "HARDMOD_SPELL_GEMS",
+		insert_after = "ANGRY_LEVITATION",
 		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_spell_gems_name",
 		ui_description = "$hardmod_perk_spell_gems_desc",
@@ -20,6 +21,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_TINKER_AT_PEDESTALS",
+		insert_after = "WAND_EXPERIMENTER",
 		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_tinker_at_pedestals_name",
 		ui_description = "$hardmod_perk_tinker_at_pedestals_desc",
@@ -34,22 +36,8 @@ hooks.new_perks = {
 		end
 	},
 	{
-		id = "HARDMOD_ITEM_IMMUNITIES",
-		author = "$modder.yui",
-		ui_name = "$hardmod_perk_item_immunities_name",
-		ui_description = "$hardmod_perk_item_immunities_desc",
-		ui_icon = dir.."ui_gfx/perks/item_immunities_016.png",
-		perk_icon = dir.."ui_gfx/perks/item_immunities.png",
-		stackable = false,
-		one_off_effect = false,
-		usable_by_enemies = false,
-		func = function(perk, player, name, count)
-			if count > 1 then return end
-			EntityAddChild(player, EntityLoad(dir.."entities/effect_item_immunities.xml"))
-		end
-	},
-	{
 		id = "HARDMOD_PROTECTION_ELECTRIC_STUN",
+		insert_after = "PROTECTION_ELECTRICITY",
 		ui_name = "$hardmod_perk_protection_electric_stun_name",
 		ui_description = "$hardmod_perk_protection_electric_stun_desc",
 		ui_icon = dir.."ui_gfx/perks/protection_electric_stun_016.png",
@@ -63,6 +51,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_PROTECTION_FREEZE",
+		insert_after = "PROTECTION_ELECTRICITY",
 		ui_name = "$perk_protection_freeze",
 		ui_description = "$perkdesc_protection_freeze",
 		ui_icon = "data/ui_gfx/perk_icons/protection_freeze.png",
@@ -74,8 +63,25 @@ hooks.new_perks = {
 		-- given from altar sacrifice
 		not_in_default_perk_pool = true,
 	},
+	{
+		id = "HARDMOD_ITEM_IMMUNITIES",
+		insert_after = "ABILITY_ACTIONS_MATERIALIZED",
+		author = "$modder.yui",
+		ui_name = "$hardmod_perk_item_immunities_name",
+		ui_description = "$hardmod_perk_item_immunities_desc",
+		ui_icon = dir.."ui_gfx/perks/item_immunities_016.png",
+		perk_icon = dir.."ui_gfx/perks/item_immunities.png",
+		stackable = false,
+		one_off_effect = false,
+		usable_by_enemies = false,
+		func = function(perk, player, name, count)
+			if count > 1 then return end
+			EntityAddChild(player, EntityLoad(dir.."entities/effect_item_immunities.xml"))
+		end
+	},
 	{ --Nabbed from Apotheosis
 		id = "HARDMOD_OVERSIZED_SHIELD",
+		insert_after = "SHIELD",
 		author = "$modder.conga",
 		ui_name = "$hardmod_perk_oversized_shield_name",
 		ui_description = "$hardmod_perk_oversized_shield_desc",
@@ -128,6 +134,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_SUMMON_TOOLBOX",
+		insert_after = "ALWAYS_CAST",
 		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_summon_toolbox_name",
 		ui_description = "$hardmod_perk_summon_toolbox_desc",
@@ -150,6 +157,7 @@ hooks.new_perks = {
 	},
 	{
 		id = "HARDMOD_PYROMANIAC",
+		insert_after = "ELECTRICITY",
 		author = "$modder.yui",
 		ui_name = "$hardmod_perk_pyromaniac_name",
 		ui_description = "$hardmod_perk_pyromaniac_desc",
@@ -191,6 +199,7 @@ hooks.new_perks = {
 	-- },
 	{
 		id = "HARDMOD_GOLD_IS_DUST",
+		insert_after = "GOLD_IS_FOREVER",
 		author = "$modder.userk",
 		ui_name = "$hardmod_gold_is_dust_perkname",
 		ui_description = "$hardmod_gold_is_dust_perkdesc",

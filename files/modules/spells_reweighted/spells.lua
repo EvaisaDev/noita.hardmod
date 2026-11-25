@@ -11,6 +11,8 @@ hooks.spell_patches = {
 		spawn_level = "2,4,5,6",
 		spawn_probability = "0.7,0.7,0.8,0.8",
 	},
+	["ENERGY_SHIELD"] = { mana = 8 },
+	["ENERGY_SHIELD_SECTOR"] = { mana = 5 },
 	["ALPHA"] = { mana = 80 },
 	["GAMMA"] = { mana = 80 },
 	["TAU"] = { mana = 120 },

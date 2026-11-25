@@ -3,6 +3,7 @@ local hooks = {}---@type perk_hooks
 hooks.new_perks = {
 	{
 		id = "HARDMOD_ALEPH",
+		insert_after = "SAVING_GRACE",
 		ui_name = "$hardmod_perk_aleph_name",
 		ui_description = "$hardmod_perk_aleph_desc",
 		ui_icon = "mods/noita.hardmod/files/modules/limited_spells/gfx/ui_gfx/perks/perk_aleph_016.png",

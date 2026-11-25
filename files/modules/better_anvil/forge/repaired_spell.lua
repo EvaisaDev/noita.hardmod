@@ -14,4 +14,9 @@ return function (x, y)
     SpawnActionItem(x, y - 5, extra_level)
     x = x + 10
   end
+
+  if not GameHasFlagRun("repaired_broken_spell") then
+	GameAddFlagRun("repaired_broken_spell")
+	CreateItemActionEntity("SUMMON_PORTAL", x - 5, y - 5)
+  end
 end

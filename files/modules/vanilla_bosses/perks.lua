@@ -4,6 +4,7 @@ local hooks = {}---@type perk_hooks
 hooks.new_perks = {
 	{
 		id = "HARDMOD_GOLD_SHIELD",
+		insert_after = "SHIELD",
 		author = "$modder.dani2d",
 		ui_name = "$hardmod_perk_divine_shield_name",
 		ui_description = "$hardmod_perk_divine_shield_desc",
