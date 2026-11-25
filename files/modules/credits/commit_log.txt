@@ -963,3 +963,5 @@ remove redundant script pickup logic
 icons for on the wiki
 undo absolution desc change
 Make Healthy Exploration remove the wounded effect so its not wasted
+some Soul Linked tweaks
+some Overclock tweaks
