@@ -98,7 +98,7 @@ hooks.new_spells = {
 	},
 	{
 		id = "HARDMOD_TORCH_MAGIC",
-		insert_after = "TORCH_ELECTRIC2",
+		insert_after = "TORCH_ELECTRIC",
 		name = "$hardmod_spell_torch_magic_name",
 		description = "$hardmod_spell_torch_magic_desc",
 		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/magic_torch.png",

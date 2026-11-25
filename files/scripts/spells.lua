@@ -62,7 +62,7 @@ for _,spell in ipairs(new_spells) do
 
 		-- shift
 		for key,value in pairs(indexes) do
-			if value > idx then
+			if value >= idx then
 				indexes[key] = value + 1
 			end
 		end
