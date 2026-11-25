@@ -432,6 +432,7 @@ hooks.perk_patches = {
 	["EXTRA_SHOP_ITEM"] = {
 		ui_name = "$hardmod_perk_extra_shop_item_name",
 		ui_description = "$hardmod_perk_extra_shop_item_desc",
+		stackable_maximum = 10,
 	},
 }
 
