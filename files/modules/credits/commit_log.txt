@@ -985,3 +985,9 @@ change Gunpowder Trail to use unstable gunpowder (and update its sprite & desc)
 change shield passives to cost less mana
 Add `insert_after` for spells
 add insert_after for perks
+reduce addmana's RT
+make hiisi shop spawn in PWs
+Make Extra Item in HM work on all in-level shops
+change max stacks of extra shop item
+update extra item in shop's desc
+rework the hookbolt spell
