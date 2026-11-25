@@ -111,7 +111,7 @@ local torches = {
 	{
 		path = "data/entities/misc/custom_cards/torch_electric.xml",
 		image = "data/particles/torch_electric_fog_of_war_hole.xml",
-		size = 3,
+		size = 2,
 	},
 }
 local torch_fow_template = nxml.new_element("SpriteComponent", {
