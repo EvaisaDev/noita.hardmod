@@ -63,7 +63,7 @@ local function run_greek(data, recursion_level, dont_draw, no_recursion)
 	local spell = not has_aleph and get_spell_data(data.id)
 	if spell and spell.never_unlimited then
 		local frame = GameGetFrameNum()
-		if not reflecting and frame - last_greek_error > 20 then
+		if not reflecting and IsPlayer(GetUpdatedEntityID()) and frame - last_greek_error > 20 then
 			local player = GetUpdatedEntityID()
 			local x, y = EntityGetTransform(player)
 

@@ -114,6 +114,7 @@ actions = {}
 ---@class DeckSpell
 ---@field deck_index integer
 ---@field mana integer
+---@field recursive boolean
 ---@field uses_remaining integer
 ---@field id string
 ---@field inventoryitem_id entity_id
