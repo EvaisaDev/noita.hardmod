@@ -920,6 +920,7 @@ small tweaks
 refactored polymorph_gui module into qol module, added new qol to it
 removed <DMC/> from Houre
 fixed some formatting
+fix alch flasks only being 50% full
 unnerfed plasma spells, made Plasma Beam and Plasma Cross appear slightly later
 removed some debug prints, fixed meat curse indicator
 ran build and split scripts
@@ -958,3 +959,9 @@ missed some
 working on new eperks
 added custom stack multipliers to eperks
 final tweaks, ran split.lua_run
+remove redundant script pickup logic
+icons for on the wiki
+undo absolution desc change
+Make Healthy Exploration remove the wounded effect so its not wasted
+some Soul Linked tweaks
+some Overclock tweaks

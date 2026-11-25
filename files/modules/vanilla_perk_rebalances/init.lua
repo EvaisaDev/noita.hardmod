@@ -206,6 +206,20 @@ hooks.new_eid = function(entity_id)
 	end
 end
 
+utils.patchifile("data/scripts/perks/adventurer.lua", {
+	{
+		from = [[heal_entity]],
+		insert_before = [[
+			for _,child in pairs(EntityGetAllChildren(player_id) or {}) do
+				if EntityGetName(child) == "hardmod.wounded_effect" then
+					EntityKill(child)
+					break
+				end
+			end
+		]]
+	}
+})
+
 -- Apotheosis fails to do nil checks for its target components, completely fails to load as a result, this disables the relevant code
 local f1,t1,f2,t2 =
 	[[do
