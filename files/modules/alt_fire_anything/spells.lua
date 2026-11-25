@@ -8,7 +8,6 @@ local function pay_spell(data)
 	end
 
 	mana = mana - cost
-	table.insert(discarded, data)
 end
 
 hooks.new_spells = {
@@ -24,8 +23,6 @@ hooks.new_spells = {
 		price = 400,
 		mana = 0,
 		action = function()
-			local free_passives = false
-
 			while #deck > 0 do
 				local data = deck[1]
 
@@ -33,13 +30,9 @@ hooks.new_spells = {
 				data.in_fake_hand = true
 				table.remove(deck, 1)
 
-				-- [AFA][shit][AFA][passives] = PROFIT
-				if data.id == "HARDMOD_ALT_FIRE_ANYTHING" then
-					free_passives = true
-				end
-
-				if data.type == ACTION_TYPE_PASSIVE and not free_passives then
+				if data.type == ACTION_TYPE_PASSIVE then
 					pay_spell(data)
+					table.insert(discarded, data)
 				else
 					table.insert(hand, data)
 				end
