@@ -6,6 +6,7 @@ return {
 	new_spells = {
 		{
 			id = "HARDMOD_NOTLA",
+			insert_after = "NOLLA",
 			author = "modder.yui",
 			name = "$hardmod_spell_notla_name",
 			description = "$hardmod_spell_notla_desc",
@@ -25,6 +26,7 @@ return {
 		{
 			id                  = "HARDMOD_ECHO_SHOT",
 			author 				= "modder.dani2d",
+			insert_after		= "SPITTER_TIER_3_TIMER",
 			name 		        = "$hardmod_spell_echo_shot_name",
 			description         = "$hardmod_spell_echo_shot_desc",
 			sprite              = root.."gfx/ui_gfx/spells/echo_shot.png",
@@ -45,6 +47,7 @@ return {
 		{
 			id                  = "HARDMOD_ECHO_SHOT_TIMER",
 			author 				= "modder.dani2d",
+			insert_after		= "SPITTER_TIER_3_TIMER",
 			name 		        = "$hardmod_spell_echo_shot_timer_name",
 			description         = "$hardmod_spell_echo_shot_timer_desc",
 			sprite              = root.."gfx/ui_gfx/spells/echo_shot_timer.png",
@@ -64,6 +67,7 @@ return {
 		},
 	    {
 		    id                  = "HARDMOD_CONTROLLED_REACH",
+			insert_after		= "DELAYED_SPELL",
 			author 				= "modder.dani2d",
 		    name 		        = "$hardmod_controlled_reach_name",
 		    description         = "$hardmod_controlled_reach_desc",
@@ -114,6 +118,7 @@ return {
 	    {
 		    id                  = "HARDMOD_OVERCLOCK",
 			author 				= "modder.dani2d",
+			insert_after		= "RECHARGE",
 		    name 		        = "$hardmod_spell_overclock_name",
 		    description         = "$hardmod_spell_overclock_desc",
 		    sprite 		        = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/overclock.png",
@@ -159,13 +164,14 @@ return {
                         add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
                     end
                 end
-                
+
                 draw_actions( 1, true )
             end,
 	    },
 		{
 			id					= "HARDMOD_BIG_SHOT",
 			author 				= "modder.dani2d",
+			insert_after		= "DAMAGE_FOREVER",
 			name				= "$hardmod_spell_big_shot_name",
 			description			= "$hardmod_spell_big_shot_desc",
 			sprite				= root.."gfx/ui_gfx/spells/big_shot.png",
@@ -187,6 +193,7 @@ return {
 		},
 		{
 			id                  = "HARDMOD_RECHARGE_SHIELD",
+			insert_after		= "ENERGY_SHIELD_SECTOR",
 			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_recharge_shield_name",
 			description         = "$hardmod_spell_recharge_shield_desc",
@@ -204,6 +211,7 @@ return {
 		{
 			id = "HARDMOD_SHIELD_BREAKER",
 			author = "modder.dani2d",
+			insert_after = "ENERGY_SHIELD_SHOT",
 			name = "$harmdod_spell_shield_breaker_name",
 			description = "$harmdod_spell_shield_breaker_desc",
 			sprite = root.."gfx/ui_gfx/spells/shield_breaker.png",
@@ -222,6 +230,7 @@ return {
 		},
 		{
 			id					= "HARDMOD_PARRY",
+			insert_after		= "ANTIHEAL",
 			author 				= "modder.dani2d",
 			name				= "$hardmod_spell_parry_name",
 			description			= "$hardmod_spell_parry_desc",
@@ -252,6 +261,7 @@ return {
 		},
 		{
 			id = "HARDMOD_GIGA_CHAINSAW",
+			insert_after = "CHAINSAW",
 			author = "modder.yui",
 			name = "$harmdod_spell_giga_chainsaw_name",
 			description = "$harmdod_spell_giga_chainsaw_desc",

@@ -97,6 +97,7 @@ local hooks = {}---@type spell_hooks
 hooks.new_spells = {
 	{
 		id = "HARDMOD_SPELL_INDULGENCE",
+		insert_after = "ZETA",
 		author = "modder.dani2d",
 		name = "$hardmod_spell_indulgence_name",
 		description = "$hardmod_spell_indulgence_desc",
@@ -178,6 +179,7 @@ hooks.new_spells = {
     -- following spells are defined here since they are too powerful to be used without this module's nerfs
     {
         id = "HARDMOD_SPELL_DAMAGE_DOUBLE",
+		insert_after = "DAMAGE_FOREVER",
 		author = "modder.dani2d",
         name = "$hardmod_spell_damage_double_name",
         description = "$hardmod_spell_damage_double_desc",

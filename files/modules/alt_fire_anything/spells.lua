@@ -13,6 +13,7 @@ end
 hooks.new_spells = {
 	{
 		id = "HARDMOD_ALT_FIRE_ANYTHING",
+		insert_after = "RESET",
 		name = "$hardmod_spell_alt_fire_anything_name",
 		description = "$hardmod_spell_alt_fire_anything_desc",
 		sprite = "mods/noita.hardmod/files/modules/alt_fire_anything/ui_gfx/spells/alt_fire_anything.png",

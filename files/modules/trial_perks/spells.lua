@@ -3,6 +3,7 @@ local hooks = {}---@type spell_hooks
 hooks.new_spells = {
 	{
 		id					= "HARDMOD_BLINK",
+		insert_after 		= "SUPER_TELEPORT_CAST",
 		author				= "$modder.dani2d",
 		name				= "$hardmod_spell_blink_name",
 		description			= "$hardmod_spell_blink_desc",

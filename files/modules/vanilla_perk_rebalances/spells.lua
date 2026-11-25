@@ -3,6 +3,7 @@ local hooks = {}
 hooks.new_spells = {
 	{
 		id = "HARDMOD_INHIBITOR",
+		insert_after = "TINY_GHOST",
 		name = "$hardmod_spell_inhibitor_name",
 		description = "$hardmod_spell_inhibitor_desc",
 		sprite = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/inhibitor.png",
@@ -18,6 +19,7 @@ hooks.new_spells = {
 	},
     {
         id                = "HARDMOD_PINPOINTER",
+		insert_after  	  = "TINY_GHOST",
         name              = "$hardmod_spell_pinpointer_name",
         description       = "$hardmod_spell_pinpointer_desc",
         sprite            = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/ui_gfx/spells/pinpointer.png",

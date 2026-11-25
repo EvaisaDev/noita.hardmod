@@ -13,6 +13,8 @@
 ---@class GunAction
 ---@field id string
 ---@field name string
+---@field author string? Custom field
+---@field insert_after string? Custom field; makes this spell appear after the provided ID in the progress menu. Does not work on custom spells added by us
 ---@field sprite string
 ---@field sprite_unidentified string?
 ---@field related_projectiles string[]?
