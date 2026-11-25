@@ -15,11 +15,6 @@ local track_names = {
 	["$animal_deer"] = "deer",
 }
 
-local track_credit = {
-	fish = true,
-	longleg = true,
-}
-
 function death(type, msg, actor, ...)
 	if orig_death then
 		orig_death(type, msg, actor, ...)
@@ -27,10 +22,11 @@ function death(type, msg, actor, ...)
 
 	local name = track_names[EntityGetName(GetUpdatedEntityID())]
 	local key = "hardmod.judgement.kills." .. (name or "innocent")
-	local is_player = actor and actor ~= 0 and IsPlayer(actor)
 
-	if track_credit[name] and not is_player then return end
+	if not actor or actor == 0 or not IsPlayer(actor) then return end
 
-	local count = tonumber(ModSettingGet(key)) or 0
-	ModSettingSet(key, count + 1)
+	ModSettingSet(key, (tonumber(ModSettingGet(key)) or 0) + 1)
+	GlobalsSetValue(key, tostring((tonumber(GlobalsGetValue(key)) or 0) + 1))
+
+	print("global", ModSettingGet(key), "current", GlobalsGetValue(key))
 end
