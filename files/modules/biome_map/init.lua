@@ -4,7 +4,8 @@ local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua")---@type nxml
 
 local hooks = {} ---@type hooks
 
-local biome_map_path = "mods/noita.hardmod/files/modules/biome_map/biome_map.lua"
+local root = "mods/noita.hardmod/files/modules/biome_map/"
+local biome_map_path = root.."biome_map.lua"
 
 local custom_biomes = {
 	{ h = 2, color = "ffde88e3", file = "secret_lab_path.xml" },
@@ -16,7 +17,7 @@ local custom_biomes = {
 for file in nxml.edit_file("data/biome/_biomes_all.xml") do
 	for _,biome in pairs(custom_biomes) do
 		file:create_child("Biome", {
-			biome_filename = "mods/noita.hardmod/files/modules/biome_map/biome/" .. biome.file,
+			biome_filename = root.."biome/" .. biome.file,
 			height_index = biome.h,
 			color = biome.color
 		})
@@ -78,10 +79,10 @@ utils.modifile(
 --	     color on biome map = #5f8fab
 
 -- robot egg is moved to be a side path to the hell, accessible with a quest
-imutil.ImageOverlay("data/biome_impl/robot_egg.png", "mods/noita.hardmod/files/modules/biome_map/gfx/robot_egg.png")
+imutil.ImageOverlay("data/biome_impl/robot_egg.png", root.."gfx/robot_egg.png")
 
 -- pyramid orb is moved to top-right cloudscape
-imutil.ImageReplace("data/biome_impl/pyramid/top_visual.png", "mods/noita.hardmod/files/modules/biome_map/gfx/pyramid_top_visual.png")
+imutil.ImageReplace("data/biome_impl/pyramid/top_visual.png", root.."gfx/pyramid_top_visual.png")
 utils.patchifile("data/scripts/biomes/pyramid_top.lua", {
 	{
 		from = [[EntityLoad( "data/entities/items/orbs/orb_01.xml", x, y )]],
@@ -94,8 +95,23 @@ utils.patchifile("data/scripts/biomes/pyramid_top.lua", {
 	}
 })
 
-ModMagicNumbersFileAdd("mods/noita.hardmod/files/modules/biome_map/magic_numbers.xml")
-ModMaterialsFileAdd("mods/noita.hardmod/files/modules/biome_map/materials.xml")
+-- no safe entrance 4 u
+function hooks.magic_numbers_and_seed_initialised()
+	SetRandomSeed(2354, 4567)
+
+	if Random(1, 100) <= 65	then
+		imutil.ImageReplace("data/biome_impl/temple/altar_snowcave_capsule.png", root.."gfx/altar_snowcave_capsule.png")
+	end
+
+	if Random(1, 100) <= 70 then
+		imutil.FillImage("data/biome_impl/temple/altar_snowcastle_capsule_background.png")
+		imutil.ImageReplace("data/biome_impl/temple/altar_snowcastle_capsule.png", root.."gfx/altar_snowcastle_capsule.png")
+	end
+
+	if Random(1, 100) <= 75 then
+		imutil.ImageReplace("data/biome_impl/temple/altar_vault_capsule.png", root.."gfx/altar_vault_capsule.png")
+	end
+end
 
 function hooks.player_spawned(pid, is_run_start)
 	if is_run_start then
@@ -105,7 +121,7 @@ function hooks.player_spawned(pid, is_run_start)
 
 	local path = MagicNumbersGetValue("BIOME_MAP")
 	if path == biome_map_path then
-		dofile_once("mods/noita.hardmod/files/modules/biome_map/orbs.lua")
+		dofile_once(root.."orbs.lua")
 	else
 		local x, y = EntityGetTransform(pid)
 		utils.SpawnTablet(
@@ -117,5 +133,8 @@ function hooks.player_spawned(pid, is_run_start)
 		)
 	end
 end
+
+ModMagicNumbersFileAdd(root.."magic_numbers.xml")
+ModMaterialsFileAdd(root.."materials.xml")
 
 return hooks

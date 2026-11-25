@@ -106,4 +106,30 @@ function utils.ReplaceImage(dest, src)
 	end
 end
 
+---Fills an image with a single color.
+---
+---Passing R, G, or B will make alpha default to 255.
+---Not passing any color will empty the image with a transparent color.
+---
+---@param path string
+---@param r integer?
+---@param g integer?
+---@param b integer?
+---@param a integer?
+function utils.FillImage(path, r, g, b, a)
+	if not ModDoesFileExist(path) then print("src was not valid for FillImage") return end
+
+	local img, w, h = ModImageMakeEditable(path, 0, 0)
+
+	if a or g or b then a = a or 0xFF end
+
+	local color = utils.abgr_merge(r or 0, g or 0, b or 0, a or 0)
+
+	for y=0,h-1 do
+		for x=0,w-1 do
+			ModImageSetPixel(img, x, y, color)
+		end
+	end
+end
+
 return utils
