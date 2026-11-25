@@ -771,7 +771,7 @@ end
 --- Function to get an entity's held wand, if any
 ---@param entity_id entity_id Entity ID of the entity to check
 ---@return entity_id entity_id? Entity ID of the wand, or nil if the entity is not holding a wand
-function GetHeldWand(entity_id)
+function utils.GetHeldWand(entity_id)
 	if entity_id ~= nil then
 		local inv2_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "Inventory2Component")
 		if not inv2_comp then return end
