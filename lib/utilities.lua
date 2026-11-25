@@ -738,6 +738,27 @@ function utils.RandomFromArray(array, seed_a, seed_b)
 	return array[Random(1, #array)]
 end
 
+local _spell_index = nil
+--- Gets a spell with a specified `id`, using an indexed table.
+--- 
+--- Note: Ensure you're importing utilities.lua via `dofile_once`!!!
+--- @param id string
+--- @return GunAction?
+function utils.GetSpell(id)
+	if not actions then
+		dofile_once("data/scripts/gun/gun_actions.lua")
+	end
+
+	if not _spell_index then
+		_spell_index = {}
+		for _,spell in pairs(actions) do
+			_spell_index[spell.id] = spell
+		end
+	end
+
+	return _spell_index[id]
+end
+
 utils.logging = false
 ---useful logger than can be enabled/disabled at will
 ---@param ... any all parameters are concatenated into one string
