@@ -12,11 +12,11 @@ local biomes = dofile_once("mods/noita.hardmod/lib/biome_index.lua")
 ---@field not_progress boolean? if true, perk won't show up in progress menu
 ---@field weight number? probability of the perk being pulled, default 10
 ---@field stack_multiplier number? the multiplier applied to the perk weight for each stack already held, default 1.15
----@field min_level number the lower level limit for this perk to be selected
----@field max_level number the upper level limit for this perk to be selected
----@field unique_slot string if set, will disallow other enemy perks with the same unique_slot value to be selected
----@field not_boss bool blacklists bosses from gaining this perk
----@field not_shop_guardian bool blacklists stevari and skoude from gaining this perk
+---@field min_level number? the lower level limit for this perk to be selected
+---@field max_level number? the upper level limit for this perk to be selected
+---@field unique_slot string? if set, will disallow other enemy perks with the same unique_slot value to be selected
+---@field not_boss bool? blacklists bosses from gaining this perk
+---@field not_shop_guardian bool? blacklists stevari and skoude from gaining this perk
 ---@field biome_conditions table? custom condition functions that run if the target_enemy is in the keyed biome, if value is a number it will set the perk weight to that value
 ---@field priority number? priority for the order its shown above enemies' heads or in the inspect window, default 10
 ---@field max integer? max number of this perk an enemy can have
@@ -265,6 +265,7 @@ enemy_perks = {
 		name = "$hardmod_eperk_haste_name",
 		description = "$hardmod_eperk_haste_desc",
 		weight = 8,
+		stack_multiplier = 1.1,
 		priority = 16,
 		biome_conditions = {
 			sandcave = 10,
@@ -283,7 +284,7 @@ enemy_perks = {
 			for comp_name,attributes in pairs(comps) do
 				for _,comp in ipairs(EntityGetComponentIncludingDisabled(entity_id, comp_name) or {}) do
 					for _,attr in ipairs(attributes) do
-						ComponentSetValue2(comp, attr, ComponentGetValue2(comp, attr) * .6)
+						ComponentSetValue2(comp, attr, ComponentGetValue2(comp, attr) * .4)
 					end
 				end
 			end
@@ -625,7 +626,7 @@ enemy_perks = {
 		id = "ELECTRICITY",
 		name = "$perk_electricity",
 		description = "$hardmod_eperk_electricity_desc",
-		weight = 5,
+		weight = 500,
 		priority = 3,
 		biome_conditions = {
 			fungal_caverns = 2,
@@ -641,7 +642,10 @@ enemy_perks = {
 			GetGameEffectLoadTo(entity_id, "PROTECTION_ELECTRICITY", false)
 			local child_id = EntityLoad("data/entities/misc/perks/electricity.xml", data.x, data.y)
 			local elec_comp = EntityGetFirstComponent(child_id, "ElectricitySourceComponent")
-			if elec_comp then ComponentSetValue2(elec_comp, "emission_interval_frames", 48) end
+			if elec_comp then
+				ComponentSetValue2(elec_comp, "emission_interval_frames", 48)
+				ComponentSetValue2(elec_comp, "mNextFrameEmitElectricity", GameGetFrameNum()+150) --wait 2.5 seconds before starting electricity stuff
+			end
 			EntityAddTag(child_id, "perk_entity")
 			EntityAddChild(entity_id, child_id)
 		end
@@ -1550,13 +1554,6 @@ for i,perk in ipairs(enemy_perks) do
 	perk.icon = ModDoesFileExist(perk.icon or "") and perk.icon
 		or ModDoesFileExist(icons_path..id:lower()..".png") and icons_path..id:lower()..".png"
 		or "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/missing.png"
-
-	if perk.max then --This is sane enough.
-		local cond = perk.condition or function(...) return true end
-		perk.condition = function(self, data, ...)
-			return cond(self, data, ...) and (data.how_many_of_each_perk[self.id] or 0) < self.max
-		end
-	end
 
 	if perk.biome_conditions then
 		local cond = perk.condition or function(...) return true end

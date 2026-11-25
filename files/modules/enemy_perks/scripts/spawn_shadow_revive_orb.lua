@@ -21,7 +21,7 @@ function death(damage_type_bit_field, message, attacker, drop_items)
 
 	local dmc = EntityGetFirstComponentIncludingDisabled(entity_id, "DamageModelComponent")
 	if dmc then
-		local hp = math.max(2.5, ComponentGetValue2(dmc, "max_hp"))
+		local hp = math.max(1, ComponentGetValue2(dmc, "max_hp")*.5)
 		for _,orb_dmc in ipairs(EntityGetComponent(orb_for_pondering, "DamageModelComponent") or {}) do
 			ComponentSetValue2(orb_dmc, "max_hp", hp)
 			ComponentSetValue2(orb_dmc, "hp", hp)
