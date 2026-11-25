@@ -138,7 +138,7 @@ return {
 	            local entity_id = GetUpdatedEntityID()
                 local x, y = EntityGetTransform( entity_id )
 
-			    local rand = Random( 0, 200 )
+			    local rand = Random( 0, 180 )
 			    local chance = 1
                 if( rand <= chance ) then
                     c.fire_rate_wait = c.fire_rate_wait + 40
@@ -146,10 +146,11 @@ return {
                     shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
                     GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
 
-                    local rand2 = Random( 1, 8 )
-                    if rand2 == 1 then -- 1/8 chance
-	                    c.fire_rate_wait = c.fire_rate_wait + 140
-	                    current_reload_time = current_reload_time + 140
+                    local rand2 = Random( 1, 10 )
+                    if rand2 == 1 and GameGetGameEffectCount(entity_id, "STUN_PROTECTION_ELECTRICITY") == 0 then -- 1/10 chance
+                    	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+                    	LoadGameEffectEntityTo(entity_id, "mods/noita.hardmod/files/modules/spell_variety/entities/spells/effect_electricity_short.xml", true)
+                    elseif rand2 == 2 then -- 1/10 chance
                     	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 400.0
                     	add_projectile( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_explode.xml" )
                     	EntityAddComponent2( entity_id, "LuaComponent", {
@@ -157,10 +158,10 @@ return {
                     		execute_on_added = true,
                     		remove_after_executed = true,
                     	})
-                    elseif rand2 <= 3 then -- 1/4 chance
+                    elseif rand2 <= 4 then -- 1/5 chance
                     	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
                         EntityLoad( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_fire.xml", x, y )
-                    else
+                    else -- 1/2 chance
                         add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
                     end
                 end

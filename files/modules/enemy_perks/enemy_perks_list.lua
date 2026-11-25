@@ -1426,11 +1426,14 @@ enemy_perks = {
 		id = "SOUL_LINKED",
 		name = "$hardmod_eperk_soul_linked_name",
 		description = "$hardmod_eperk_soul_linked_desc",
-		weight = 2,
+		weight = 0,
 		priority = 23,
 		max = 1,
 		biome_conditions = {
-			sandcave = 4,
+			wizards_den = 2,
+			sky = 2,
+			hell = 2,
+			meat_realm = 2,
 		},
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(data.target_enemy)

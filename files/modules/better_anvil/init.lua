@@ -32,6 +32,49 @@ local function patch_forge_convert()
 		[[EntityLoad("data/entities/items/wand_level_05_better.xml", x, y - 5)]],
 		[[dofile("mods/noita.hardmod/files/modules/better_anvil/forge/repaired_wand.lua")(x, y)]]
 	)
+
+	-- upgrade starter wand
+	ModLuaFileAppend("data/scripts/gun/procedural/starting_wand.lua", "mods/noita.hardmod/files/modules/better_anvil/appends/starting_wand.lua")
+	utils.modifile(
+		forge_item_convert,
+		[[for _,id in pairs(EntityGetInRadiusWithTag(pos_x, pos_y, 70, "tablet")) do]],
+		[[for _,id in pairs(EntityGetInRadiusWithTag(pos_x, pos_y, 70, "hardmod_starter_wand")) do
+			-- make sure item is not carried in inventory or wand
+			if EntityGetRootEntity(id) == id then
+				local x,y = EntityGetTransform(id)
+
+				-- cache spells from starter wand
+				local EZWand = dofile_once("mods/noita.hardmod/lib/ezwand.lua")
+				local spells,always_casts = EZWand(id):GetSpells()
+
+				-- spawn upgraded wand
+				local wand_entity = EntityLoad("data/entities/items/wand_level_05_better.xml",  x, y - 12)
+				local wand = EZWand(wand_entity)
+				wand:RemoveSpells()
+				if HasFlagPersistent("hardmod_hell_completed") then
+					wand:SetSprite( "mods/noita.hardmod/files/modules/better_anvil/gfx/starter_wand_better_red.png", 10, 4, 15, 0 )
+				elseif HasFlagPersistent("hardmod_game_completed") then
+					wand:SetSprite( "mods/noita.hardmod/files/modules/better_anvil/gfx/starter_wand_better_gold.png", 10, 4, 15, 0 )
+				else
+					wand:SetSprite( "mods/noita.hardmod/files/modules/better_anvil/gfx/starter_wand_better.png", 10, 4, 15, 0 )
+				end
+
+				-- paste cached spells onto the new wand
+				for _,spell_obj in ipairs(always_casts) do
+					wand:AttachSpells(spell_obj.action_id)
+				end
+				for _,spell_obj in ipairs(spells) do
+					wand:AddSpells(spell_obj.action_id)
+				end
+
+				EntityLoad("data/entities/projectiles/explosion.xml", x, y - 10)
+				EntityKill(id)
+				converted = true
+			end
+		end
+
+		for _,id in pairs(EntityGetInRadiusWithTag(pos_x, pos_y, 70, "tablet")) do]]
+	)
 end
 
 local function patch_broken_spell()

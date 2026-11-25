@@ -15,10 +15,10 @@ local function seek_new_ally()
 	if not nearby_enemies or #nearby_enemies == 0 then return end
 	local candidates = {}
 	for _,nearby_enemy in ipairs( nearby_enemies ) do
-		-- if the enemy can have perks in the first place...
-		if ( not EntityHasTag( nearby_enemy, "no_enemy_perks" ) )
+		-- if the enemy already has perks of its own (i.e. Ira cannot have a soul link)...
+		if EntityHasTag( nearby_enemy, "hardmod_blessed" )
 		-- and if the owner can tolerate that enemy...
-		and ( nearby_enemy ~= owner and EntityGetHerdRelation( owner, nearby_enemy ) >= 80 )
+		and ( nearby_enemy ~= owner and EntityGetHerdRelationSafe( owner, nearby_enemy ) >= 80 )
 		-- and the target is not yet soul linked to another...
 		and ( utils.GetInternalInt( nearby_enemy, "hardmod_soul_linked_ally" ) or 0 ) == 0 then
 		--- ...add them as a candidate
