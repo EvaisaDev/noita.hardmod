@@ -15,8 +15,7 @@ hooks.new_perks = {
 		one_off_effect = false,
 		usable_by_enemies = false,
 		func = function(entity_perk_item, entity_who_picked, item_name, pickup_count)
-			if pickup_count > 1 then return end
-			EntityAddChild(entity_who_picked, EntityLoad(dir.."entities/perks/spell_gems.xml"))
+			-- nothing happens
 		end
 	},
 	{

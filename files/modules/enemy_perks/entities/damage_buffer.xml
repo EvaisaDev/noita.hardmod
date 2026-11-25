@@ -5,6 +5,7 @@
 	/>
 
 	<ParticleEmitterComponent
+		_tags="aura_can_be_invis"
 		emitted_material_name="spark_red"
 		gravity.y="0.0"
 		lifetime_min="0.02"
@@ -27,6 +28,7 @@
 	/>
 
 	<ParticleEmitterComponent
+		_tags="aura_can_be_invis"
 		emitted_material_name="spark_red"
 		gravity.y="0.0"
 		lifetime_min="0.4"
@@ -52,5 +54,10 @@
 		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/damage_buffer.lua"
 		execute_every_n_frame="20"
 	/>
+
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/eperk_aura_update_visibility.lua"
+		execute_every_n_frame="15"
+	></LuaComponent>
 
 </Entity>

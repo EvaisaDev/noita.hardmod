@@ -13,7 +13,7 @@
 		execute_every_n_frame="1"
 	></LuaComponent>
 
-    <ParticleEmitterComponent
+	<ParticleEmitterComponent
 		_tags="character,enabled_in_hand,item_identified__LEGACY"
 		emitted_material_name="gold"
 		gravity.y="0.0"
@@ -81,13 +81,13 @@
 	</ParticleEmitterComponent>
 
 	<LightComponent 
-    	_tags="enabled_in_hand,item_identified"
-        _enabled="1" 
-        radius="80"
-        fade_out_time="1.5" 
-    	r="150"
-    	g="190"
-    	b="230" >
+		_tags="enabled_in_hand,item_identified"
+		_enabled="1" 
+		radius="80"
+		fade_out_time="1.5" 
+		r="150"
+		g="190"
+		b="230" >
 	</LightComponent>
 
 	<AudioComponent

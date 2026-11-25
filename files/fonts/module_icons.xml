@@ -28,8 +28,8 @@
 <!-- no_more_instant_recharge --><QuadChar id="85" rect_x="320" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
 <!-- no_more_max_hp_cheesing --><QuadChar id="86" rect_x="336" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
 <!-- phantom_nemesis --><QuadChar id="87" rect_x="352" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
-<!-- polymorph_gui --><QuadChar id="88" rect_x="368" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
-<!-- potions --><QuadChar id="89" rect_x="384" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
+<!-- potions --><QuadChar id="88" rect_x="368" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
+<!-- qol --><QuadChar id="89" rect_x="384" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
 <!-- rapidfire_nerfs --><QuadChar id="90" rect_x="400" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
 <!-- snail --><QuadChar id="91" rect_x="416" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />
 <!-- spell_variety --><QuadChar id="92" rect_x="432" rect_y="0" width="16" rect_h="16" rect_w="16" offset_x="0" offset_y="0" />

@@ -40,6 +40,8 @@ hooks.spell_patches = {
 	["SPITTER_TIER_3"] = { mana = 17 },
 	["SPITTER_TIER_3_TIMER"] = { mana = 24 },
 	["LASER"] = { mana = 25 },
+	["LASER_EMITTER"] = { spawn_level = "3,4,5", spawn_probability = "0.3,0.5,0.7" },
+	["LASER_EMITTER_FOUR"] = { spawn_level = "3,4,5", spawn_probability = "0.2,0.5,0.7" },
 	["TENTACLE"] = { mana = 40, spawn_level = "5,6", spawn_probability = "0.5,0.5" },
 	["TENTACLE_TIMER"] = { mana = 40, spawn_level = "5,6", spawn_probability = "0.5,0.5" },
 	["BUCKSHOT"] = { mana = 40 },

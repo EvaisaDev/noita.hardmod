@@ -11,8 +11,8 @@ if ai_comp then
 end
 local attack_comps = EntityGetComponentIncludingDisabled(owner, "AIAttackComponent") or {}
 for z=1,#attack_comps do
-    local attack_comp = attack_comps[z]
-    ComponentSetValue2(attack_comp, "frames_between", ComponentGetValue2(attack_comp, "frames_between") * 0.5)
-    ComponentSetValue2(attack_comp, "frames_between_global", ComponentGetValue2(attack_comp, "frames_between_global") * 0.5)
-    ComponentSetValue2(attack_comp, "attack_ranged_aim_rotation_speed", ComponentGetValue2(attack_comp, "attack_ranged_aim_rotation_speed") * 2)
+	local attack_comp = attack_comps[z]
+	ComponentSetValue2(attack_comp, "frames_between", ComponentGetValue2(attack_comp, "frames_between") * 0.5)
+	ComponentSetValue2(attack_comp, "frames_between_global", ComponentGetValue2(attack_comp, "frames_between_global") * 0.5)
+	ComponentSetValue2(attack_comp, "attack_ranged_aim_rotation_speed", ComponentGetValue2(attack_comp, "attack_ranged_aim_rotation_speed") * 2)
 end

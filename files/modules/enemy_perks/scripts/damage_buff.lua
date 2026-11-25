@@ -1,3 +1,5 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
+
 local entity_id = GetUpdatedEntityID()
 local component = GetUpdatedComponentID()
 
@@ -36,9 +38,20 @@ end
 
 local x,y = EntityGetTransform(entity_id)
 local name_prefix = "hardmod.damage_buff."
-local buff_benefactor = tonumber(EntityGetName(entity_id):sub(#name_prefix+1, -1))
-for _,enemy in ipairs(EntityGetInRadiusWithTag(x, y, 100, "hardmod_blessed")) do
-	if enemy == buff_benefactor then return end
+local t = {}
+for str in EntityGetName(entity_id):sub(#name_prefix+1, -1):gmatch("([^%.]+)") do
+	t[#t+1] = str
+end
+
+t[3],t[4] = tonumber(t[3]) or 0,tonumber(t[4]) or 0
+
+if EntityGetIsAlive(t[3]) then
+	local bx,by = EntityGetTransform(t[3])
+	if utils.get_distance(x, y, bx, by) <= 100 then
+		for _,luacomp in ipairs(EntityGetComponent(t[3], "LuaComponent") or {}) do
+			if luacomp == t[4] then return end
+		end
+	end
 end
 
 EntityKill(entity_id)

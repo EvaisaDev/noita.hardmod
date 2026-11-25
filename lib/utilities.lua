@@ -206,25 +206,33 @@ function utils.ShootProjectile(shooter, entity_file, x, y, vel_x, vel_y, send_me
 	---@type entity_id
 	---@diagnostic disable-next-line: assign-type-mismatch
 	shooter = shooter or 0
-	local entity_id = EntityLoad(entity_file, x, y)
+	local projectile = EntityLoad(entity_file, x, y)
 	vel_x = vel_x or 0
 	vel_y = vel_y or 0
 	send_message =  send_message or true
 
 	local herd_id = utils.GetHerdID(shooter)
 
-	GameShootProjectile(shooter, x, y, x+vel_x, y+vel_y, entity_id, send_message)
+	GameShootProjectile(shooter, x, y, x+vel_x, y+vel_y, projectile, send_message)
 
-	for _,proj_comp in ipairs(EntityGetComponent(entity_id, "ProjectileComponent") or {}) do
+	local friendly_fire = EntityHasTag(shooter, "friendly_fire_enabled")
+	if friendly_fire then EntityAddTag(projectile, "friendly_fire_enabled") end
+
+	for _,proj_comp in ipairs(EntityGetComponent(projectile, "ProjectileComponent") or {}) do
 		ComponentSetValue2(proj_comp, "mWhoShot", shooter)
 		ComponentSetValue2(proj_comp, "mShooterHerdId", herd_id) --should be fine if nil..?
+
+		if friendly_fire then
+			ComponentSetValue2(proj_comp, "friendly_fire", true)
+			ComponentSetValue2(proj_comp, "collide_with_shooter_frames", 6)
+		end
 	end
 
-	for _,vel_comp in ipairs(EntityGetComponent(entity_id, "VelocityComponent") or {}) do
+	for _,vel_comp in ipairs(EntityGetComponent(projectile, "VelocityComponent") or {}) do
 		ComponentSetValue2(vel_comp, "mVelocity", vel_x, vel_y)
 	end
 
-	return entity_id
+	return projectile
 end
 
 ---Shorthand for quickly getting the int value of a VSC
@@ -259,6 +267,7 @@ end
 ---@param entity_id entity_id ID of the entity
 ---@param variable_name string Name of the variable
 ---@param new_value int New value of the variable (or initial value, if VSC did not exist)
+---@return new_value int Returns the given value for convenience
 function utils.SetInternalInt(entity_id, variable_name, new_value)
 	local variable_found = false
 	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
@@ -278,6 +287,8 @@ function utils.SetInternalInt(entity_id, variable_name, new_value)
 			value_int = new_value
 		})
 	end
+
+	return new_value
 end
 
 ---Shorthand for quickly getting the string value of a VSC
@@ -329,6 +340,50 @@ function utils.SetInternalString(entity_id, variable_name, new_value)
 		EntityAddComponent2(entity_id, "VariableStorageComponent", {
 			name = variable_name,
 			value_string = new_value
+		})
+	end
+end
+
+---Shorthand for quickly getting the bool value of a VSC
+---@param entity_id entity_id ID of the entity
+---@param variable_name string Name of the variable
+---@return bool Value that matches the given VSC name
+function utils.GetInternalBool(entity_id, variable_name)
+	local value = nil
+	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
+	if vscomps ~= nil then
+		for key,comp_id in pairs(vscomps) do
+			local var_name = ComponentGetValue2(comp_id, "name")
+			if var_name == variable_name then
+				value = ComponentGetValue2(comp_id, "value_bool")
+			end
+		end
+	end
+
+	return value
+end
+
+---Shorthand for quickly setting a VSC's bool value, or creating one if a VSC with the same name doesn't exist yet
+---@param entity_id entity_id ID of the entity
+---@param variable_name string Name of the variable
+---@param new_value bool New value of the variable (or initial value, if VSC did not exist)
+function utils.SetInternalBool(entity_id, variable_name, new_value)
+	local variable_found = false
+	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
+	if vscomps ~= nil then
+		for key,comp_id in pairs(vscomps) do
+			local var_name = ComponentGetValue2(comp_id, "name")
+			if var_name == variable_name then
+				ComponentSetValue2(comp_id, "value_bool", new_value)
+				variable_found = true
+			end
+		end
+	end
+
+	if not variable_found then
+		EntityAddComponent2(entity_id, "VariableStorageComponent", {
+			name = variable_name,
+			value_bool  = new_value
 		})
 	end
 end
@@ -693,6 +748,52 @@ function utils.SpawnPerkCircle(perks, x, y, radius)
 	return perk_eids
 end
 
+--- Function to find a child entity based on their entity name
+---@param entity_id entity_id Entity ID of the parent
+---@param name string Name of the child to look for
+---@return entity_id? Entity ID of the first match, or nil if none was found
+function utils.EntityGetChildByName(entity_id, name)
+	local children = EntityGetAllChildren(entity_id)
+	for _,child in ipairs(children) do
+		if EntityGetName(child) == name then
+			return child
+		end
+	end
+	return nil
+end
+
+local function entity_is_wand(entity_id)
+	local acomp = EntityGetFirstComponentIncludingDisabled(entity_id, "AbilityComponent")
+	if not acomp then return false end
+	return ComponentGetValue2(acomp, "use_gun_script") == true
+end
+
+--- Function to get an entity's held wand, if any
+---@param entity_id entity_id Entity ID of the entity to check
+---@return entity_id entity_id? Entity ID of the wand, or nil if the entity is not holding a wand
+function GetHeldWand(entity_id)
+	if entity_id ~= nil then
+		local inv2_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "Inventory2Component")
+		if not inv2_comp then return end
+		local active_item = ComponentGetValue2(inv2_comp, "mActiveItem")
+		if entity_is_wand(active_item) then
+			return active_item
+		end
+	end
+	return nil
+end
+
+--- Replaces vanilla utilities' random_from_array function
+---@param array table Array to get a random element from
+---@param seed_a int? Seed value a (defaults to GameGetFrameNum() if nil)
+---@param seed_b int? Seed value b (defaults to GameGetFrameNum() if nil)
+---@return int A random element from the array
+function utils.RandomFromArray(array, seed_x, seed_y)
+	seed_x = seed_x or GameGetFrameNum()
+	seed_y = seed_y or GameGetFrameNum()
+	SetRandomSeed(seed_a, seed_b)
+	return array[Random(1, #array)]
+end
 
 utils.logging = false
 ---useful logger than can be enabled/disabled at will

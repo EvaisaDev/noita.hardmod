@@ -6,6 +6,7 @@ return {
 	new_spells = {
 		{
 			id = "HARDMOD_NOTLA",
+			author = "modder.yui",
 			name = "$hardmod_spell_notla_name",
 			description = "$hardmod_spell_notla_desc",
 			sprite = root.."gfx/ui_gfx/spells/notla.png",
@@ -23,6 +24,7 @@ return {
 		},
 		{
 			id                  = "HARDMOD_ECHO_SHOT",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_echo_shot_name",
 			description         = "$hardmod_spell_echo_shot_desc",
 			sprite              = root.."gfx/ui_gfx/spells/echo_shot.png",
@@ -42,6 +44,7 @@ return {
 		},
 		{
 			id                  = "HARDMOD_ECHO_SHOT_TIMER",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_echo_shot_timer_name",
 			description         = "$hardmod_spell_echo_shot_timer_desc",
 			sprite              = root.."gfx/ui_gfx/spells/echo_shot_timer.png",
@@ -61,6 +64,7 @@ return {
 		},
 	    {
 		    id                  = "HARDMOD_CONTROLLED_REACH",
+			author 				= "modder.dani2d",
 		    name 		        = "$hardmod_controlled_reach_name",
 		    description         = "$hardmod_controlled_reach_desc",
 		    sprite 		        = root.."gfx/ui_gfx/spells/controlled_reach.png",
@@ -107,8 +111,61 @@ return {
 				draw_actions(1, true)
 			end,
 	    },
+	    {
+		    id                  = "HARDMOD_OVERCLOCK",
+			author 				= "modder.dani2d",
+		    name 		        = "$hardmod_spell_overclock_name",
+		    description         = "$hardmod_spell_overclock_desc",
+		    sprite 		        = "mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/overclock.png",
+		    type 		        = ACTION_TYPE_MODIFIER,
+			spawn_level         = "1,2,3",
+			spawn_probability   = "0.4,0.3,0.2",
+		    price               = 240,
+		    mana                = 6,
+		    custom_xml_file 	= "mods/noita.hardmod/files/modules/spell_variety/entities/cards/card_overclock.xml",
+		    action              = function()
+                c.fire_rate_wait    = c.fire_rate_wait - 10
+                current_reload_time = current_reload_time - 20
+                c.spread_degrees = c.spread_degrees - 6
+
+	            if reflecting then return end
+
+	            local entity_id = GetUpdatedEntityID()
+                local x, y = EntityGetTransform( entity_id )
+
+			    local rand = Random( 0, 200 )
+			    local chance = 1
+                if( rand <= chance ) then
+                    c.fire_rate_wait = c.fire_rate_wait + 40
+                    current_reload_time = current_reload_time + 40
+                    shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+                    GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+
+                    local rand2 = Random( 1, 8 )
+                    if rand2 == 1 then -- 1/8 chance
+	                    c.fire_rate_wait = c.fire_rate_wait + 140
+	                    current_reload_time = current_reload_time + 140
+                    	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 400.0
+                    	add_projectile( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_explode.xml" )
+                    	EntityAddComponent2( entity_id, "LuaComponent", {
+                    		script_source_file = "mods/noita.hardmod/files/modules/spell_variety/scripts/spells/overclock_explode.lua",
+                    		execute_on_added = true,
+                    		remove_after_executed = true,
+                    	})
+                    elseif rand2 <= 3 then -- 1/4 chance
+                    	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
+                        EntityLoad( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_fire.xml", x, y )
+                    else
+                        add_projectile( "data/entities/projectiles/deck/fizzle.xml" )
+                    end
+                end
+                
+                draw_actions( 1, true )
+            end,
+	    },
 		{
 			id					= "HARDMOD_BIG_SHOT",
+			author 				= "modder.dani2d",
 			name				= "$hardmod_spell_big_shot_name",
 			description			= "$hardmod_spell_big_shot_desc",
 			sprite				= root.."gfx/ui_gfx/spells/big_shot.png",
@@ -130,6 +187,7 @@ return {
 		},
 		{
 			id                  = "HARDMOD_RECHARGE_SHIELD",
+			author 				= "modder.dani2d",
 			name 		        = "$hardmod_spell_recharge_shield_name",
 			description         = "$hardmod_spell_recharge_shield_desc",
 			sprite              = root.."gfx/ui_gfx/spells/recharge_shield.png",
@@ -145,6 +203,7 @@ return {
 		},
 		{
 			id = "HARDMOD_SHIELD_BREAKER",
+			author = "modder.dani2d",
 			name = "$harmdod_spell_shield_breaker_name",
 			description = "$harmdod_spell_shield_breaker_desc",
 			sprite = root.."gfx/ui_gfx/spells/shield_breaker.png",
@@ -163,6 +222,7 @@ return {
 		},
 		{
 			id					= "HARDMOD_PARRY",
+			author 				= "modder.dani2d",
 			name				= "$hardmod_spell_parry_name",
 			description			= "$hardmod_spell_parry_desc",
 			sprite				= "mods/noita.hardmod/files/modules/trial_perks/gfx/ui_gfx/spells/parry.png",
@@ -183,15 +243,16 @@ return {
 				if current_frame - prev_cast_frame > 48 then
 					add_projectile("mods/noita.hardmod/files/modules/trial_perks/entities/spells/parry.xml")
 					utils.SetInternalInt(GetUpdatedEntityID(), "hardmod_parry_prev_cast_frame", current_frame)
-				else
-					local x, y = EntityGetTransform(GetUpdatedEntityID())
-                    GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
-                    add_projectile("data/entities/projectiles/deck/fizzle.xml")
+				-- else
+					-- local x, y = EntityGetTransform(GetUpdatedEntityID())
+                    -- GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/not_enough_mana_for_action", x, y)
+                    -- add_projectile("data/entities/projectiles/deck/fizzle.xml")
 				end
 			end,
 		},
 		{
 			id = "HARDMOD_GIGA_CHAINSAW",
+			author = "modder.yui",
 			name = "$harmdod_spell_giga_chainsaw_name",
 			description = "$harmdod_spell_giga_chainsaw_desc",
 			sprite = root.."gfx/ui_gfx/spells/giga_chainsaw.png",

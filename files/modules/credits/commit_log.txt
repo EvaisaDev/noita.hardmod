@@ -750,6 +750,8 @@ make player's podf distinguishable from enemy's podf
 make Protector shield stronger
 electric torch -2 mana
 make Apoth illusions not have eperks
+more Soul Linked attempts
+Add Trigger unnerf (depends on Lamia fix)
 add stylua ignore to splashes.lua
 asdasd
 guh?
@@ -907,3 +909,54 @@ some small eperk stuff
 merge cleanup
 couple new eperks, couple of fixes, added origin to all spells/perks and author to a few
 removed debug stuff, slight tweaks
+QoL: bugs/flies from nests now drop gold
+Add chaotic and unstable poly gas
+make absolution not subtract use count
+upd*
+on 2nd thought just keep it close to vanilla lmao
+update absolution's description (smh imagine LYING)
+this is jank but at least its a biiit better
+small tweaks
+refactored polymorph_gui module into qol module, added new qol to it
+removed <DMC/> from Houre
+fixed some formatting
+unnerfed plasma spells, made Plasma Beam and Plasma Cross appear slightly later
+removed some debug prints, fixed meat curse indicator
+ran build and split scripts
+made damage buffer able to appear slightly earlier
+added back update to eperk handler
+make anti tele field less common
+improve Absolution desc
+no all-seeing monkeys
+make *giant* eperks (tether/anti-tele) spawn more sparsely
+(and remove a one-off tag somewhere to compensate)
+fix Divine Shield cooldown vfx
+add Homing Curser eperk
+>w< typo
+pee pee poo poo
+slight tweaks to translation stuff
+add Overclock spell
+oops, double translations
+Overclock tweaks
+moar
+MOAR
+improve Soul Linked eperk logic
+ye olde eperk weight fix
+add Rapidfire eperk
+?
+spaeed
+run periodic checks to see if the target is still alive
+add Invisible eperk
+fix some stuff
+improve giant aura eperk sparsity
+make Obfuscation and Invisible hide eperk auras
+make Invisible eperk spawn later
+improve Soul Linked desc
+check entitygetisalive
+ignore wand y offset for torches
+missed some
+working on new eperks
+added custom stack multipliers to eperks
+final tweaks, ran split.lua_run
+remove redundant script pickup logic
+icons for on the wiki

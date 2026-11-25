@@ -1,0 +1,63 @@
+<Entity>
+	
+	<Base file="data/entities/base_custom_card.xml" > 
+		<SpriteComponent 
+			image_file="mods/noita.hardmod/files/modules/spell_variety/gfx/ui_gfx/spells/overclock.png"
+		></SpriteComponent>
+		
+		<ItemActionComponent 
+			_tags="enabled_in_world"
+			action_id="HARDMOD_OVERCLOCK" >
+		</ItemActionComponent>
+	</Base>
+
+	<InheritTransformComponent
+		_tags="enabled_in_world,enabled_in_hand" >
+	  <Transform 
+		position.x="8" 
+		position.y="0" >
+	  </Transform>
+	</InheritTransformComponent>
+
+	<ParticleEmitterComponent
+		_enabled="0"
+		_tags="enabled_in_hand,overheated"
+		emitted_material_name="smoke"
+		offset.x="0"
+		offset.y="0"
+		x_pos_offset_min="-2"
+		x_pos_offset_max="2"
+		y_pos_offset_min="-2"
+		y_pos_offset_max="2"
+		x_vel_min="-2"
+		x_vel_max="2"
+		gravity.y="-5.0"
+		y_vel_min="-15"
+		y_vel_max="-10"
+		count_min="3"
+		count_max="5"
+		airflow_force="0.2"
+		airflow_time="0.05"
+		lifetime_min="1.0"
+		lifetime_max="2.5"
+		create_real_particles="0"
+		emit_cosmetic_particles="1"
+		particle_single_width="0"
+		emission_interval_min_frames="5"
+		emission_interval_max_frames="15"
+		is_emitting="1" >
+	</ParticleEmitterComponent>
+
+	<LuaComponent
+		_tags="enabled_in_hand"
+		script_enabled_changed="mods/noita.hardmod/files/modules/vanilla_spell_rebalances/scripts/set_spell_effect_offset.lua"
+		execute_every_n_frame="-1"
+	></LuaComponent>
+
+	<LuaComponent
+		_tags="enabled_in_hand"
+		script_source_file="mods/noita.hardmod/files/modules/spell_variety/scripts/cards/card_overclock_update.lua"
+		execute_every_n_frame="15"
+	></LuaComponent>
+
+</Entity>

@@ -1,0 +1,13 @@
+<Entity>
+
+	<Base file="data/entities/projectiles/deck/fireblast.xml" >
+    <ProjectileComponent>
+      <config_explosion
+        damage="0"
+        explosion_radius="15"
+        sparks_count_max="40"
+      ></config_explosion>
+    </ProjectileComponent>
+	</Base>
+
+</Entity>

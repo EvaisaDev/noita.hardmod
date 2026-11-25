@@ -1,0 +1,1 @@
+EntityInflictDamage( GetUpdatedEntityID(), 39.96, "DAMAGE_CURSE", "soul linked", "NORMAL", 0, 0 )

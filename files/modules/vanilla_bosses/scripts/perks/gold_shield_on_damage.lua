@@ -10,7 +10,7 @@ function damage_received(damage, desc, entity_who_caused, is_fatal)
 	if shield == nil then return end
 
 	-- check whether the effect is on cooldown
-	local game_effect = EntityGetAllChildren(owner, "hardmod_gold_shield_cooldown")[1]
+	local game_effect = utils.EntityGetChildByName(owner, "hardmod_gold_shield_cd")
 	if game_effect ~= nil then
 		local ge_comp = EntityGetFirstComponentIncludingDisabled(game_effect, "GameEffectComponent")
 		if ge_comp ~= nil then

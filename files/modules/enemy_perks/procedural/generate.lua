@@ -6,26 +6,26 @@ local callback_data = dofile_once(dir.."procedural/data.lua")
 local generated_dir = dir.."generated/"
 local procedural_dir = dir.."procedural/"
 for _,callback in ipairs(callback_data.callbacks) do
-    local id = callback.id
+	local id = callback.id
 
-    local templates = {
-        "template_shot.lua",
-        "template_shot.xml",
-        "template_hit.xml",
-        "template_explode.lua"
-    }
-    if not callback.entity_on_hit then
-        templates[#templates+1] = "template_hit.xml"
-        callback.entity_on_hit = table.concat({dir,"generated/",id,"_hit.xml"})
-    end
+	local templates = {
+		"template_shot.lua",
+		"template_shot.xml",
+		"template_hit.xml",
+		"template_explode.lua"
+	}
+	if not callback.entity_on_hit then
+		templates[#templates+1] = "template_hit.xml"
+		callback.entity_on_hit = table.concat({dir,"generated/",id,"_hit.xml"})
+	end
 
-    for _,template in ipairs(templates) do
-        local file = ModTextFileGetContent(procedural_dir..template)
+	for _,template in ipairs(templates) do
+		local file = ModTextFileGetContent(procedural_dir..template)
 
-        for key, value in pairs(callback) do
-            file = file:gsub(utils.escape('%'..key:upper()..'%'), value)
-        end
+		for key, value in pairs(callback) do
+			file = file:gsub(utils.escape('%'..key:upper()..'%'), value)
+		end
 
-        ModTextFileSetContent(table.concat({generated_dir,id,template:sub(9)}), file)
-    end
+		ModTextFileSetContent(table.concat({generated_dir,id,template:sub(9)}), file)
+	end
 end

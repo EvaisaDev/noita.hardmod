@@ -11,6 +11,12 @@ local biomes = dofile_once("mods/noita.hardmod/lib/biome_index.lua")
 ---@field icon string? path to the perk's icon
 ---@field not_progress boolean? if true, perk won't show up in progress menu
 ---@field weight number? probability of the perk being pulled, default 10
+---@field stack_multiplier number? the multiplier applied to the perk weight for each stack already held, default 1.15
+---@field min_level number the lower level limit for this perk to be selected
+---@field max_level number the upper level limit for this perk to be selected
+---@field unique_slot string if set, will disallow other enemy perks with the same unique_slot value to be selected
+---@field not_boss bool blacklists bosses from gaining this perk
+---@field not_shop_guardian bool blacklists stevari and skoude from gaining this perk
 ---@field biome_conditions table? custom condition functions that run if the target_enemy is in the keyed biome, if value is a number it will set the perk weight to that value
 ---@field priority number? priority for the order its shown above enemies' heads or in the inspect window, default 10
 ---@field max integer? max number of this perk an enemy can have
@@ -25,7 +31,7 @@ local sprites_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_sprites/
 local icons_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/"
 
 --TODO!!!! bake all of this into new eperk logic function
-local enemy_is_ranged_attack = function(self, data)
+local enemy_is_ranged_attack = function(self, data, min_attack_delay)
 	local summoners = {
 		["data/entities/animals/bigbat.xml"] = true,
 		["data/entities/animals/giant.xml"] = true,
@@ -33,25 +39,23 @@ local enemy_is_ranged_attack = function(self, data)
 
 	if summoners[EntityGetFilename(data.target_enemy)] then return false end --even if a summoner has HANDY, they will inflict their summons with the status ailment, maybe fix?
 	if data.how_many_of_each_perk.HARDMOD_HANDY then return true end --this grants a ranged attack to enemies that wouldnt have it otherwise
-	local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-	if animal_ai_comp
-	and ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
-	and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends") then
+	if data.animal_ai_comp
+	and ComponentGetValue2(data.animal_ai_comp, "attack_ranged_enabled")
+	and not ComponentGetValue2(data.animal_ai_comp, "tries_to_ranged_attack_friends")
+	and (not min_attack_delay or ComponentGetValue2(data.animal_ai_comp, "attack_ranged_frames_between") >= min_attack_delay) then
 		return true
 	end
 end
 
 local enemy_is_ranged_support = function(self, data)
-	local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-	if animal_ai_comp
-	and ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends") then
+	if data.animal_ai_comp
+	and ComponentGetValue2(data.animal_ai_comp, "tries_to_ranged_attack_friends") then
 		return true
 	end
 end
 
 local enemy_is_melee = function(self, data)
-	local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-	if animal_ai_comp and ComponentGetValue2(animal_ai_comp, "attack_melee_enabled") then
+	if data.animal_ai_comp and ComponentGetValue2(data.animal_ai_comp, "attack_melee_enabled") then
 		return true
 	end
 end
@@ -73,6 +77,11 @@ end
 local function is_projectile_immune(self, data)
 	return not (data.dmc and ComponentObjectGetValue2(data.dmc, "damage_multipliers", "projectile") > 0
 		and GameGetGameEffectCount(data.target_enemy, "PROTECTION_PROJECTILE") == 0)
+end
+
+local function no_nearby_giant_auras(self, data)
+	local x, y = EntityGetTransform(data.target_enemy)
+	return #EntityGetInRadiusWithTag(x, y, 300, "hardmod_giant_eperk_aura") == 0
 end
 
 local function spawn_on_death_blacklist(self, data)
@@ -248,6 +257,35 @@ enemy_perks = {
 				EntityAddChild(entity_id, EntityLoad(dir.."entities/area_protector_shield_t1.xml", x, y))
 			elseif tier == 2 then
 				EntityAddChild(entity_id, EntityLoad(dir.."entities/area_protector_shield_t2.xml", x, y))
+			end
+		end
+	},
+	{
+		id = "HASTE",
+		name = "$hardmod_eperk_haste_name",
+		description = "$hardmod_eperk_haste_desc",
+		weight = 8,
+		priority = 16,
+		biome_conditions = {
+			sandcave = 10,
+		},
+		condition = function(self, data)
+			return data.animal_ai_comp or data.how_many_of_each_perk.HARDMOD_HANDY
+		end,
+		func = function(self, entity_id, data)
+			local comps = {
+				AnimalAIComponent = {
+					"attack_dash_frames_between",
+					"attack_melee_frames_between",
+					"attack_ranged_frames_between",
+				},
+			}
+			for comp_name,attributes in pairs(comps) do
+				for _,comp in ipairs(EntityGetComponentIncludingDisabled(entity_id, comp_name) or {}) do
+					for _,attr in ipairs(attributes) do
+						ComponentSetValue2(comp, attr, ComponentGetValue2(comp, attr) * .6)
+					end
+				end
 			end
 		end
 	},
@@ -429,17 +467,10 @@ enemy_perks = {
 			sky = 8,
 		},
 		condition = function(self, data)
-			if EntityHasTag(data.target_enemy, "thundermage") then return end
-			local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-			if animal_ai_comp
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
-			and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends")
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between") >= 60 then -- only on slow shooters
-				return true
-			end
+			return enemy_is_ranged_attack(self, data, 60) and not EntityHasTag(data.target_enemy, "thundermage")
 		end,
 		func = function(self, entity_id, data)
-			if not is_projectile_immune(self, data) then GetGameEffectLoadTo(entity_id, "PROTECTION_ELECTRICITY", false) else print("not eimmune :)") end
+			if not is_projectile_immune(self, data) then GetGameEffectLoadTo(entity_id, "PROTECTION_ELECTRICITY", false) end
 			EntityAddComponent2(entity_id, "LuaComponent", {
 				script_shot = dir.."scripts/thunderlord_on_shot.lua",
 				execute_every_n_frame = -1,
@@ -476,13 +507,7 @@ enemy_perks = {
 			wizards_den = 8,
 		},
 		condition = function(self, data)
-			local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(data.target_enemy, "AnimalAIComponent")
-			if animal_ai_comp
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
-			and not ComponentGetValue2(animal_ai_comp, "tries_to_ranged_attack_friends")
-			and ComponentGetValue2(animal_ai_comp, "attack_ranged_frames_between") >= 60 then -- only on slow shooters
-				return true
-			end
+			return enemy_is_ranged_attack(self, data, 60)
 		end,
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
@@ -538,13 +563,28 @@ enemy_perks = {
 	--	end
 	--},
 	{
+		id = "HOMING_CURSER",
+		name = "$hardmod_eperk_homing_curser_name",
+		description = "$hardmod_eperk_homing_curser_desc",
+		weight = 3,
+		priority = 7,
+		max = 1,
+		condition = enemy_is_ranged_attack,
+		func = function(self, entity_id, data)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_shot = dir.."generated/homing_curser_shot.lua",
+				execute_every_n_frame = -1,
+			})
+		end
+	},
+	{
 		id = "DAMAGE_BUFFER",
 		name = "$hardmod_eperk_damage_buffer_name",
 		description = "$hardmod_eperk_damage_buffer_desc",
 		weight = 6,
 		priority = 3,
 		max = 1,
-		min_level = 3,
+		min_level = 2,
 		unique_slot = "large_aura",
 		func = function(self, entity_id, data)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/damage_buffer.xml", data.x, data.y))
@@ -612,6 +652,7 @@ enemy_perks = {
 		description = "$hardmod_eperk_magic_resistance_desc",
 		weight = 7,
 		priority = 12,
+		requires_dmc = true,
 		biome_conditions = {
 			magical_temple = 10,
 			temple_of_the_art = 10,
@@ -631,6 +672,7 @@ enemy_perks = {
 		weight = 5,
 		priority = 3,
 		max = 1,
+		requires_dmc = true,
 		condition = function(self, data)
 			increment_weight_with_level(self, data)
 			return GameGetGameEffectCount(data.target_enemy, "PROTECTION_EXPLOSION") == 0 and not is_projectile_immune(self, data) end,
@@ -646,6 +688,7 @@ enemy_perks = {
 		priority = 3,
 		max = 1,
 		min_level = 3,
+		requires_dmc = true,
 		biome_conditions = {
 			frozen_vault = 6,
 			sandcave = 6,
@@ -1076,13 +1119,61 @@ enemy_perks = {
 		end
 	},
 	{
+		id = "INVISIBLE",
+		name = "$hardmod_eperk_invisible_name",
+		description = "$hardmod_eperk_invisible_desc",
+		weight = 2,
+		max = 1,
+		min_level = 3,
+		unique_slot = "obscures_perks",
+		biome_conditions = {
+			magical_temple = 4,
+			temple_of_the_art = 4,
+			wizards_den = 4,
+		},
+		func_handler = function(self, entity_id, root, spr_comps)
+			local invis_gec = GameGetGameEffect(root, "INVISIBILITY")
+			if not invis_gec or invis_gec == 0 then return end
+			local is_owner_visible = not ComponentGetValue2(invis_gec, "mInvisible")
+
+			for _,spr_comp in ipairs(spr_comps) do
+				ComponentSetValue2(spr_comp, "visible", is_owner_visible)
+				EntityRefreshSprite(entity_id, spr_comp)
+			end
+			utils.SetInternalBool(entity_id, "hardmod_hide_eperk_auras", not is_owner_visible)
+		end,
+		func = function(self, entity_id, data)
+			GetGameEffectLoadTo(entity_id, "INVISIBILITY", true)
+			GetGameEffectLoadTo(entity_id, "STAINLESS_ARMOUR", true)
+
+			local x, y = EntityGetTransform(entity_id)
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_damage_received = "mods/noita.hardmod/files/modules/enemy_perks/scripts/invisible_show_perk_icons.lua",
+				script_shot = "mods/noita.hardmod/files/modules/enemy_perks/scripts/invisible_show_perk_icons.lua",
+				execute_every_n_frame = -1,
+			})
+
+			-- this makes eperk auras invisible while the player is not near
+			utils.SetInternalBool(entity_id, "hardmod_hide_eperk_auras", true)
+
+			-- below happens when an entity gets the Invisibility (player) perk
+			-- local sprites = EntityGetComponent(entity_id, "SpriteComponent")
+			-- if sprites then
+			-- 	for _,sprite in ipairs(sprites) do
+			-- 		ComponentSetValue2(sprite, "alpha", 1.0)
+			-- 	end
+			-- end
+		end
+	},
+	{
 		id = "OBFUSCATION",
 		name = "$hardmod_eperk_obfuscation_name",
 		description = "$hardmod_eperk_obfuscation_desc",
 		weight = 2,
 		priority = 100,
-		max = 1,
+		max = 0,
 		min_level = 3,
+		unique_slot = "obscures_perks",
 		condition = function(self, data)
 			return (#data.already_held_perks + data.perks_to_give) > 1
 		end,
@@ -1102,6 +1193,9 @@ enemy_perks = {
 			for _,perk in ipairs(perks) do
 				if perk ~= self then perk.sprite = dir.."perk_sprites/missing.png" end
 			end
+		end,
+		func = function(self, entity_id, data)
+			utils.SetInternalBool(entity_id, "hardmod_hide_eperk_auras", true)
 		end
 	},
 	{
@@ -1125,19 +1219,20 @@ enemy_perks = {
 		name = "$hardmod_eperk_bounty_name",
 		description = "$hardmod_eperk_bounty_desc",
 		weight = 1,
+		stack_multiplier = 0.8,
 		priority = 30,
-		max = 1,
-		min_level = 5,
+		max = 10,
+		min_level = 0,
 		unique_slot = "on_death",
 		func = function(self, entity_id, data)
 			if data.perks_to_give then data.perks_to_give = data.perks_to_give + 10 end
 		end,
 		on_death = function(self, entity_id, ddata)
-    		if EntityHasTag(entity_id, "boss") then
-    		    EntityLoad("data/entities/items/pickup/chest_random_super.xml", ddata.x, ddata.y)
-    		else
-    		    EntityLoad("data/entities/items/pickup/chest_random.xml", ddata.x, ddata.y)
-    		end
+			if EntityHasTag(entity_id, "boss") then
+				EntityLoad("data/entities/items/pickup/chest_random_super.xml", ddata.x, ddata.y)
+			else
+				EntityLoad("data/entities/items/pickup/chest_random.xml", ddata.x, ddata.y)
+			end
 		end
 	},
 	{
@@ -1155,7 +1250,9 @@ enemy_perks = {
 			sky = 6,
 			hell = 6,
 		},
-		condition = increment_weight_with_level,
+		condition = function(self, data)
+			return increment_weight_with_level(self, data) and no_nearby_giant_auras(self, data)
+		end,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/shield_sapper_aura.xml", x, y))
@@ -1264,6 +1361,7 @@ enemy_perks = {
 		priority = 10,
 		max = 1,
 		min_level = 3,
+		requires_dmc = true,
 		func = function(self, entity_id, data)
 			EntityRemoveTag(entity_id, "homing_target")
 		end
@@ -1286,7 +1384,7 @@ enemy_perks = {
 		condition = function(self, data)
 			-- this perk can only appear on mages, ghosts (excl. wand ghosts) and some select enemies
 			local factions = "mage,mage_swapper,ghost,"
-			local creatures = { "monk", }
+			local creatures = { "/monk.xml", }
 
 			local strparts = split_string(EntityGetFilename(data.target_enemy), "/")
 			local filename = strparts[#strparts]
@@ -1325,12 +1423,28 @@ enemy_perks = {
 		end
 	},
 	{
+		id = "SOUL_LINKED",
+		name = "$hardmod_eperk_soul_linked_name",
+		description = "$hardmod_eperk_soul_linked_desc",
+		weight = 2,
+		priority = 23,
+		max = 1,
+		biome_conditions = {
+			sandcave = 4,
+		},
+		func = function(self, entity_id, data)
+			local x, y = EntityGetTransform(data.target_enemy)
+			EntityAddChild(data.target_enemy,
+				EntityLoad("mods/noita.hardmod/files/modules/enemy_perks/entities/soul_linked_ally_seeker.xml", x, y))
+		end
+	},
+	{
 		id = "TETHER",
 		name = "$hardmod_eperk_tether_name",
 		description = "$hardmod_eperk_tether_desc",
 		weight = 1,
 		priority = 25,
-		max = 2,
+		max = 1,
 		min_level = 6,
 		unique_slot = "large_aura",
 		biome_conditions = {
@@ -1340,19 +1454,18 @@ enemy_perks = {
 			hell = 4,
 			tower = 4,
 		},
+		requires_dmc = true,
 		condition = function(self, data)
-			if not data.dmc then return end
-			return ComponentGetValue2(data.dmc, "max_hp") >= 3
+			return ComponentGetValue2(data.dmc, "max_hp") >= 4 and no_nearby_giant_auras(self, data)
 		end,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/tether_aura_dormant.xml", x, y))
 
-			local stacks = (data.how_many_of_each_perk[self.id] or 0) + 1
-			if stacks == 2 then
-				local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
-				utils.SetInternalInt(entity_id, "hardmod_tether_stacks", stacks)
-			end
+			-- local stacks = (data.how_many_of_each_perk[self.id] or 0) + 1
+			-- if stacks == 2 then
+			-- 	utils.SetInternalInt(entity_id, "hardmod_tether_stacks", stacks)
+			-- end
 		end
 	},
 	{
@@ -1364,10 +1477,63 @@ enemy_perks = {
 		max = 1,
 		min_level = 6,
 		unique_slot = "large_aura",
+		condition = no_nearby_giant_auras,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/anti_tele_aura.xml", x, y))
 		end
+	},
+	{
+		id = "BURDENED",
+		name = "$hardmod_eperk_burdened_name",
+		description = "$hardmod_eperk_burdened_desc",
+		weight = 1.5,
+		priority = 12,
+		max = 1,
+		min_level = 7,
+		func = function(self, entity_id, data)
+			-- print( "spawning ghost" )
+
+			local entity_ghost = EntityLoad("data/entities/animals/ghost.xml", data.x, data.y)
+
+			local ghost_comp = EntityGetFirstComponent(entity_ghost, "GhostComponent")
+			if not ghost_comp then return end
+			ComponentSetValue2(ghost_comp, "mEntityHome", entity_id)
+			ComponentSetValue2(ghost_comp, "hunt_box_radius", 200)
+			ComponentSetValue2(ghost_comp, "max_distance_from_home", 120)
+
+			EntityAddComponent2(entity_id, "LuaComponent", {
+				script_source_file = dir.."scripts/remove_ghost.lua",
+				execute_every_n_frame = -1,
+				execute_on_removed = true
+			})
+			EntityAddComponent2(entity_id, "VariableStorageComponent", {
+				name = "ghost_id",
+				value_int = entity_ghost
+			})
+			local pec = EntityAddComponent2(entity_id, "ParticleEmitterComponent", {
+    			emitted_material_name = "spark_purple",
+    			count_min = 0,
+    			count_max = 1,
+    			x_pos_offset_min = -8,
+    			x_pos_offset_max = 8,
+    			y_pos_offset_min = -8,
+    			y_pos_offset_max = 8,
+    			x_vel_min = -10,
+    			x_vel_max = 10,
+    			y_vel_min = -10,
+    			y_vel_max = 10,
+    			lifetime_min = 1.1,
+    			lifetime_max = 2,
+    			create_real_particles = false,
+    			emit_cosmetic_particles = true,
+    			emission_interval_min_frames = 0,
+    			emission_interval_max_frames = 10,
+    			delay_frames = 2,
+    			is_emitting = true,
+			})
+			ComponentSetValue2(pec, "gravity", 0, 0)
+		end,
 	},
 }
 
@@ -1376,6 +1542,7 @@ for i,perk in ipairs(enemy_perks) do
 	perk.id = "HARDMOD_"..perk.id
 	perk.name = perk.name or perk.id
 	perk.weight = perk.weight or 10
+	perk.stack_multiplier = perk.stack_multiplier or 1.15 --default 15% stack multiplier, eg 10 stacks would multiply the base weight by ~4x
 	perk.priority = (perk.priority or 0) + i*0.001
 	perk.sprite = ModDoesFileExist(perk.sprite or "") and perk.sprite
 		or ModDoesFileExist(sprites_path..id:lower()..".png") and sprites_path..id:lower()..".png"

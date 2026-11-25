@@ -1,12 +1,12 @@
-<Entity tags="perk_entity">
+<Entity name="hardmod_soul_linked_protection" tags="perk_entity,hardmod_soul_linked">
 
-    <!-- <GameEffectComponent
+	<!-- <GameEffectComponent
 		_tags="effect_protection_all"
-        effect="PROTECTION_ALL"
-        frames="-1"
-    ></GameEffectComponent > -->
+		effect="PROTECTION_ALL"
+		frames="-1"
+	></GameEffectComponent > -->
 
-    <!-- <GameEffectComponent
+	<!-- <GameEffectComponent
 		effect="NO_HEAL"
 		frames="-1"
 	></GameEffectComponent> -->
@@ -19,7 +19,7 @@
 		</Transform>
 	</InheritTransformComponent>
 
-    <!-- <ParticleEmitterComponent
+	<!-- <ParticleEmitterComponent
 		_tags="character,enabled_in_hand,item_identified__LEGACY"
 		emitted_material_name="gold"
 		gravity.y="0.0"
@@ -64,7 +64,7 @@
 		custom_alpha="0.5">
 	</ParticleEmitterComponent> -->
 
-	<ParticleEmitterComponent 
+	<!-- <ParticleEmitterComponent 
 		emitted_material_name="gold"
 		gravity.y="0.0"
 		lifetime_min="1"
@@ -88,20 +88,26 @@
 		area_circle_radius.max="11"
 		render_back="1"
 		is_emitting="1" 
-	></ParticleEmitterComponent>
+	></ParticleEmitterComponent> -->
 
 	<LightComponent 
-    	_tags="enabled_in_hand,item_identified"
-        _enabled="1" 
-        radius="80"
-        fade_out_time="1.5" 
-    	r="150"
-    	g="190"
-    	b="230" >
+		_tags="enabled_in_hand,item_identified"
+		_enabled="1" 
+		radius="80"
+		fade_out_time="1.5" 
+		r="150"
+		g="190"
+		b="230" >
 	</LightComponent>
-
-	<!-- for when the shield is down -->
-	<!-- <ParticleEmitterComponent
+    
+    <GameEffectComponent
+		_tags="effect_protection_all"
+        effect="PROTECTION_ALL"
+        frames="-1"
+    >
+	</GameEffectComponent >
+	
+	<ParticleEmitterComponent
 		_tags="character,enabled_in_hand,item_identified__LEGACY,shield_ring"
 		emitted_material_name="gold"
 		gravity.y="0.0"
@@ -111,8 +117,8 @@
 		count_max="25"
 		render_on_grid="1"
 		fade_based_on_lifetime="1"
-		area_circle_radius.min="24"
-		area_circle_radius.max="24"
+		area_circle_radius.min="16"
+		area_circle_radius.max="16"
 		cosmetic_force_create="0"
 		airflow_force="0.3"
 		airflow_time="0.01"
@@ -122,28 +128,7 @@
 		emit_cosmetic_particles="1"
 		is_emitting="1"
 		custom_alpha="0.5">
-	</ParticleEmitterComponent> -->
-    
-    <!-- <GameEffectComponent
-		_tags="protection_all_short,effect_protection_all"
-        effect="PROTECTION_ALL"
-        frames="-1"
-    >
-	</GameEffectComponent >
-	
-	<GameEffectComponent
-		_tags="protection_all_short,effect_protection_all"
-        effect="PROTECTION_FREEZE"
-        frames="-1"
-    >
-	</GameEffectComponent >
-	
-	<GameEffectComponent
-		_tags="protection_all_short,effect_protection_all"
-        effect="PROTECTION_FIRE"
-        frames="-1"
-    >
-	</GameEffectComponent > -->
+	</ParticleEmitterComponent>
 	
 	<SpriteParticleEmitterComponent
 		sprite_file="data/particles/protection_all_evil.xml"
@@ -169,6 +154,11 @@
 		randomize_velocity.min_y="-40"
 		randomize_velocity.max_y="-10"
 		>
-    </SpriteParticleEmitterComponent>
+	</SpriteParticleEmitterComponent>
+
+	<LuaComponent
+		script_source_file="mods/noita.hardmod/files/modules/enemy_perks/scripts/soul_linked_protection_scan.lua"
+		execute_every_n_frame="30"
+	></LuaComponent>
 
 </Entity>

@@ -39,7 +39,7 @@ for _,player in pairs(nearby_players or {}) do
 			local p_max_hp = ComponentGetValue2(dmg_comp, "max_hp")
 
 			if dist > OUTER_RADIUS then
-				EntityInflictDamage(player, p_hp * 0.5, "DAMAGE_SLICE", "divine tether", "NONE", 0, 0)
+				EntityInflictDamage(player, p_hp * 0.5, "DAMAGE_SLICE", "$hardmod_eperk_tether_broken", "NONE", 0, 0)
 				GamePlaySound("data/audio/Desktop/player.bank", "player_projectiles/megalaser/launch", px, py)
 
 				-- if there is no more aura, a new one will be spawned
@@ -52,7 +52,7 @@ for _,player in pairs(nearby_players or {}) do
 					ComponentSetValue2(boss_dmg_comp, "hp", math.min(boss_hp + (boss_max_hp * 0.2), boss_max_hp))
 				end
 			else
-				EntityInflictDamage(player, 0.00667, "DAMAGE_CURSE", "divine tether", "NONE", 0, 0)
+				EntityInflictDamage(player, 0.00667, "DAMAGE_CURSE", "$hardmod_eperk_tether_broken", "NONE", 0, 0)
 			end
 		end
 	end
