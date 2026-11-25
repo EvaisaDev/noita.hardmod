@@ -963,9 +963,25 @@ remove redundant script pickup logic
 icons for on the wiki
 undo absolution desc change
 Make Healthy Exploration remove the wounded effect so its not wasted
+spawn pyramid orb in NG+ again
+oops it should be ~= not ==
+make hand statues always drop one broken spell make the first repaired broken spell give both Summon Portal and the reward
 some Soul Linked tweaks
 some Overclock tweaks
 this probably fixes something somewhere
 nvm lol
+dont mind this
+upd
+fix warnings in utilities.lua (grrrrrrrr)
+remove unused utils.GetSpellCost
+new utils.GetSpell func
+disallow bypassing mana cost of passives with alt fire anything i did add a cool tech where if you have AFA then passives after that do become free :))
 limit Soul Linked to a few late-game biomes
 add starter wand anvil upgrade
+ehehe
+yknow what, fuck you
+update tracker
+change Gunpowder Trail to use unstable gunpowder (and update its sprite & desc)
+change shield passives to cost less mana
+Add `insert_after` for spells
+add insert_after for perks
