@@ -135,6 +135,7 @@ hooks.spell_patches = {
 hooks.new_spells = {
 	{
 		id = "HARDMOD_NULL_MANA",
+		insert_after = "MANA_REDUCE",
 		name = "$hardmod_spell_null_mana_name",
 		description = "$hardmod_spell_null_mana_desc",
 		sprite = "mods/noita.hardmod/files/modules/rapidfire_nerfs/ui_gfx/null_mana.png",
@@ -159,6 +160,7 @@ hooks.new_spells = {
 	},
 	{
 		id = "HARDMOD_MINI_CHAINSAW",
+		insert_after = "POWERDIGGER",
 		author = "modder.dani2d",
 		name = "$hardmod_spell_mini_chainsaw_name",
 		description = "$hardmod_spell_mini_chainsaw_desc",
@@ -179,6 +181,7 @@ hooks.new_spells = {
 	},
 	{
 		id = "HARDMOD_MANA_REGEN",
+		insert_after = "MANA_REDUCE",
 		author = "modder.dani2d",
 		name = "$hardmod_spell_mana_regen_name",
 		description = "$hardmod_spell_mana_regen_desc",

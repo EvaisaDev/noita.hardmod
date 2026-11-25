@@ -43,10 +43,32 @@ for _,path in ipairs(ModLuaFileGetAppends("mods/noita.hardmod/files/__spell_appe
 	end
 end
 
-local num_spells = #actions
-for i,spell in ipairs(new_spells) do
+local indexes = {}
+local offsets = {}
+for idx,spell in ipairs(actions) do
+	indexes[spell.id] = idx
+end
+
+for _,spell in ipairs(new_spells) do
 	spell.origin = "$mod.noita.hardmod"
-	actions[num_spells+i] = spell
+
+	local idx = indexes[spell.insert_after]
+	if idx then
+		local offset = offsets[spell.insert_after] or 1
+		idx = idx + offset
+
+		table.insert(actions, idx, spell)
+		offsets[spell.insert_after] = offset + 1
+
+		-- shift
+		for key,value in pairs(indexes) do
+			if value >= idx then
+				indexes[key] = value + 1
+			end
+		end
+	else
+		table.insert(actions, spell)
+	end
 end
 
 for _,spell in ipairs(actions) do

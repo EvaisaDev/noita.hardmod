@@ -27,6 +27,7 @@ local sacrilege_blacklisted_spells = {
 hooks.new_spells = {
 	{
 		id = "HARDMOD_SACRILEGE",
+		insert_after = "DIVIDE_10",
 		name = "$hardmod_spell_sacrilege_name",
 		description = "$hardmod_spell_sacrilege_desc",
 		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/sacrilege.png",
@@ -97,6 +98,7 @@ hooks.new_spells = {
 	},
 	{
 		id = "HARDMOD_TORCH_MAGIC",
+		insert_after = "TORCH_ELECTRIC",
 		name = "$hardmod_spell_torch_magic_name",
 		description = "$hardmod_spell_torch_magic_desc",
 		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/magic_torch.png",
@@ -349,6 +351,21 @@ hooks.spell_patches = {
 	["TORCH_ELECTRIC"] = {
 		description = "$hardmod_spell_torch_electric_desc",
 		mana = -2,
+	},
+	["GUNPOWDER_TRAIL"] = {
+		description = "$hardmod_spell_gunpowder_trail_desc",
+		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/gunpowder_trail.png",
+		spawn_level = "0,1,2,3,4",
+		spawn_probability = "0.4,0.5,0.3,0.3,0.2",
+		action = function()
+			c.trail_material = c.trail_material .. "gunpowder_unstable,"
+			c.trail_material_amount = c.trail_material_amount + 20
+			draw_actions(1, true)
+		end,
+	},
+	["DESTRUCTION"] = {
+		spawn_requires_flag = "hardmod_cannot_spawn",
+		spawn_probability = "",
 	},
 }
 

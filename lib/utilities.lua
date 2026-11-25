@@ -267,7 +267,7 @@ end
 ---@param entity_id entity_id ID of the entity
 ---@param variable_name string Name of the variable
 ---@param new_value int New value of the variable (or initial value, if VSC did not exist)
----@return new_value int Returns the given value for convenience
+---@return int new_value Returns the given value for convenience
 function utils.SetInternalInt(entity_id, variable_name, new_value)
 	local variable_found = false
 	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
@@ -554,63 +554,6 @@ function utils.GetIntegerCostOffsetX(cost_int)
 	return width * 0.5 - 0.5
 end
 
-function utils.GetSpellCost(base_cost, biome_id, biome_id_is_chunk)
-	if type(base_cost) == "string" then
-		local bc = (dofile_once("mods/noita.hardmod/lib/gun_actions_indexed.lua")[base_cost] or {}).price
-		if not bc then print("ACTION WAS INVALID: "..base_cost) return end
-		base_cost = bc
-	end
-
-	if biome_id_is_chunk then
-		local biomes = {
-			[1] = 0,
-			[2] = 0,
-			[3] = 0,
-			[4] = 1,
-			[5] = 1,
-			[6] = 1,
-			[7] = 2,
-			[8] = 2,
-			[9] = 2,
-			[10] = 2,
-			[11] = 2,
-			[12] = 2,
-			[13] = 3,
-			[14] = 3,
-			[15] = 3,
-			[16] = 3,
-			[17] = 4,
-			[18] = 4,
-			[19] = 4,
-			[20] = 4,
-			[21] = 5,
-			[22] = 5,
-			[23] = 5,
-			[24] = 5,
-			[25] = 6,
-			[26] = 6,
-			[27] = 6,
-			[28] = 6,
-			[29] = 6,
-			[30] = 6,
-			[31] = 6,
-			[32] = 6,
-			[33] = 6,
-		}
-
-		if biome_id > 35 then biome_id = 7
-		else biome_id = biomes[biome_id] or 0 end
-	end
-
-	biome_id = biome_id^2
-	local price = math.max(math.floor(((base_cost * 0.30) + (70 * biome_id)) * .1) * 10, 10)
-	if biome_id >= 10 then
-		price = price * 5
-	end
-
-	return price
-end
-
 ---Clones a table
 ---@param orig table
 ---@param copies nil
@@ -753,10 +696,31 @@ end
 ---@param name string Name of the child to look for
 ---@return entity_id? Entity ID of the first match, or nil if none was found
 function utils.EntityGetChildByName(entity_id, name)
-	local children = EntityGetAllChildren(entity_id)
+	local children = EntityGetAllChildren(entity_id) or {}
 	for _,child in ipairs(children) do
 		if EntityGetName(child) == name then
 			return child
+		end
+	end
+	return nil
+end
+
+local function entity_is_wand(entity_id)
+	local acomp = EntityGetFirstComponentIncludingDisabled(entity_id, "AbilityComponent")
+	if not acomp then return false end
+	return ComponentGetValue2(acomp, "use_gun_script") == true
+end
+
+--- Function to get an entity's held wand, if any
+---@param entity_id entity_id Entity ID of the entity to check
+---@return entity_id? entity_id Entity ID of the wand, or nil if the entity is not holding a wand
+function GetHeldWand(entity_id)
+	if entity_id ~= nil then
+		local inv2_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "Inventory2Component")
+		if not inv2_comp then return nil end
+		local active_item = ComponentGetValue2(inv2_comp, "mActiveItem")
+		if entity_is_wand(active_item) then
+			return active_item
 		end
 	end
 	return nil
@@ -767,11 +731,32 @@ end
 ---@param seed_a int? Seed value a (defaults to GameGetFrameNum() if nil)
 ---@param seed_b int? Seed value b (defaults to GameGetFrameNum() if nil)
 ---@return int A random element from the array
-function utils.RandomFromArray(array, seed_x, seed_y)
-	seed_x = seed_x or GameGetFrameNum()
-	seed_y = seed_y or GameGetFrameNum()
+function utils.RandomFromArray(array, seed_a, seed_b)
+	seed_a = seed_a or GameGetFrameNum()
+	seed_b = seed_b or GameGetFrameNum()
 	SetRandomSeed(seed_a, seed_b)
 	return array[Random(1, #array)]
+end
+
+local _spell_index = nil
+--- Gets a spell with a specified `id`, using an indexed table.
+--- 
+--- Note: Ensure you're importing utilities.lua via `dofile_once`!!!
+--- @param id string
+--- @return GunAction?
+function utils.GetSpell(id)
+	if not actions then
+		dofile_once("data/scripts/gun/gun_actions.lua")
+	end
+
+	if not _spell_index then
+		_spell_index = {}
+		for _,spell in pairs(actions) do
+			_spell_index[spell.id] = spell
+		end
+	end
+
+	return _spell_index[id]
 end
 
 utils.logging = false

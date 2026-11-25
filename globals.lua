@@ -13,6 +13,8 @@
 ---@class GunAction
 ---@field id string
 ---@field name string
+---@field author string? Custom field
+---@field insert_after string? Custom field; makes this spell appear after the provided ID in the progress menu. Does not work on custom spells added by us
 ---@field sprite string
 ---@field sprite_unidentified string?
 ---@field related_projectiles string[]?
@@ -111,16 +113,36 @@ actions = {}
 ---@field projectile_file string
 ---@field global_null_shot boolean Custom field added by HardMod
 
+---@class DeckSpell
+---@field deck_index integer
+---@field mana integer
+---@field recursive boolean
+---@field uses_remaining integer
+---@field id string
+---@field inventoryitem_id entity_id
+---@field is_identified boolean
+---@field type integer
+---@field related_projectiles [string, integer]?
+---@field related_extra_entities string[]?
+---@field action fun(recursion_level?: integer, iteration?: integer)
+---@field name string
+
 ---@type ShotState
 c = nil
 
 gun = {}
+
+---@type DeckSpell[]
 hand = {}
+---@type DeckSpell[]
 discarded = {}
+---@type DeckSpell[]
 deck = {}
+
 shot_effects = {}
 first_shot = true
 current_reload_time = 0
+mana = 0
 reloading = false
 reflecting = false
 
@@ -184,6 +206,7 @@ move_discarded_to_deck = nil
 ---@field usable_by_enemies boolean?
 ---@field max_in_perk_pool integer?
 ---@field not_in_default_perk_pool boolean?
+---@field insert_after string? Custom field, same as spells insert_after but for perks. Does not work on custom perks added by us.
 ---@field not_progress boolean? Hardmod's custom field, hides the perk from the progress menu
 ---@field holy_mountain_exclusive boolean? Hardmod's custom field
 ---@field func fun(perk_entity: entity_id, picked_by_entity: entity_id, item_name: string, pickup_count: integer)?
