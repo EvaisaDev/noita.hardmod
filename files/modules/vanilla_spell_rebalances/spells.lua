@@ -185,6 +185,16 @@ hooks.spell_patches = {
             draw_actions(1, true)
         end
 	},
+	["HOOK"] = {
+		mana = 14,
+		spawn_level = "1,2,3,4,5",
+		spawn_probability = "0.4,0.5,0.5,0.3,0.2",
+		related_projectiles = { "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/hook.xml" },
+		action = function()
+			add_projectile("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/hook.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 8
+		end
+	},
 	["SCATTER_2"] = {
 		action = function()
 			draw_actions(2, true)
