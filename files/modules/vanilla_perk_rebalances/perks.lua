@@ -428,7 +428,12 @@ hooks.perk_patches = {
 				GamePlaySound("data/audio/Desktop/event_cues.bank", "event_cues/chest_bad/create", x, y)
 			end
 		end
-	}
+	},
+	["EXTRA_SHOP_ITEM"] = {
+		ui_name = "$hardmod_perk_extra_shop_item_name",
+		ui_description = "$hardmod_perk_extra_shop_item_desc",
+		stackable_maximum = 10,
+	},
 }
 
 --Perks recoverable via Kakkakikkare

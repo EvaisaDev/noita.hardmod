@@ -8,12 +8,16 @@ local damage_nerfs = {
 	-- so that enemies realize theyre being damaged
 	["flamethrower"] = { projectile = 0.01 },
 
-	["data/entities/projectiles/darkflame.xml"] = { unpierce = true },
+	["data/entities/projectiles/darkflame.xml"] = {
+		unpierce = true,
+		projectile = 0,
+	},
+
 	["data/entities/projectiles/darkflame_stationary.xml"] = {
-		projectile = 0.05,
+		projectile = 0.04,
 		unpierce = true,
 		dmg = {
-			fire = 0.3,
+			fire = 0.2,
 		},
 	},
 
@@ -41,8 +45,9 @@ for proj,nerfs in pairs(damage_nerfs) do
 			pcomp:set("damage_every_x_frames", 15)
 		end
 
-		local dmg = pcomp:first_of("damage_by_type")
-		if dmg and nerfs.dmg then
+		if nerfs.dmg then
+			local dmg = pcomp:first_of("damage_by_type") or pcomp:create_child("damage_by_type")
+
 			for kind,value in pairs(nerfs.dmg) do
 				dmg:set(kind, value)
 			end

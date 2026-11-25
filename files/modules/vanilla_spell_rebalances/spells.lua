@@ -185,6 +185,16 @@ hooks.spell_patches = {
             draw_actions(1, true)
         end
 	},
+	["HOOK"] = {
+		mana = 14,
+		spawn_level = "1,2,3,4,5",
+		spawn_probability = "0.4,0.5,0.5,0.3,0.2",
+		related_projectiles = { "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/hook.xml" },
+		action = function()
+			add_projectile("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/hook.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 8
+		end
+	},
 	["SCATTER_2"] = {
 		action = function()
 			draw_actions(2, true)
@@ -280,6 +290,7 @@ hooks.spell_patches = {
 	},
 	["DARKFLAME"] = {
 		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/darkflame_player.png",
+		related_projectiles = {"mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/darkflame_player.xml"},
 		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/card_darkflame_player.xml",
 		max_uses = -1,
 		mana = 40,
@@ -287,6 +298,13 @@ hooks.spell_patches = {
 			add_projectile("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/darkflame_player.xml")
 			c.fire_rate_wait = c.fire_rate_wait + 14
 		end,
+	},
+	["POLLEN"] = {
+		action = function()
+			add_projectile("data/entities/projectiles/deck/pollen.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 2
+			c.spread_degrees = c.spread_degrees + 10
+		end
 	},
 	["FLAMETHROWER"] = { -- damage is also changed in damage.lua
 		mana = 15,
