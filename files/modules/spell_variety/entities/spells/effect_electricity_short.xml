@@ -1,0 +1,9 @@
+<Entity>
+
+	<Base file="data/entities/misc/effect_electricity.xml" >
+	    <GameEffectComponent 
+	    	frames="20"
+	    ></GameEffectComponent >
+	</Base>
+
+</Entity>
