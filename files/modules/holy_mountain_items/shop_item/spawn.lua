@@ -31,7 +31,6 @@ function hardmod_spawn_purchasable_item(x, y)
 
 	local item = utils.ConditionalRandomFromTable(shop_items.items, data)
 	if not item then return end
-	local cost = item.base_cost*1.7^(hm_level-1)
 
 	if hm_level == 7 then
 		if not item.hm_escape then item = shop_items.indexed.ring_of_elevation end
@@ -75,7 +74,7 @@ function hardmod_spawn_purchasable_item(x, y)
 			_tags = "shop_cost,enabled_in_world",
 			image_file = "data/fonts/font_pixel_white.xml",
 			text = tostring(cost),
-			offset_x = utils.GetIntegerCostOffsetX(cost) * .5,
+			offset_x = (utils.GetIntegerCostOffsetX(cost) * .5)-8,
 			offset_y = 15,
 			is_text_sprite = true,
 			update_transform = true,
