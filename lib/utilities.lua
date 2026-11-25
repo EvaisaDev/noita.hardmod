@@ -267,6 +267,7 @@ end
 ---@param entity_id entity_id ID of the entity
 ---@param variable_name string Name of the variable
 ---@param new_value int New value of the variable (or initial value, if VSC did not exist)
+---@return new_value int Returns the given value for convenience
 function utils.SetInternalInt(entity_id, variable_name, new_value)
 	local variable_found = false
 	local vscomps = EntityGetComponentIncludingDisabled(entity_id, "VariableStorageComponent")
@@ -286,6 +287,8 @@ function utils.SetInternalInt(entity_id, variable_name, new_value)
 			value_int = new_value
 		})
 	end
+
+	return new_value
 end
 
 ---Shorthand for quickly getting the string value of a VSC
