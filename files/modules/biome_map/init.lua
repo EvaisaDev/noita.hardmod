@@ -86,7 +86,7 @@ utils.patchifile("data/scripts/biomes/pyramid_top.lua", {
 	{
 		from = [[EntityLoad( "data/entities/items/orbs/orb_01.xml", x, y )]],
 		insert_before = [[
-			if (tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT","0")) or 0) == 0 then
+			if (tonumber(SessionNumbersGetValue("NEW_GAME_PLUS_COUNT","0")) or 0) ~= 0 then
 		]],
 		insert_after = [[
 			end
