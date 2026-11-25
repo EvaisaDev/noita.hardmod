@@ -111,16 +111,35 @@ actions = {}
 ---@field projectile_file string
 ---@field global_null_shot boolean Custom field added by HardMod
 
+---@class DeckSpell
+---@field deck_index integer
+---@field mana integer
+---@field uses_remaining integer
+---@field id string
+---@field inventoryitem_id entity_id
+---@field is_identified boolean
+---@field type integer
+---@field related_projectiles [string, integer]?
+---@field related_extra_entities string[]?
+---@field action fun(recursion_level?: integer, iteration?: integer)
+---@field name string
+
 ---@type ShotState
 c = nil
 
 gun = {}
+
+---@type DeckSpell[]
 hand = {}
+---@type DeckSpell[]
 discarded = {}
+---@type DeckSpell[]
 deck = {}
+
 shot_effects = {}
 first_shot = true
 current_reload_time = 0
+mana = 0
 reloading = false
 reflecting = false
 
