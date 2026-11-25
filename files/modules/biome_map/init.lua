@@ -96,22 +96,10 @@ utils.patchifile("data/scripts/biomes/pyramid_top.lua", {
 })
 
 -- no safe entrance 4 u
-function hooks.magic_numbers_and_seed_initialised()
-	SetRandomSeed(2354, 4567)
-
-	if Random(1, 100) <= 65	then
-		imutil.ImageReplace("data/biome_impl/temple/altar_snowcave_capsule.png", root.."gfx/altar_snowcave_capsule.png")
-	end
-
-	if Random(1, 100) <= 70 then
-		imutil.FillImage("data/biome_impl/temple/altar_snowcastle_capsule_background.png")
-		imutil.ImageReplace("data/biome_impl/temple/altar_snowcastle_capsule.png", root.."gfx/altar_snowcastle_capsule.png")
-	end
-
-	if Random(1, 100) <= 75 then
-		imutil.ImageReplace("data/biome_impl/temple/altar_vault_capsule.png", root.."gfx/altar_vault_capsule.png")
-	end
-end
+imutil.ImageReplace("data/biome_impl/temple/altar_snowcave_capsule.png", root.."gfx/altar_snowcave_capsule.png")
+imutil.FillImage("data/biome_impl/temple/altar_snowcastle_capsule_background.png")
+imutil.ImageReplace("data/biome_impl/temple/altar_snowcastle_capsule.png", root.."gfx/altar_snowcastle_capsule.png")
+imutil.ImageReplace("data/biome_impl/temple/altar_vault_capsule.png", root.."gfx/altar_vault_capsule.png")
 
 function hooks.player_spawned(pid, is_run_start)
 	if is_run_start then
