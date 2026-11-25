@@ -350,6 +350,17 @@ hooks.spell_patches = {
 		description = "$hardmod_spell_torch_electric_desc",
 		mana = -2,
 	},
+	["GUNPOWDER_TRAIL"] = {
+		description = "$hardmod_spell_gunpowder_trail_desc",
+		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/gunpowder_trail.png",
+		spawn_level = "0,1,2,3,4",
+		spawn_probability = "0.4,0.5,0.3,0.3,0.2",
+		action = function()
+			c.trail_material = c.trail_material .. "gunpowder_unstable,"
+			c.trail_material_amount = c.trail_material_amount + 20
+			draw_actions(1, true)
+		end,
+	}
 }
 
 local mats = { "MATERIAL_WATER", "MATERIAL_OIL", "MATERIAL_BLOOD", "MATERIAL_CEMENT", "WATER_TRAIL" }
