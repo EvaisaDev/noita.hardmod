@@ -12,7 +12,7 @@ for _,mist in pairs(mists) do
 		local comp = file:first_of("ProjectileComponent")
 		if comp then
 			comp:set("lifetime", 200)
-			comp:set("damage_every_x_frames", 30)
+			comp:set("damage_every_x_frames", 20)
 			comp:set("collide_with_world", true)
 		end
 	end
@@ -22,7 +22,7 @@ for file in nxml.edit_file("data/entities/projectiles/deck/base_field.xml") do
 	local proj = file:first_of("ProjectileComponent")
 	if proj then
 		proj:set("collide_with_world", true)
-		proj:set("damage_every_x_frames", 30)
+		proj:set("damage_every_x_frames", 20)
 	end
 
 	local lifetime = file:first_of("LifetimeComponent")
