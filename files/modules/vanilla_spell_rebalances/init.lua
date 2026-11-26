@@ -6,6 +6,12 @@ local hooks = {}---@type hooks
 lootlib.add_patch_script("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/lootlib_patch.lua")
 ModMagicNumbersFileAdd("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/magic_numbers.xml")
 
+utils.modifile(
+	"data/scripts/gun/gun_actions.lua",
+	[[if ( hpdiff > 0.25 ) then doskip = true end]],
+	[[if ( hpdiff > 0.75 ) then doskip = true end]]
+)
+
 local mists = { "slime", "alcohol", "blood", "radioactive" }
 for _,mist in pairs(mists) do
 	for file in nxml.edit_file("data/entities/projectiles/deck/mist_"..mist..".xml") do

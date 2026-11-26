@@ -161,10 +161,12 @@ hooks.spell_patches = {
 	["BOMB"] = { max_uses = 5 },
 	["MINE"] = { max_uses = 20 },
 	["GRENADE"] = { max_uses = 30 },
+	["IF_HP"] = {
+		-- modifile'd in init.lua
+		description = "$hardmod_spell_if_hp_desc",
+	},
 	["TELEPORT_CAST"] = {
-		mana = 200,
-		max_uses = 10,
-		never_unlimited = true,
+		mana = 100,
 		spawn_level = "10",
 		spawn_probability = "0"
 	},
