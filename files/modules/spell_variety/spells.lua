@@ -39,11 +39,10 @@ return {
 			action = function()
 				if force_stop_draws then return end
 
-				SetRandomSeed(GameGetFrameNum(), GameGetFrameNum())
-
 				local max = #deck + #discarded
 				if max == 0 then return end
 
+				utils.RandomizeSeed()
 				local rnd = math.floor((Random() ^ 0.4) * max) + 1
 				draw_actions(rnd, true)
 
