@@ -803,7 +803,7 @@ function utils.GetWandTipPos(shooter)
 end
 
 local _rand_y = 0
---- Changes the current RNG seed (SetRandomSeed) with the current frame *and* an increment,
+--- Changes the current PRNG seed (`SetRandomSeed`) with the current frame *and* an increment,
 --- allowing you to use it multiple times in a single frame
 function utils.RandomizeSeed()
 	SetRandomSeed(GameGetFrameNum(), _rand_y)
