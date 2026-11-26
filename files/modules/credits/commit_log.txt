@@ -991,3 +991,13 @@ Make Extra Item in HM work on all in-level shops
 change max stacks of extra shop item
 update extra item in shop's desc
 rework the hookbolt spell
+buff piercing stuff slightly (reduce damage_every_x_frames)
+add a new spell Random Cast
+add utils.RandomizeSeed
+change description of utils.RandomizeSeed
+reduce mummy's HP
+reduce mummy's hp
+oops accidentally left that out, was a test spell
+Make Requirement - HP skip if >75% HP rather than 25%
+add notla and random burst to pyramid boss's drop make him also drop 5 random spells and not 4
+add arrow as a possible starting spell
