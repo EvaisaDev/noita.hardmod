@@ -254,7 +254,7 @@ for xml in nxml.edit_file("data/entities/items/pickup/stonestone.xml") do
 			script_source_file=dir.."scripts/toxic_immunity_item_update.lua",
 			execute_every_n_frame = "60",
 			script_enabled_changed = dir.."scripts/toxic_immunity_item.lua"
-		})
+		}),
 	}))
 end
 

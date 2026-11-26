@@ -12,6 +12,8 @@
 - move food poisoning immunity to EYV and make sure it works with vomit eperk
 - make shit perk border chunkier?
 - make passive spells always active in item slots with Spells materialised
+- fix Tannerkivi not working with Amplified Items
+  - Move up relevant components to core item level?
 
 ## Enemy Perk Ideas
 - Mass Chaotic Polymorph on death

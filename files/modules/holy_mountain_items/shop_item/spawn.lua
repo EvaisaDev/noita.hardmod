@@ -33,7 +33,7 @@ function hardmod_spawn_purchasable_item(x, y)
 	local item = utils.ConditionalRandomFromTable(shop_items.items, data)
 	if not item then return end
 
-	local cost = math.min(utils.max_gold, item.base_cost*1.5^(hm_level+math.abs(GetParallelWorldPosition(x, y) * 7)-1))
+	local cost = math.min(utils.max_gold, item.base_cost*1.6^(hm_level+math.abs(GetParallelWorldPosition(x, y) * 7)-1))
 
 	if hm_level == 7 then
 		if not item.hm_escape then item = shop_items.indexed.ring_of_elevation end

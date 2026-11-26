@@ -104,7 +104,7 @@ local torches = {
 	{
 		path = "data/entities/misc/custom_cards/torch.xml",
 		image = "data/particles/torch_fog_of_war_hole.xml",
-		size = 1.5,
+		size = 2,
 	},
 	{
 		path = "data/entities/misc/custom_cards/torch_electric.xml",

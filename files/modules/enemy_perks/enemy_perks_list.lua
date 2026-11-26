@@ -175,6 +175,7 @@ enemy_perks = {
 		name = "$hardmod_eperk_extra_hp_name",
 		description = "$hardmod_eperk_extra_hp_desc",
 		weight = 10,
+		stack_multiplier = 1.1,
 		requires_dmc = true,
 		func = function(self, entity_id, data)
 			ComponentSetValue2(data.dmc, "max_hp", ComponentGetValue2(data.dmc, "max_hp") * 1.5)
@@ -264,8 +265,8 @@ enemy_perks = {
 		id = "HASTE",
 		name = "$hardmod_eperk_haste_name",
 		description = "$hardmod_eperk_haste_desc",
-		weight = 8,
-		stack_multiplier = 1.1,
+		weight = 9,
+		stack_multiplier = 1.05,
 		priority = 16,
 		biome_conditions = {
 			sandcave = 10,
@@ -284,7 +285,7 @@ enemy_perks = {
 			for comp_name,attributes in pairs(comps) do
 				for _,comp in ipairs(EntityGetComponentIncludingDisabled(entity_id, comp_name) or {}) do
 					for _,attr in ipairs(attributes) do
-						ComponentSetValue2(comp, attr, ComponentGetValue2(comp, attr) * .4)
+						ComponentSetValue2(comp, attr, ComponentGetValue2(comp, attr) * .6)
 					end
 				end
 			end
