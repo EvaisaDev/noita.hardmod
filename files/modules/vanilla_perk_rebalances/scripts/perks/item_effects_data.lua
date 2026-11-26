@@ -1,3 +1,6 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
+
+
 local function func_toggle_item_gameeffects(game_effects)
 	if type(game_effects) == "string" then
 		game_effects = { [game_effects] = true }
@@ -13,6 +16,7 @@ local function func_toggle_item_gameeffects(game_effects)
 end
 
 local function func_toggle_item_children(children_names)
+	print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	if type(children_names) == "string" then
 		children_names = { [children_names] = true }
 	end
@@ -23,10 +27,20 @@ local function func_toggle_item_children(children_names)
 		for _,child in ipairs(EntityGetAllChildren(item) or {}) do
 			print("checking "..child)
 			if children_names[EntityGetName(child)] then
-				print("found")
-				for _,comp in ipairs(EntityGetAllComponents(child)) do
-					print("enabled component: "..comp)
-					EntitySetComponentIsEnabled(child, comp, togglestate)
+				--EntitySetComponentsWithTagEnabled(child, "enabled_in_hand", togglestate)
+				utils.set_components_enabled_delayed(child, togglestate, "enabled_in_hand")
+				if togglestate then
+					EntityAddComponent2(child, "LuaComponent", {
+						_tags = "enabled_in_hand",
+						script_source_file = "mods/noita.hardmod/lib/utility_scripts/enable_in_hand_components.lua",
+						remove_after_executed = true,
+					})
+				else
+					EntityAddComponent2(child, "LuaComponent", {
+						_tags = "enabled_in_hand", --this probably doesnt work but idk if there are consequences to that and i dont wanna think about it rn.
+						script_source_file = "mods/noita.hardmod/lib/utility_scripts/disable_in_hand_components.lua",
+						remove_after_executed = true,
+					})
 				end
 			end
 		end

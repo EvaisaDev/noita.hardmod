@@ -3,7 +3,7 @@ function enabled_changed(entity_id, is_enabled)
 
 	EntityAddComponent2(entity_id, "LuaComponent", {
 		_tags = "enabled_in_hand",
-		script_source_file="mods/noita.hardmod/files/modules/vanilla_spell_rebalances/scripts/enable_in_hand_components.lua",
+		script_source_file="mods/noita.hardmod/lib/utility_scripts/enable_in_hand_components.lua",
 		remove_after_executed = true
 	})
 

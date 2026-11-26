@@ -10,8 +10,8 @@
 - remove item immunities perk if apotheosis is enabled?
 - fix zerk strat (i have a plan :> (concrete))
 - move food poisoning immunity to EYV and make sure it works with vomit eperk
-- add sort_after fields for perks and spells
 - make shit perk border chunkier?
+- make passive spells always active in item slots with Spells materialised
 
 ## Enemy Perk Ideas
 - Mass Chaotic Polymorph on death
@@ -32,7 +32,6 @@
   - covered by Rival?
 - extra projectiles
 - iframes
-- chaotic poly on death
 - some stuff with darkness?
 - mini meat realm
 - blinding projectiles ~8s
@@ -44,6 +43,7 @@
 ## bugs
 - 2nd and 3rd hand statue kicked drops summon portal spell
 - Snail module crashes?
+  - cause: script is defined as a coroutine: will be resolved when reimplemted with dialogue system
 - make HM basin changes work in final stage
 - Ira should probs remove CBC from their champion
 - Bug report, 23/11/26

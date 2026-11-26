@@ -570,6 +570,7 @@ enemy_perks = {
 		weight = 3,
 		priority = 7,
 		max = 1,
+		min_level = 3,
 		condition = enemy_is_ranged_attack,
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
