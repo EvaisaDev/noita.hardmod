@@ -389,6 +389,22 @@ function utils.SetInternalBool(entity_id, variable_name, new_value)
 	end
 end
 
+---@param eid entity_id
+---@param var_name string
+---@return entity_id?
+function utils.GetInternalEntityId(eid, var_name)
+	---@diagnostic disable-next-line: return-type-mismatch
+	return utils.GetInternalInt(eid, var_name)
+end
+
+---@param eid entity_id
+---@param var_name string
+---@param value entity_id
+function utils.SetInternalEntityId(eid, var_name, value)
+	---@diagnostic disable-next-line: param-type-mismatch
+	utils.SetInternalInt(eid, var_name, value)
+end
+
 ---Returns the player, polymorphed or not. Pass x, y and distance for a distance check.
 ---@param x number?
 ---@param y number?
@@ -758,6 +774,33 @@ function utils.GetSpell(id)
 	end
 
 	return _spell_index[id]
+end
+
+--- Returns the position of the tip of the wand held by `shooter`
+---@param shooter entity_id
+---@return number x, number y, number rotation, boolean found
+function utils.GetWandTipPos(shooter)
+	local x, y, rot = EntityGetTransform(shooter)
+	local wx, wy, wr = x, y, rot
+	local found = false
+	local inventory = EntityGetFirstComponent(shooter, "Inventory2Component")
+	if inventory then
+		local active_wand = ComponentGetValue2(inventory, "mActiveItem")
+		if EntityHasTag(active_wand, "wand") then
+			local _, _, wand_rot = EntityGetTransform(active_wand)
+			local comp = EntityGetFirstComponentIncludingDisabled(active_wand, "HotspotComponent", "shoot_pos")
+			if comp then
+				local ox, oy = ComponentGetValue2(comp, "offset")
+				local tx = math.cos(wand_rot) * ox - math.sin(wand_rot) * oy
+				local ty = math.sin(wand_rot) * ox + math.cos(wand_rot) * oy
+				wx, wy = wx + tx, wy + ty - 4
+				wr = wand_rot
+				found = true
+			end
+		end
+	end
+
+	return wx, wy, wr, found
 end
 
 utils.logging = false

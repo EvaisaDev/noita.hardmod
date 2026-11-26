@@ -144,10 +144,31 @@ for _,path in ipairs(amplified_item_targets) do
 	end
 end
 
+-- Extra Items in HM
+local shops = {
+	{ biome = "coalmine", x = 78, y = 92 },
+	{ biome = "excavationsite", x = 162, y = 106 },
+	{ biome = "snowcave", x = 307, y = 114 },
+	{ biome = "vault", x = 95, y = 153 },
+	{ biome = "crypt", x = 131, y = 156 },
+}
 
+for _,shop in pairs(shops) do
+	imutil.ImageOverlay(
+		"data/biome_impl/"..shop.biome.."/shop.png",
+		dir.."gfx/shop_overlay.png",
+		shop.x, shop.y
+	)
+end
+
+imutil.ImageOverlay("data/biome_impl/snowcastle/side_cavern_left.png", dir.."gfx/shop_overlay_hiisi.png", 133, 360)
+imutil.ImageOverlay("data/biome_impl/snowcastle/side_cavern_right.png", dir.."gfx/shop_overlay_hiisi.png", 304, 360)
+
+ModLuaFileAppend("data/scripts/biome_scripts.lua", dir.."scripts/appends/biome_scripts.lua")
+ModLuaFileAppend("data/scripts/biomes/snowcastle_cavern.lua", dir.."scripts/appends/snowcastle_cavern.lua")
+-----
 
 ModLuaFileAppend("data/scripts/items/__drop_money.lua", dir.."scripts/append_gold_drops.lua")
-
 
 hooks.mod_init = function()
 	modify_wandstone()
@@ -197,8 +218,10 @@ hooks.mod_post_init = function()
 end
 
 hooks.new_eid = function(entity_id)
-	local spell_gems_enabled = tonumber(GlobalsGetValue("PERK_PICKED_HARDMOD_SPELL_GEMS_PICKUP_COUNT","0")) > 0
-	if spell_gems_enabled and EntityHasTag(entity_id, "enemy") then
+	if not EntityHasTag(entity_id, "enemy") then return end
+
+	local spell_gems = tonumber(GlobalsGetValue("PERK_PICKED_HARDMOD_SPELL_GEMS_PICKUP_COUNT","0"))
+	if spell_gems > 0 then
 		EntityAddComponent2(entity_id, "LuaComponent", {
 			script_death = "mods/noita.hardmod/files/modules/vanilla_perk_rebalances/scripts/perks/spell_gems_try_drop_on_death.lua",
 			execute_every_n_frame = -1,

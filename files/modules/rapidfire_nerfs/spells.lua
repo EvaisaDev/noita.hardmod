@@ -29,7 +29,7 @@ hooks.spell_patches = {
 		mana = -30,
 		action = function()
 			c.fire_rate_wait = c.fire_rate_wait + 7
-			current_reload_time = current_reload_time + 2
+			current_reload_time = current_reload_time + 1
 			draw_actions(1, true)
 		end
 	},

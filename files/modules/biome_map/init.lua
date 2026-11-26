@@ -56,11 +56,17 @@ for file in nxml.edit_file("data/biome_impl/spliced/gourd_room.xml") do
 end
 
 -- the hiisi shop & hourglass can now only generate on the right
-utils.modifile(
-	"data/scripts/biomes/snowcastle_cavern.lua",
-	[[local is_right = ]],
-	[[local is_right = true --]]
-)
+utils.patchifile("data/scripts/biomes/snowcastle_cavern.lua", {
+	{
+		from = [[local is_right = ]],
+		insert_after = [[true --]],
+	},
+	{
+		-- why did they make it not spawn in PWs??
+		from = [[if x > 10000 or x < -10000 then return end]],
+		to = [[--]]
+	}
+})
 
 utils.modifile(
 	"data/scripts/buildings/teleport_hourglass_return.lua",

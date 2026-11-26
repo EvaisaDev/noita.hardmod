@@ -55,14 +55,6 @@ for file in nxml.edit_file("data/entities/projectiles/deck/buckshot_player.xml")
 	end
 end
 
-for file in nxml.edit_file("data/entities/projectiles/darkflame.xml") do
-	for comp in file:each_of("LuaComponent") do
-		if comp.attr.script_source_file == "data/scripts/projectiles/darkflame.lua" then
-			comp:set("execute_every_n_frame", 2)
-		end
-	end
-end
-
 for file in nxml.edit_file("data/entities/projectiles/deck/arrow.xml") do
 	for comp in file:each_of("ProjectileComponent") do
 		comp:set("friendly_fire", false)
@@ -147,8 +139,8 @@ for _,torch in ipairs(torches) do
 end
 
 utils.patchifile("data/scripts/gun/procedural/level_1_wand.lua", {
-	{ from = "BLACK_HOLE_BIG", to = "SLOW_BULLET" },
-	{ from = "BLACK_HOLE", to = "SLOW_BULLET" },
+	{ from = "BLACK_HOLE_BIG", to = "POLLEN" },
+	{ from = "BLACK_HOLE", to = "POLLEN" },
 	{ from = "LUMINOUS_DRILL", to = "SPITTER_TIER_2" },
 	{ from = "CHAINSAW", to = "SPITTER_TIER_3" },
 	{ from = "FREEZE_FIELD", to = "BERSERK_FIELD" },
