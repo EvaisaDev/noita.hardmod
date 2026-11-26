@@ -1,7 +1,12 @@
 local max_icons_displayed = 4
-local y_offset_amount = 14
 local icon_buffer = 10
 local z_index = -.3
+
+--Keep these consistent with handler_offset.lua
+local y_offset_amount = 14
+local stack_fade_amount = 0.2
+local stack_offset_amount = 2
+
 
 local half_icon_buffer = icon_buffer*.5
 
@@ -9,7 +14,7 @@ local half_icon_buffer = icon_buffer*.5
 local entity_id = GetUpdatedEntityID()
 local root = EntityGetRootEntity(entity_id)
 
-if entity_id == root then EntityKill(entity_id) return end
+if entity_id == root or not EntityGetIsAlive(root) then EntityKill(entity_id) return end
 
 local enemy_perks_indexed = dofile_once("mods/noita.hardmod/files/modules/enemy_perks/enemy_perks_index.lua")
 
@@ -59,11 +64,11 @@ for i=1,num_icons do
 	local stacks = is_etc and #unique_eperks-i or how_many_of_each_perk[eperk.id]-1
 	local sprite = is_etc and "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/expand.png" or eperk.icon
 	for j=0, stacks do
-		local alpha = 1-(j*.2)
+		local alpha = 1-(j*stack_fade_amount)
 		if alpha <= 0 then goto continue end
 		spr_comps[#spr_comps+1] = EntityAddComponent2(entity_id, "SpriteComponent", {
 			offset_x = -((i-1)*icon_buffer-num_icons*half_icon_buffer),
-			offset_y = offset_y-(j*2),
+			offset_y = offset_y-(j*stack_offset_amount),
 			alpha = alpha,
 			image_file = sprite,
 			z_index = z_index+(j*.001),

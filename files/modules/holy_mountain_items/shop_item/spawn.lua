@@ -1,6 +1,7 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
+local dir = utils.module_dir.."holy_mountain_items/"
 
-local shop_items = dofile_once("mods/noita.hardmod/files/modules/holy_mountain_items/shop_item/shop_items.lua")
+local shop_items = dofile_once(dir.."shop_item/shop_items.lua")
 
 
 ---@diagnostic disable-next-line: lowercase-global
@@ -31,17 +32,15 @@ function hardmod_spawn_purchasable_item(x, y)
 
 	local item = utils.ConditionalRandomFromTable(shop_items.items, data)
 	if not item then return end
-	local cost = item.base_cost*1.7^(hm_level-1)
+
+	local cost = math.min(utils.max_gold, item.base_cost*1.6^(hm_level+math.abs(GetParallelWorldPosition(x, y) * 7)-1))
 
 	if hm_level == 7 then
 		if not item.hm_escape then item = shop_items.indexed.ring_of_elevation end
 		cost = 0
 	end --guarantee a way to the previous holy mountain
 
-	local entity = EntityLoad(
-		"mods/noita.hardmod/files/modules/holy_mountain_items/entities/shop_item.xml",
-		x, y
-	)
+	local entity = EntityLoad(dir.."entities/shop_item.xml", x, y)
 
 	EntityAddComponent2(entity, "ItemComponent", {
 		_tags = "enabled_in_world",
@@ -62,7 +61,7 @@ function hardmod_spawn_purchasable_item(x, y)
 	})
 
 	EntityAddComponent2(entity, "LuaComponent", {
-		script_item_picked_up = "mods/noita.hardmod/files/modules/holy_mountain_items/shop_item/pickup.lua",
+		script_item_picked_up = dir.."shop_item/pickup.lua",
 		-- I LOVE STORING SHIT IN SCRIPT_PRESSURE_PLATE_CHANGE
 		script_pressure_plate_change = item.entity,
 		script_biome_entered = item.id,
@@ -71,17 +70,29 @@ function hardmod_spawn_purchasable_item(x, y)
 
 	if cost > 0 then
 		EntityAddComponent2(entity, "ItemCostComponent", { cost = cost })
-		EntityAddComponent2(entity, "SpriteComponent", {
-			_tags = "shop_cost,enabled_in_world",
-			image_file = "data/fonts/font_pixel_white.xml",
-			text = tostring(cost),
-			offset_x = utils.GetIntegerCostOffsetX(cost) * .5,
-			offset_y = 15,
-			is_text_sprite = true,
-			update_transform = true,
-			update_transform_rotation = false,
-			z_index = -1,
-		})
+		if cost < utils.max_gold then
+			EntityAddComponent2(entity, "SpriteComponent", {
+				_tags = "shop_cost,enabled_in_world",
+				image_file = "data/fonts/font_pixel_white.xml",
+				text = tostring(cost),
+				offset_x = 5+utils.GetIntegerCostOffsetX(cost)*.5,
+				offset_y = 15,
+				is_text_sprite = true,
+				update_transform = true,
+				update_transform_rotation = false,
+				z_index = -1,
+			})
+		else
+			EntityAddComponent2(entity, "SpriteComponent", {
+				_tags = "shop_cost,enabled_in_world",
+				image_file = dir.."gfx/infinity.png",
+				offset_x = 5,
+				offset_y = 15,
+				update_transform = true,
+				update_transform_rotation = false,
+				z_index = -1,
+			})
+		end
 	end
 
 	if item.rotate_deg then

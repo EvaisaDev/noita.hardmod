@@ -243,28 +243,19 @@ utils.patchifile("data/scripts/perks/adventurer.lua", {
 	}
 })
 
--- Apotheosis fails to do nil checks for its target components, completely fails to load as a result, this disables the relevant code
-local f1,t1,f2,t2 =
-	[[do
-  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
-	[[if false then
-  local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunseed.xml")]],
-	[[do
-	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]],
-	[[if false then
-	local content = ModTextFileGetContent("data/entities/items/pickup/sun/sunstone.xml")]]
-
-if ModIsEnabled("Apotheosis") then
-	utils.patchifile("mods/Apotheosis/files/scripts/mod_compatibility/vanilla_appends.lua", {
-		{
-			from = f1,
-			to = t1,
-		},
-		{
-			from = f2,
-			to = t2,
-		},
-	})
-end --We can remove this if Apotheosis 1.4.0 ever releases.
+for xml in nxml.edit_file("data/entities/items/pickup/stonestone.xml") do
+	xml:add_child(nxml.new_element("Entity", {name="hardmod.toxic_immunity_item"}, {
+		nxml.new_element("GameEffectComponent", {
+			_tags = "enabled_in_hand",
+			effect = "PROTECTION_RADIOACTIVITY",
+		}),
+		nxml.new_element("LuaComponent", {
+			_tags = "enabled_in_hand",
+			script_source_file=dir.."scripts/toxic_immunity_item_update.lua",
+			execute_every_n_frame = "60",
+			script_enabled_changed = dir.."scripts/toxic_immunity_item.lua"
+		}),
+	}))
+end
 
 return hooks

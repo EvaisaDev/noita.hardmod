@@ -12,11 +12,11 @@ local biomes = dofile_once("mods/noita.hardmod/lib/biome_index.lua")
 ---@field not_progress boolean? if true, perk won't show up in progress menu
 ---@field weight number? probability of the perk being pulled, default 10
 ---@field stack_multiplier number? the multiplier applied to the perk weight for each stack already held, default 1.15
----@field min_level number the lower level limit for this perk to be selected
----@field max_level number the upper level limit for this perk to be selected
----@field unique_slot string if set, will disallow other enemy perks with the same unique_slot value to be selected
----@field not_boss bool blacklists bosses from gaining this perk
----@field not_shop_guardian bool blacklists stevari and skoude from gaining this perk
+---@field min_level number? the lower level limit for this perk to be selected
+---@field max_level number? the upper level limit for this perk to be selected
+---@field unique_slot string? if set, will disallow other enemy perks with the same unique_slot value to be selected
+---@field not_boss bool? blacklists bosses from gaining this perk
+---@field not_shop_guardian bool? blacklists stevari and skoude from gaining this perk
 ---@field biome_conditions table? custom condition functions that run if the target_enemy is in the keyed biome, if value is a number it will set the perk weight to that value
 ---@field priority number? priority for the order its shown above enemies' heads or in the inspect window, default 10
 ---@field max integer? max number of this perk an enemy can have
@@ -175,6 +175,7 @@ enemy_perks = {
 		name = "$hardmod_eperk_extra_hp_name",
 		description = "$hardmod_eperk_extra_hp_desc",
 		weight = 10,
+		stack_multiplier = 1.1,
 		requires_dmc = true,
 		func = function(self, entity_id, data)
 			ComponentSetValue2(data.dmc, "max_hp", ComponentGetValue2(data.dmc, "max_hp") * 1.5)
@@ -264,7 +265,8 @@ enemy_perks = {
 		id = "HASTE",
 		name = "$hardmod_eperk_haste_name",
 		description = "$hardmod_eperk_haste_desc",
-		weight = 8,
+		weight = 9,
+		stack_multiplier = 1.05,
 		priority = 16,
 		biome_conditions = {
 			sandcave = 10,
@@ -535,8 +537,8 @@ enemy_perks = {
 		id = "TELEPORT_CURSER",
 		name = "$hardmod_eperk_teleport_curser_name",
 		description = "$hardmod_eperk_teleport_curser_desc",
-		weight = 3,
-		priority = 7,
+		weight = 1.5,
+		priority = 16,
 		max = 1,
 		min_level = 2,
 		condition = enemy_is_ranged_attack,
@@ -569,6 +571,7 @@ enemy_perks = {
 		weight = 3,
 		priority = 7,
 		max = 1,
+		min_level = 3,
 		condition = enemy_is_ranged_attack,
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
@@ -625,7 +628,7 @@ enemy_perks = {
 		id = "ELECTRICITY",
 		name = "$perk_electricity",
 		description = "$hardmod_eperk_electricity_desc",
-		weight = 5,
+		weight = 500,
 		priority = 3,
 		biome_conditions = {
 			fungal_caverns = 2,
@@ -641,7 +644,10 @@ enemy_perks = {
 			GetGameEffectLoadTo(entity_id, "PROTECTION_ELECTRICITY", false)
 			local child_id = EntityLoad("data/entities/misc/perks/electricity.xml", data.x, data.y)
 			local elec_comp = EntityGetFirstComponent(child_id, "ElectricitySourceComponent")
-			if elec_comp then ComponentSetValue2(elec_comp, "emission_interval_frames", 48) end
+			if elec_comp then
+				ComponentSetValue2(elec_comp, "emission_interval_frames", 48)
+				ComponentSetValue2(elec_comp, "mNextFrameEmitElectricity", GameGetFrameNum()+150) --wait 2.5 seconds before starting electricity stuff
+			end
 			EntityAddTag(child_id, "perk_entity")
 			EntityAddChild(entity_id, child_id)
 		end
@@ -816,7 +822,7 @@ enemy_perks = {
 		id = "TELEPORT_BLOOD",
 		name = "$hardmod_eperk_teleport_blood_name",
 		description = "$hardmod_eperk_teleport_blood_desc",
-		weight = 3,
+		weight = 2,
 		max = 1,
 		min_level = 3,
 		unique_slot = "blood",
@@ -1171,7 +1177,7 @@ enemy_perks = {
 		description = "$hardmod_eperk_obfuscation_desc",
 		weight = 2,
 		priority = 100,
-		max = 0,
+		max = 1,
 		min_level = 3,
 		unique_slot = "obscures_perks",
 		condition = function(self, data)
@@ -1222,7 +1228,7 @@ enemy_perks = {
 		stack_multiplier = 0.8,
 		priority = 30,
 		max = 10,
-		min_level = 0,
+		min_level = 5,
 		unique_slot = "on_death",
 		func = function(self, entity_id, data)
 			if data.perks_to_give then data.perks_to_give = data.perks_to_give + 10 end
@@ -1262,7 +1268,7 @@ enemy_perks = {
 		id = "UNSTABLE_TELEPORTITIS",
 		name = "$hardmod_eperk_unstable_teleportitis_name",
 		description = "$hardmod_eperk_unstable_teleportitis_desc",
-		weight = 2.4,
+		weight = .4,
 		max = 1,
 		min_level = 2,
 		not_boss = true,
@@ -1553,13 +1559,6 @@ for i,perk in ipairs(enemy_perks) do
 	perk.icon = ModDoesFileExist(perk.icon or "") and perk.icon
 		or ModDoesFileExist(icons_path..id:lower()..".png") and icons_path..id:lower()..".png"
 		or "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/missing.png"
-
-	if perk.max then --This is sane enough.
-		local cond = perk.condition or function(...) return true end
-		perk.condition = function(self, data, ...)
-			return cond(self, data, ...) and (data.how_many_of_each_perk[self.id] or 0) < self.max
-		end
-	end
 
 	if perk.biome_conditions then
 		local cond = perk.condition or function(...) return true end

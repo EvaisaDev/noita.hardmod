@@ -5,13 +5,14 @@ local pos_x, pos_y = EntityGetTransform(entity_id)
 
 SetRandomSeed(GameGetFrameNum(), pos_x + pos_y + entity_id)
 
-local size = 8
+local range = 8
 
-local radius_cap = #EntityGetInRadiusWithTag(pos_x, pos_y, size*1.3, "hardmod_darkflame")*.07
-local total_cap = #EntityGetWithTag("hardmod_darkflame")*.005
-if Random() < math.max(radius_cap, total_cap) then return end
+local dark_flames = EntityGetWithTag("hardmod_darkflame")
+for i=1,#dark_flames-200 do
+    EntityKill(dark_flames[i])
+end
 
-pos_x = pos_x + Random(-size, size)
-pos_y = pos_y + Random(-size, size)
+pos_x = pos_x + Random(-range, range)
+pos_y = pos_y + Random(-range, range)
 
 utils.ShootProjectile(entity_id, "data/entities/projectiles/darkflame_stationary.xml", pos_x, pos_y, 0, 0)

@@ -25,6 +25,7 @@ end
 ---@diagnostic disable-next-line: lowercase-global
 function enabled_changed(item, state)
 	if state == true then return end
+	local component = GetUpdatedComponentID()
 	update_state()
-	EntitySetComponentIsEnabled(item, GetUpdatedComponentID(), true)
+	EntitySetComponentIsEnabled(item, component, true)
 end

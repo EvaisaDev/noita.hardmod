@@ -24,19 +24,64 @@ if ModIsEnabled("component-explorer") then
 	ModLuaFileAppend("mods/component-explorer/spawn_data/creatures.lua", dir.."scripts/ce_creatures.lua")
 end
 
-utils.AddEnemyToProgress("hardmod_fungal_longleg", "longleg")
-utils.AddEnemyToProgress("hardmod_fungal_zombie", "zombie_weak")
-utils.AddEnemyToProgress("hardmod_fungal_slimeshooter", "slimeshooter_weak")
-utils.AddEnemyToProgress("hardmod_fungal_acidshooter", "acidshooter_weak")
-utils.AddEnemyToProgress("hardmod_fungal_giantshooter", "giantshooter_weak")
-utils.AddEnemyToProgress("hardmod_fungal_miner", "miner_weak")
-utils.AddEnemyToProgress("hardmod_fungal_shotgunner", "shotgunner_weak")
-utils.AddEnemyToProgress("hardmod_fungal_firemage", "firemage_weak")
-utils.AddEnemyToProgress("hardmod_fungal_worm", "worm")
-utils.AddEnemyToProgress("hardmod_fungal_skull", "fireskull")
-utils.AddEnemyToProgress("hardmod_fungal_shaman", "shaman")
-utils.AddEnemyToProgress("hardmod_fungal_alchemist", "alchemist")
-utils.AddEnemyToProgress("hardmod_fungal_thundermage", "thundermage")
+local enemies = {
+	{
+		id = "hardmod_fungal_longleg",
+		insert_after = "longleg"
+	},
+	{
+		id = "hardmod_fungal_zombie",
+		insert_after = "zombie_weak"
+	},
+	{
+		id = "hardmod_fungal_slimeshooter",
+		insert_after = "slimeshooter_weak"
+	},
+	{
+		id = "hardmod_fungal_acidshooter",
+		insert_after = "acidshooter_weak"
+	},
+	{
+		id = "hardmod_fungal_giantshooter",
+		insert_after = "giantshooter_weak"
+	},
+	{
+		id = "hardmod_fungal_miner",
+		insert_after = "miner_weak"
+	},
+	{
+		id = "hardmod_fungal_shotgunner",
+		insert_after = "shotgunner_weak"
+	},
+	{
+		id = "hardmod_fungal_firemage",
+		insert_after = "firemage_weak"
+	},
+	{
+		id = "hardmod_fungal_worm",
+		insert_after = "worm"
+	},
+	{
+		id = "hardmod_fungal_skull",
+		insert_after = "fireskull"
+	},
+	{
+		id = "hardmod_fungal_shaman",
+		insert_after = "shaman"
+	},
+	{
+		id = "hardmod_fungal_alchemist",
+		insert_after = "alchemist"
+	},
+	{
+		id = "hardmod_fungal_thundermage",
+		insert_after = "thundermage"
+	},
+}
+
+for _,enemy in ipairs(enemies) do
+	utils.AddEnemyToProgress(enemy.id, enemy.insert_after)
+end
 
 for xml in nxml.edit_file("data/biome/_biomes_all.xml") do
 	for _,alt_biome in ipairs(alt_biomes) do
