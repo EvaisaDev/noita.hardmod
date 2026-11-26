@@ -186,6 +186,7 @@ hooks.spell_patches = {
         end
 	},
 	["HOOK"] = {
+		description = "$hardmod_spell_hookbolt_desc",
 		mana = 14,
 		spawn_level = "1,2,3,4,5",
 		spawn_probability = "0.4,0.5,0.5,0.3,0.2",

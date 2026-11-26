@@ -24,6 +24,38 @@ return {
 			end
 		},
 		{
+			id = "HARDMOD_RANDOM_BURST",
+			insert_after = "RANDOM_STATIC_PROJECTILE",
+			author = "modder.yui",
+			name = "$hardmod_spell_random_burst_name",
+			description = "$hardmod_spell_random_burst_desc",
+			sprite = root.."gfx/ui_gfx/spells/random_burst.png",
+			type = ACTION_TYPE_DRAW_MANY,
+			spawn_requires_flag = "card_unlocked_pyramid",
+			spawn_level= "1,2,3,4",
+			spawn_probability = "0.4,0.3,0.3,0.2",
+			price = 150,
+			mana = 6,
+			action = function()
+				if force_stop_draws then return end
+
+				SetRandomSeed(GameGetFrameNum(), GameGetFrameNum())
+
+				local max = #deck + #discarded
+				if max == 0 then return end
+
+				local rnd = math.floor((Random() ^ 0.4) * max) + 1
+				draw_actions(rnd, true)
+
+				for _,v in ipairs(deck) do
+					table.insert(discarded, v)
+				end
+				deck = {}
+
+				start_reload = true
+			end
+		},
+		{
 			id                  = "HARDMOD_ECHO_SHOT",
 			author 				= "modder.dani2d",
 			insert_after		= "SPITTER_TIER_3_TIMER",
@@ -149,7 +181,7 @@ return {
                     local rand2 = Random( 1, 10 )
                     if rand2 == 1 and GameGetGameEffectCount(entity_id, "STUN_PROTECTION_ELECTRICITY") == 0 then -- 1/10 chance
                     	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 200.0
-                    	LoadGameEffectEntityTo(entity_id, "mods/noita.hardmod/files/modules/spell_variety/entities/spells/effect_electricity_short.xml", true)
+                    	LoadGameEffectEntityTo(entity_id, "mods/noita.hardmod/files/modules/spell_variety/entities/spells/effect_electricity_short.xml")
                     elseif rand2 == 2 then -- 1/10 chance
                     	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 400.0
                     	add_projectile( "mods/noita.hardmod/files/modules/spell_variety/entities/spells/overclock_explode.xml" )
