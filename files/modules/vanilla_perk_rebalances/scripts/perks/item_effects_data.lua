@@ -18,9 +18,14 @@ local function func_toggle_item_children(children_names)
 	end
 
 	return function(item, togglestate)
+		print("toggling: "..item)
+		print("state: "..tostring(togglestate))
 		for _,child in ipairs(EntityGetAllChildren(item) or {}) do
+			print("checking "..child)
 			if children_names[EntityGetName(child)] then
+				print("found")
 				for _,comp in ipairs(EntityGetAllComponents(child)) do
+					print("enabled component: "..comp)
 					EntitySetComponentIsEnabled(child, comp, togglestate)
 				end
 			end
@@ -32,8 +37,8 @@ local effect_items = {
 	["data/entities/items/pickup/brimstone.xml"] = func_toggle_item_gameeffects("PROTECTION_FIRE"),
 	["data/entities/items/pickup/waterstone.xml"] = func_toggle_item_gameeffects("BREATH_UNDERWATER"),
 	["data/entities/items/pickup/thunderstone.xml"] = func_toggle_item_gameeffects("PROTECTION_ELECTRICITY"),
+	["data/entities/items/pickup/stonestone.xml"] = func_toggle_item_children("hardmod.toxic_immunity_item"),
 	["data/entities/items/pickup/wandstone.xml"] = func_toggle_item_gameeffects("EDIT_WANDS_EVERYWHERE"),
-	--["data/entities/items/pickup/stonestone.xml"] = {}, --no effect associated at present
 	["mods/noita.hardmod/files/modules/vanilla_perk_rebalances/entities/items/cheese.xml"] = func_toggle_item_gameeffects("PROTECTION_MELEE"),
 	["data/entities/items/pickup/sun/sunseed.xml"] = func_toggle_item_gameeffects("REMOVE_FOG_OF_WAR"),
 	["data/entities/items/pickup/sun/sunstone.xml"] = func_toggle_item_gameeffects("REMOVE_FOG_OF_WAR"),

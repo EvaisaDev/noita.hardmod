@@ -51,6 +51,12 @@ local sacrifice_items = {
 		not_in_hellmode = true,
 	},
 	{
+		id = "stonestone",
+		identity_tag = "stonestone",
+		spawn_perk = "PROTECTION_RADIOACTIVITY",
+		not_in_hellmode = true,
+	},
+	{
 		id = "poopstone",
 		identity_tag = "poopstone",
 		func = function(eid)

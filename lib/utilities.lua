@@ -824,4 +824,28 @@ function utils.get_distance(x1, y1, x2, y2)
 	return ((x2-x1)^2 + (y2-y1)^2)^.5
 end
 
+
+---returns a table of material damage taken by this entity keyed by material id
+---@param entity_id entity_id
+---@return table
+function utils.EntityGetMaterialsThatDamage(entity_id)
+	local dmc = EntityGetFirstComponentIncludingDisabled(entity_id, "DamageModelComponent")
+	if not dmc then return {} end --maybe return nil here? will change based on what seems most convenient
+
+	local material_index = {}
+	for material in ComponentGetValue2(dmc, "materials_that_damage"):gmatch("[^,]+") do
+		material_index[#material_index+1] = material
+	end
+	local materials_that_damage = {}
+	for damage in ComponentGetValue2(dmc, "materials_how_much_damage"):gmatch("[^,]+") do
+		local i = #materials_that_damage+1
+		materials_that_damage[i] = {
+			material = material_index[i],
+			damage = tonumber(damage) or 0,
+		}
+	end
+
+	return materials_that_damage
+end
+
 return utils
