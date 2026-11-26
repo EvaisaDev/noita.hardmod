@@ -42,7 +42,7 @@ for proj,nerfs in pairs(damage_nerfs) do
 		end
 
 		if nerfs.unpierce then
-			pcomp:set("damage_every_x_frames", 15)
+			pcomp:set("damage_every_x_frames", 10)
 		end
 
 		if nerfs.dmg then

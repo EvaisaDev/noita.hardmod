@@ -9,7 +9,7 @@ utils.patchifile(starting_wand, {
 		from = "local mana_max",
 		insert_before = [[
 			gun.deck_capacity = {3,4}
-			gun.actions = { "LIGHT_BULLET", "SPITTER", "BOUNCY_ORB" }
+			gun.actions = { "LIGHT_BULLET", "SPITTER", "BOUNCY_ORB", "ARROW" }
 		]]
 	},
 	{

@@ -802,6 +802,14 @@ function utils.GetWandTipPos(shooter)
 	return wx, wy, wr, found
 end
 
+local _rand_y = 0
+--- Changes the current PRNG seed (`SetRandomSeed`) with the current frame *and* an increment,
+--- allowing you to use it multiple times in a single frame
+function utils.RandomizeSeed()
+	SetRandomSeed(GameGetFrameNum(), _rand_y)
+	_rand_y = _rand_y + 1
+end
+
 utils.logging = false
 ---useful logger than can be enabled/disabled at will
 ---@param ... any all parameters are concatenated into one string

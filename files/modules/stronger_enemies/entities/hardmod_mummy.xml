@@ -29,7 +29,7 @@
 		></AnimalAIComponent>
 
 		<DamageModelComponent 
-            hp="5"
+            hp="4.44"
             materials_create_messages="1"
             ragdoll_material="sand"
 			blood_material="sand"
