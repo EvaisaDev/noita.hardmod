@@ -26,7 +26,7 @@ hooks.spell_patches = {
 	["LIGHT_BULLET_TIMER"] = { mana = 20, spawn_level = "2,3,4,5", spawn_probability = "0.5,0.6,0.8,0.8" },
 	["LIGHT_BULLET_TRIGGER"] = { mana = 25, spawn_level = "2,3,4,5", spawn_probability = "0.4,0.5,0.7,0.7" },
 	["LIGHT_BULLET_TRIGGER_2"] = { mana = 30, spawn_level = "2,3,4,5", spawn_probability = "0.3,0.4,0.6,0.6" },
-	["BULLET"] = { mana = 10 },
+	["BULLET"] = { mana = 12 },
 	["HEAVY_BULLET"] = { mana = 13 },
 	["BULLET_TIMER"] = { mana = 20 },
 	["HEAVY_BULLET_TIMER"] = { mana = 20 },

@@ -8,7 +8,7 @@ end
 
 for _,pcomp in pairs(EntityGetComponent(parent_id, "ProjectileComponent") or {}) do
 	local x = ComponentGetValue2(pcomp, "damage_every_x_frames")
-	ComponentSetValue2(pcomp, "damage_every_x_frames", math.max(x, 15))
+	ComponentSetValue2(pcomp, "damage_every_x_frames", math.max(x, 10))
 end
 
 -- local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
