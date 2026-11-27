@@ -495,7 +495,7 @@ hardmod_setting_module_rapidfire_nerfs_name,"Rapidfire Nerfs","Ослаблен�
 hardmod_setting_module_rapidfire_nerfs_desc,"Changes to Chainsaw and Add Mana; also adds more alternative spells","Изменяет цепную пилу и добавление маны; также добавляет несколько альтернативных заклинаний",,,,,,,,,,,,
 hardmod_setting_module_trial_perks_name,"Trial Perks","Перки испытаний",,,,,,,,,,,,
 hardmod_setting_module_trial_perks_desc,"A set of perks that reward you for challenging yourself.","Добавляет набор перков, которые награждают вас за испытания.",,,,,,,,,,,,
-hardmod_setting_module_biome_map_name,"Biome Map Changes","Изменение карты биомов",,,,,,,,,,,,
+hardmod_setting_module_biome_map_name,"World Generation Changes",,,,,,,,,,,,,
 hardmod_setting_module_biome_map_desc,"Changes the entire world layout, and adds some custom things.\nIntegral to the progression","Изменяет всю структуру мира, добавляя новые вещи,\nкоторые являются неотъемлемой частью прогрессии.",,,,,,,,,,,,
 hardmod_setting_module_biome_modifiers_name,"Biome Modifiers+","Модификаторы биомов+",,,,,,,,,,,,
 hardmod_setting_module_biome_modifiers_desc,"Reworks the biome modifier system. Allows a biome to have multiple modifiers at once","Перерабатывает систему модификаторов биомов. Позволяет биому активировать сразу несколько модификаторов за раз.",,,,,,,,,,,,
