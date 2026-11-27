@@ -130,6 +130,36 @@ local function patch_enemy_changes()
 			[[vars.script_death =]], "-- "
 		)
 	end
+
+	for file in nxml.edit_file("data/entities/animals/sniper_hell.xml") do
+		local base = file:first_of("Base")
+		if not base then break end
+
+		local aicomp = base:first_of("AnimalAIComponent")
+		if aicomp then
+			aicomp:set("attack_ranged_frames_between", 130)
+			aicomp:set("attack_ranged_entity_count_min", 2)
+			aicomp:set("attack_ranged_entity_count_max", 5)
+		end
+
+		local dmc = base:first_of("DamageModelComponent")
+		if dmc then
+			dmc:set("hp", 4.5)
+		end
+	end
+
+	for file in nxml.edit_file("data/entities/projectiles/sniperbullet_hell.xml") do
+		local proj = file:first_of("ProjectileComponent")
+		if not proj then break end
+
+		-- from 33 to 82 dmg
+		proj:set("damage", 0.66)
+
+		local expl = proj:first_of("config_explosion")
+		if expl then
+			expl:set("damage", 0)
+		end
+	end
 end
 
 local function patch_enemy_resistances()
