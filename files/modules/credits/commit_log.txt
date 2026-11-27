@@ -959,8 +959,12 @@ missed some
 working on new eperks
 added custom stack multipliers to eperks
 final tweaks, ran split.lua_run
+whoops, couple things slipped through the cracks
 remove redundant script pickup logic
 icons for on the wiki
+gave Electricity eperk a 2.5s grace period and weakened shadow orb from Forbidden Arts eperk
+updated Burdened eperk icon/sprite
+Update spawn.lua
 undo absolution desc change
 Make Healthy Exploration remove the wounded effect so its not wasted
 spawn pyramid orb in NG+ again
@@ -985,12 +989,16 @@ change Gunpowder Trail to use unstable gunpowder (and update its sprite & desc)
 change shield passives to cost less mana
 Add `insert_after` for spells
 add insert_after for perks
+added max cap of ∞ to HM shop item and perk reroll
+shrank electric torch spotlight
 reduce addmana's RT
 make hiisi shop spawn in PWs
 Make Extra Item in HM work on all in-level shops
 change max stacks of extra shop item
 update extra item in shop's desc
 rework the hookbolt spell
+some tweaks
+got toxic imm working on tannerkivi, but wont work with Amplified Items perk?
 buff piercing stuff slightly (reduce damage_every_x_frames)
 add a new spell Random Cast
 add utils.RandomizeSeed
@@ -1001,3 +1009,6 @@ oops accidentally left that out, was a test spell
 Make Requirement - HP skip if >75% HP rather than 25%
 add notla and random burst to pyramid boss's drop make him also drop 5 random spells and not 4
 add arrow as a possible starting spell
+tweaks + nonsense i need to revert
+reverted some nonsense that wasnt working
+final polish + ran translation script
