@@ -174,7 +174,7 @@ add_projectile = nil
 ---@type fun(entity_id: entity_id, action_id: string)
 AddGunActionPermanent = nil
 
----@type fun(who_shot: entity_id, entity_file: string, x: number, y: number, vel_x: number, vel_y: number, send_message?: boolean)
+---@type fun(who_shot: entity_id, entity_file: string, x: number, y: number, vel_x: number, vel_y: number, send_message?: boolean): entity_id
 shoot_projectile = nil
 
 ---@type fun(who_shot: entity_id, entity_file: string, x: number, y: number, vel_x: number, vel_y: number)
