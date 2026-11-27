@@ -1012,3 +1012,15 @@ add arrow as a possible starting spell
 tweaks + nonsense i need to revert
 reverted some nonsense that wasnt working
 final polish + ran translation script
+change Concentrated Spells
+smh who broke biome modifier icons
+rename Biome Map module to World Generation Changes in settings
+e
+change hand statues
+change Heavy Shot and Bloodlust mana cost & how much dmg they add
+reduce grayscale in the spooky biome modifier
+rework cursed sphere
+update globals.lua
+make shamans much less annoying but a bit more dangerous
+nerf hell snipers
+WIP!!
