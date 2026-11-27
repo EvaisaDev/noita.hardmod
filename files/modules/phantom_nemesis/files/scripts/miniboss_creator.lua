@@ -60,7 +60,7 @@ local context_checks = {
 	{
 		id = "can_fly",
 		check = function(entity_id)
-			if EntityHasTag(entity_id,"flying") == true then return true end
+			if EntityHasTag(entity_id,"flying") then return true end
 			local worm_comp = EntityGetFirstComponentIncludingDisabled(entity_id,"WormComponent")
 			if worm_comp then
 				if ComponentGetValue2(worm_comp,"gravity") == 0 or ComponentGetValue2(worm_comp,"tail_gravity") == 0 then
@@ -198,7 +198,7 @@ local function GetAbilityWeight(ability_id, context, tier)
 		{
 			affected_abilities = {"homing_shoot","barrage","suppressive","vulnerability_shoot","neutral_shoot","wounded_shoot"},
 			weight_change = function()
-				if has_ranged == false then
+				if not has_ranged then
 					weight = 0.01 --No point giving a new scope to a man without a gun
 				end
 			end
@@ -206,7 +206,7 @@ local function GetAbilityWeight(ability_id, context, tier)
 		{
 			affected_abilities = {"contact_damage","ghastly","alchemic"},
 			weight_change = function(ability_id)
-				if has_ranged == false then
+				if not has_ranged then
 					weight = weight * 2 --You can give him a new knife though
 				elseif ability_id == "contact_damage" then
 					weight = weight * 0.35
@@ -216,7 +216,7 @@ local function GetAbilityWeight(ability_id, context, tier)
 		{
 			affected_abilities = {"corrupted","suppressive"},
 			weight_change = function()
-				if has_animalaicomp == false then
+				if not has_animalaicomp then
 					weight = 0.01 --These abilities would break if the target entity doesn't have an animal ai comp
 				end
 			end
@@ -234,7 +234,7 @@ local function GetAbilityWeight(ability_id, context, tier)
 		{
 			affected_abilities = {"matter_eater"},
 			weight_change = function ()
-				if can_fly and is_worm == false then
+				if can_fly and not is_worm then
 					weight = weight * 8
 				elseif tier <3 or is_worm then
 					weight = weight * 0.01
@@ -558,12 +558,12 @@ function FindPossessionTarget(biomes_visited)
 		end
 
 		--Filter by directory
-		if EntityGetIsAlive(target) == false or IsValidEnemy(EntityGetFilename(target)) == false then
+		if not EntityGetIsAlive(target) or not IsValidEnemy(EntityGetFilename(target)) then
 			goto skipthistarget
 		end
 
 		--Filter by tag
-		if EntityHasTag(target,"boss") or EntityHasTag(target,"miniboss") or EntityHasTag(target,"hardmod_blessed") or EntityHasTag(target,"miniboss_minion") or EntityHasTag(target,"helpless_animal") or EntityHasTag(target,"prop") or EntityHasTag(target,"polymorphed_player") or EntityHasTag(target,"polymorphed_cessation") or EntityHasTag(target,"player_unit") or EntityHasTag(target,"mortal") == false then
+		if EntityHasTag(target,"boss") or EntityHasTag(target,"miniboss") or EntityHasTag(target,"hardmod_blessed") or EntityHasTag(target,"miniboss_minion") or EntityHasTag(target,"helpless_animal") or EntityHasTag(target,"prop") or EntityHasTag(target,"polymorphed_player") or EntityHasTag(target,"polymorphed_cessation") or EntityHasTag(target,"player_unit") or not EntityHasTag(target,"mortal") then
 			goto skipthistarget
 		end
 
@@ -571,11 +571,11 @@ function FindPossessionTarget(biomes_visited)
 		local animal_ai_comp = EntityGetFirstComponentIncludingDisabled(target,"AnimalAIComponent")
 		local proj_comp = EntityGetFirstComponentIncludingDisabled(target,"ProjectileComponent")
 		local lifetime_comp = EntityGetFirstComponentIncludingDisabled(target,"LifetimeComponent")
-		local collisiontrigger_comp EntityGetFirstComponentIncludingDisabled(target,"CollisionTriggerComponent")
+		local collisiontrigger_comp = EntityGetFirstComponentIncludingDisabled(target,"CollisionTriggerComponent")
 		local damagemodel_comp = EntityGetFirstComponentIncludingDisabled(target,"DamageModelComponent")
 		local camerabound_comp = EntityGetFirstComponentIncludingDisabled(target,"CameraBoundComponent")
 		local physics_body_comp = EntityGetFirstComponentIncludingDisabled(target,"PhysicsImageShapeComponent")
-		if proj_comp or lifetime_comp or not camerabound_comp or collisiontrigger_comp or not damagemodel_comp or ComponentGetIsEnabled(damagemodel_comp) == false then
+		if proj_comp or lifetime_comp or not camerabound_comp or collisiontrigger_comp or not damagemodel_comp or not ComponentGetIsEnabled(damagemodel_comp) then
 			goto skipthistarget
 		end
 
@@ -609,9 +609,9 @@ function FindPossessionTarget(biomes_visited)
 		if physics_body_comp then
 			hp_max = hp_max * 0.25 --Deprioritise physics body entities for possession since they're a bit tricky to work with
 		elseif animal_ai_comp then
-			local has_ranged_attack = ComponentGetValue2(animal_ai_comp,"attack_ranged_enabled") or false
-			local has_melee_attack = ComponentGetValue2(animal_ai_comp,"attack_melee_enabled") or false
-			if has_melee_attack == false and has_melee_attack == false then
+			local has_ranged_attack = ComponentGetValue2(animal_ai_comp, "attack_ranged_enabled")
+			local has_melee_attack = ComponentGetValue2(animal_ai_comp, "attack_melee_enabled")
+			if not has_ranged_attack and not has_melee_attack then
 				hp_max = hp_max * 0.15 --Severely Deprioritise enemies with no attacks
 			end
 		end

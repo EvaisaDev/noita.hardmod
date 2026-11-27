@@ -8,6 +8,7 @@ GetBiomeTableFromKeys(active_modifiers)
 
 function biome_entered(biome_name)
 	local player = GetUpdatedEntityID()
+	local x, y = EntityGetTransform(player)
 
 	if last_active_biome == biome_name then return end
 	last_active_biome = biome_name
@@ -25,7 +26,7 @@ function biome_entered(biome_name)
 	local root = "mods/noita.hardmod/files/modules/biome_modifiers/"
 
 	for _,modifier in pairs(modifiers) do
-		local effect = LoadGameEffectEntityTo(player, root.."entity/status_effect.xml")
+		local effect = EntityLoad(root.."entity/status_effect.xml", x, y)
 
 		local icon = modifier.status_icon or (root.."gfx/status_effect/"..string.lower(modifier.id)..".png")
 		if not ModDoesFileExist(icon) then
@@ -42,6 +43,7 @@ function biome_entered(biome_name)
 			.. "\n" .. GameTextGet("$hardmod_biomemodifier_status")
 		)
 
+		EntityAddChild(player, effect)
 		EntityAddComponent2(effect, "UIIconComponent", {
 			_enabled = true,
 			name = name .. " ",

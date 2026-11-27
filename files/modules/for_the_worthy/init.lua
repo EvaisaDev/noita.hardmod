@@ -13,7 +13,7 @@ function hooks.new_eid(eid)
 	if not GameHasFlagRun("hardmod_hell") then return end
 	if not EntityHasTag(eid, "enemy") then return end
 
-	HardmodTransformEnemyHell(eid)
+	HardmodApplyHellScalingToEnemy(eid)
 end
 
 return hooks

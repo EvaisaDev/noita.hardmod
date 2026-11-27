@@ -84,10 +84,10 @@ function HardmodEnableHell(player)
 	end
 
 	for _,enemy in pairs(EntityGetWithTag("enemy")) do
-		HardmodTransformEnemyHell(enemy)
+		HardmodApplyHellScalingToEnemy(enemy)
 	end
 end
 
-function HardmodTransformEnemyHell(eid)
-	HardmodTransformEnemy(eid, hell_enemy_biome_multipliers)
+function HardmodApplyHellScalingToEnemy(eid)
+	HardmodApplyScalingToEnemy(eid, hell_enemy_biome_multipliers)
 end

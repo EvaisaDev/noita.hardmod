@@ -34,7 +34,7 @@ function SetTeleportLocation()
     local distance_from_target = GetDistanceFromTarget(host_id, current_target)
     if not current_target or distance_from_target < 128 or distance_from_target > 800 or IsInvisible(current_target) then return end
     SetRandomSeed(pos_x+current_frame, pos_y)
-    if EntityGetIsAlive(current_target) == false and current_target ~= 0 then return end
+    if not EntityGetIsAlive(current_target) and current_target ~= 0 then return end
     local t_x, t_y = EntityGetTransform(current_target)
     local angle = math.rad(Random(0, 359))
 

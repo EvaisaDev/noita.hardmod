@@ -160,7 +160,7 @@ local events = {
 }
 
 for k=1,#events do
-    if events[k].trigger() == true and EntityHasTag(entity_id, "graham_speaking") == false then
+    if events[k].trigger() == true and not EntityHasTag(entity_id, "graham_speaking") then
         local bool, dialogue = events[k].trigger()
         if bool == true then
             Speak(entity_id, dialogue)

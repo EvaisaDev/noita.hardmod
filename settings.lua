@@ -165,7 +165,7 @@ function input_listen(key_inputs, mouse_inputs, joystick_inputs, mod_setting)
 		if InputIsKeyDown(code) then
 			there_is_input = true
 			there_has_been_input = true
-			if has_value(key_inputs, code) == false then
+			if not has_value(key_inputs, code) then
 				table.insert(key_inputs, code)
 			end
 		end
@@ -174,7 +174,7 @@ function input_listen(key_inputs, mouse_inputs, joystick_inputs, mod_setting)
 		if InputIsMouseButtonDown(code) then
 			there_is_input = true
 			there_has_been_input = true
-			if has_value(mouse_inputs, code) == false then
+			if not has_value(mouse_inputs, code) then
 				table.insert(mouse_inputs, code)
 			end
 		end
@@ -183,7 +183,7 @@ function input_listen(key_inputs, mouse_inputs, joystick_inputs, mod_setting)
 		if InputIsJoystickButtonDown(0, code) then
 			there_is_input = true
 			there_has_been_input = true
-			if has_value(joystick_inputs, code) == false then
+			if not has_value(joystick_inputs, code) then
 				table.insert(joystick_inputs, code)
 			end
 		end
@@ -193,19 +193,19 @@ function input_listen(key_inputs, mouse_inputs, joystick_inputs, mod_setting)
 	local decided = false
 	local binding = "key_code,"
 	for _, code in pairs(key_inputs) do
-		if decided == true then break end
+		if decided then break end
 		binding = table.concat({binding,tostring(code),","})
 		decided = true
 	end
 	binding = binding .. "mouse_code,"
 	for _, code in pairs(mouse_inputs) do
-		if decided == true then break end
+		if decided then break end
 		binding = table.concat({binding,tostring(code),","})
 		decided = true
 	end
 	binding = binding .. "joystick_code,"
 	for _, code in pairs(joystick_inputs) do
-		if decided == true then break end
+		if decided then break end
 		binding = table.concat({binding,tostring(code),","})
 		decided = true
 	end
