@@ -28,7 +28,7 @@ local enemy_biome_multipliers = {
 	["sky"] = { hp = 6, speed = 0.25 },
 }
 
-function HardmodTransformEnemy(eid, tbl)
+function HardmodApplyScalingToEnemy(eid, tbl)
 	if EntityHasTag(eid, "hardmod_mult_applied") then return end
 	if EntityHasTag(eid, "boss") then return end
 

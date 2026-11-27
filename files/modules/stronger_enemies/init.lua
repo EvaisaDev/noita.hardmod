@@ -197,7 +197,7 @@ end
 dofile_once("mods/noita.hardmod/files/modules/stronger_enemies/hp-multipliers.lua")
 function hooks.new_eid(eid)
 	if not EntityHasTag(eid, "enemy") then return end
-	HardmodTransformEnemy(eid)
+	HardmodApplyScalingToEnemy(eid)
 end
 
 patch_spawn_rules()
