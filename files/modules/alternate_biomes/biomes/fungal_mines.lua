@@ -1214,7 +1214,7 @@ end
 function spawn_chest(x, y)
 	SetRandomSeed(x, y)
 	local super_chest_spawn_rate = 2000
-	if GameHasFlagRun("greed_curse") and (GameHasFlagRun("greed_curse_gone") == false) then
+	if GameHasFlagRun("greed_curse") and not GameHasFlagRun("greed_curse_gone") then
 		super_chest_spawn_rate = 100
 	end
 

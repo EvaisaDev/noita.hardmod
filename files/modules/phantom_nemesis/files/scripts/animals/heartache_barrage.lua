@@ -8,7 +8,7 @@ local t_x, t_y = EntityGetTransform(target)
 if target ~= 0 then
     --Line of Sight check
     local hit = RaytraceSurfaces(r_x, r_y - 10, t_x, t_y - 6)
-    if not hit and IsInvisible(target) == false then
+    if not hit and not IsInvisible(target) then
         local p_x = t_x + math.random(-96, 96)
         local p_y = t_y + math.random(-48, 48)
         local proj_filepath = "mods/noita.hardmod/files/modules/phantom_nemesis/files/entities/projectiles/heartache_portal.xml"
