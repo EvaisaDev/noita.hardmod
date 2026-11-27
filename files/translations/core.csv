@@ -434,6 +434,7 @@ hardmod_spell_echo_shot_timer_desc,Deals quadruple damage and casts another spel
 hardmod_spell_torch_desc,Gives your wand a fiery light to peek through the darkness!,RU_MISSING,,,,,,,,,,,
 hardmod_spell_torch_electric_desc,Gives your wand a bright but very dangerous light to peek through the darkness!,RU_MISSING,,,,,,,,,,,
 hardmod_spell_gunpowder_trail_desc,Gives a projectile a trail of unstable gunpowder,RU_MISSING,,,,,,,,,,,,
+hardmod_spell_cursed_orb_desc,A fast orb that curses anyone it hits with a thundercloud!,,,,,,,,,,,,
 hardmod_controlled_reach_name,Controlled Reach,Контролируемая дальность,,,,,,,,,,,,
 hardmod_controlled_reach_desc,Makes a projectile expire when it reaches the cursor,"Заставляет снаряд исчезнуть, когда он достигает курсора",,,,,,,,,,,,
 hardmod_item_trophy_chest_bronze,Bronze Trophy Chest,Бронзовый трофейный сундук,,,,,,,,,,,,

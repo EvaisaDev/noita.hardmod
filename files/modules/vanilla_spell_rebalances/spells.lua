@@ -1,3 +1,5 @@
+local root = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/"
+
 local function apply_freeze()
 	if reflecting then return end
 
@@ -10,7 +12,7 @@ local function apply_freeze()
 			local effect = GetGameEffectLoadTo(player, "FROZEN", true)
 			ComponentSetValue2(effect, "lifetime", 100)
 		else
-			LoadGameEffectEntityTo(player, "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/effect_cold.xml")
+			LoadGameEffectEntityTo(player, root.."entities/effect_cold.xml")
 		end
 	end
 end
@@ -30,7 +32,7 @@ hooks.new_spells = {
 		insert_after = "DIVIDE_10",
 		name = "$hardmod_spell_sacrilege_name",
 		description = "$hardmod_spell_sacrilege_desc",
-		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/sacrilege.png",
+		sprite = root.."gfx/ui_gfx/spells/sacrilege.png",
 		type = ACTION_TYPE_OTHER,
 		spawn_probability = "0",
 		spawn_requires_flag = "hardmod_cannot_spawn",
@@ -101,13 +103,13 @@ hooks.new_spells = {
 		insert_after = "TORCH_ELECTRIC",
 		name = "$hardmod_spell_torch_magic_name",
 		description = "$hardmod_spell_torch_magic_desc",
-		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/magic_torch.png",
+		sprite = root.."gfx/ui_gfx/spells/magic_torch.png",
 		type = ACTION_TYPE_PASSIVE,
 		spawn_level = "5,6,10",
 		spawn_probability = "0.8,0.6,0.4",
 		price = 200,
 		mana = 8,
-		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/cards/card_torch_magic.xml",
+		custom_xml_file = root.."entities/cards/card_torch_magic.xml",
 		action = function()
 			draw_actions(1, true)
 		end,
@@ -176,12 +178,12 @@ hooks.spell_patches = {
 		-- name = "$hardmod_spell_piercing_shot_name",
         -- description = "$hardmod_spell_piercing_shot_desc",
 		action = function()
-			-- local entity = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/piercing_shot_tracker.xml,"
+			-- local entity = root.."entities/piercing_shot_tracker.xml,"
             -- if not c.extra_entities:find(entity) then
             --     c.extra_entities = c.extra_entities .. entity
             -- end
 
-            c.extra_entities = c.extra_entities .. "data/entities/misc/piercing_shot.xml,mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/piercing_shot_init.xml,"
+            c.extra_entities = c.extra_entities.."data/entities/misc/piercing_shot.xml,"..root.."entities/piercing_shot_init.xml,"
 			c.damage_projectile_add = c.damage_projectile_add - 0.4
 			c.friendly_fire = true
             draw_actions(1, true)
@@ -192,9 +194,9 @@ hooks.spell_patches = {
 		mana = 14,
 		spawn_level = "1,2,3,4,5",
 		spawn_probability = "0.4,0.5,0.5,0.3,0.2",
-		related_projectiles = { "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/hook.xml" },
+		related_projectiles = { root.."entities/hook.xml" },
 		action = function()
-			add_projectile("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/hook.xml")
+			add_projectile(root.."entities/hook.xml")
 			c.fire_rate_wait = c.fire_rate_wait + 8
 		end
 	},
@@ -292,13 +294,13 @@ hooks.spell_patches = {
 		end
 	},
 	["DARKFLAME"] = {
-		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/darkflame_player.png",
-		related_projectiles = {"mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/darkflame_player.xml"},
-		custom_xml_file = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/card_darkflame_player.xml",
+		sprite = root.."gfx/ui_gfx/spells/darkflame_player.png",
+		related_projectiles = {root.."entities/darkflame_player.xml"},
+		custom_xml_file = root.."entities/card_darkflame_player.xml",
 		max_uses = -1,
 		mana = 40,
 		action = function()
-			add_projectile("mods/noita.hardmod/files/modules/vanilla_spell_rebalances/entities/darkflame_player.xml")
+			add_projectile(root.."entities/darkflame_player.xml")
 			c.fire_rate_wait = c.fire_rate_wait + 14
 		end,
 	},
@@ -375,13 +377,26 @@ hooks.spell_patches = {
 	},
 	["GUNPOWDER_TRAIL"] = {
 		description = "$hardmod_spell_gunpowder_trail_desc",
-		sprite = "mods/noita.hardmod/files/modules/vanilla_spell_rebalances/gfx/ui_gfx/spells/gunpowder_trail.png",
+		sprite = root.."gfx/ui_gfx/spells/gunpowder_trail.png",
 		spawn_level = "0,1,2,3,4",
 		spawn_probability = "0.4,0.5,0.3,0.3,0.2",
 		action = function()
 			c.trail_material = c.trail_material .. "gunpowder_unstable,"
 			c.trail_material_amount = c.trail_material_amount + 20
 			draw_actions(1, true)
+		end,
+	},
+	["CURSED_ORB"] = {
+		description = "$hardmod_spell_cursed_orb_desc",
+		sprite = root.."gfx/ui_gfx/spells/cursed_orb.png",
+		spawn_level = "1,2,3,4",
+		spawn_probability = "0.4,0.3,0.2,0.2",
+		related_projectiles	= {root.."entities/player_orb_cursed.xml"},
+		mana = 25,
+		action = function()
+			add_projectile(root.."entities/player_orb_cursed.xml")
+			c.fire_rate_wait = c.fire_rate_wait + 20
+			shot_effects.recoil_knockback = 40.0
 		end,
 	},
 	["DESTRUCTION"] = {
