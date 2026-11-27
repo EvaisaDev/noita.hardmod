@@ -7,7 +7,7 @@
 	/>
 
 	<ParticleEmitterComponent
-		emitted_material_name="water"
+		emitted_material_name="water_fading"
 		offset.x="0"
 		offset.y="-42"
 		x_pos_offset_min="0"

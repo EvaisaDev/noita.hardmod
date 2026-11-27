@@ -129,6 +129,8 @@ actions = {}
 
 ---@type ShotState
 c = nil
+---@type ShotState?
+root_shot = nil
 
 gun = {}
 

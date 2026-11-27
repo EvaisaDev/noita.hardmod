@@ -209,6 +209,7 @@ hardmod_hell_mode_popup_desc,"A terrible tune reverberates across the world","У
 hardmod_hell_mode_detail_title,Hell Mode,Адский режим,,,,,,,,,,,,
 hardmod_hell_mode_detail_desc,"\nYou start with 200 HP\nYou are more vulnerable to all damage types\nEnemies have more HP and attack faster\n(different biomes have different scaling)\nEnemies spawn more and drop 75% less gold\nSome perks are significantly nerfed or removed\nCertain materials are gone from the world\nExtremely Dense Rock is now Cursed Rock\n(and a few more small changes)\n \nGood luck...","\nВы начинаете с 200 ХП\nВы более уязвимы ко всем типам урона\nВраги атакуют быстрее и имеют больше ХП\n(разные биомы - разные множители)\nВраги появляются чаще, но с них падает на 75% меньше золота\nНекоторые перки значительно ослаблены или удалены\nНекоторые материалы исчезли из мира\nЭкстремально плотный камень стал проклятым\n(и еще несколько маленьких изменений)\n \nУдачи...",,,,,,,,,,,,
 hardmod_hell_mode_god_force_anger,"The Swan's Song has disturbed them","Лебединая песня встревожила их",,,,,,,,,,,,
+hardmod_perk_lower_spread_desc,Your spells have lower spread and deal extra damage,,,,,,,,,,,,,
 hardmod_eperk_kamikaze_name,Kamikaze,Камикадзе,,,,,,,,,,,,
 hardmod_eperk_kamikaze_desc,"This enemy may explode violently when it's near you.","Этот враг может внезапно взорваться, находясь рядом с вами.",,,,,,,,,,,,
 hardmod_eperk_protector_name,Shielded,Защищённый,,,,,,,,,,,,
