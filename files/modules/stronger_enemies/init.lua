@@ -180,6 +180,47 @@ local function patch_less_annoyances()
 			dmc:first_of("damage_multipliers"):set("projectile", 1)
 		end
 	end
+
+	-- make shamans much less annoying but a bit more dangerous
+	-- holy fuck 4 file edits just for a single enemy
+	for file in nxml.edit_file("data/entities/animals/shaman.xml") do
+		local aicomp = file:first_of("Base"):first_of("AnimalAIComponent")
+		if aicomp then
+			aicomp:set("attack_ranged_entity_count_min", 1)
+			aicomp:set("attack_ranged_entity_count_max", 1)
+		end
+	end
+
+	for file in nxml.edit_file("data/entities/projectiles/orb_cursed.xml") do
+		local proj = file:first_of("ProjectileComponent")
+		if proj then
+			proj:set("bounces_left", 0)
+			proj:set("bounce_always", false)
+		end
+	end
+
+	for file in nxml.edit_file("data/entities/misc/effect_curse_cloud_01_temporary.xml") do
+		local gec = file:first_of("Base"):first_of("GameEffectComponent")
+		if gec then
+			gec:set("frames", 481)
+		end
+	end
+
+	for file in nxml.edit_file("data/entities/misc/effect_curse_cloud_01.xml") do
+		for comp in file:each_of("ParticleEmitterComponent") do
+			if comp.attr.emitted_material_name == "water" then
+				comp.attr.emitted_material_name = "water_fading"
+				break
+			end
+		end
+
+		for comp in file:each_of("LuaComponent") do
+			if comp.attr.script_source_file == "data/scripts/status_effects/effect_curse_cloud_thunder.lua" then
+				comp:set("execute_every_n_frame", 120)
+				break
+			end
+		end
+	end
 end
 
 local function patch_fixes()
