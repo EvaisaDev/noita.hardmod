@@ -856,4 +856,22 @@ function utils.EntityGetMaterialsThatDamage(entity_id)
 	return materials_that_damage
 end
 
+
+---Shuffles a table randomly
+---@param t table
+---@return table
+function utils.ShuffleTable(t)
+	for i = #t, 2, -1 do
+		local j = Random(1, i)
+		t[i], t[j] = t[j], t[i]
+	end
+	return t
+end
+
+
+
+function utils.IsPlayer(entity_id)
+	return EntityHasTag(entity_id, "player_unit") or EntityHasTag(entity_id, "polymorphed_player")
+end
+
 return utils

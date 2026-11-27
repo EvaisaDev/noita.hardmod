@@ -100,8 +100,8 @@
 		smooth_filtering="1"
 		fog_of_war_hole="1"
 		has_special_scale="1"
-		special_scale_x="3"
-		special_scale_y="3"
+		special_scale_x="2.5"
+		special_scale_y="2.5"
 	/>
 
 	<LuaComponent
