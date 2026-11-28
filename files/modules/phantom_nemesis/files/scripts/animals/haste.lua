@@ -1,5 +1,5 @@
 local function SpeedUpEnemy(entity_id, speed_mult)
-    if EntityHasTag(entity_id, "spedup") == false and EntityHasTag(entity_id, "player_unit") == false then
+    if not EntityHasTag(entity_id, "spedup") and not EntityHasTag(entity_id, "player_unit") then
         --local c = EntityLoad("mods/conga_fast_enemies/files/enemy_speed.xml", pos_x, pos_y)
         --EntityAddChild(entity_id, c)
         EntityAddTag(entity_id, "spedup")

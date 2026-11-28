@@ -722,27 +722,6 @@ function utils.EntityGetChildByName(entity_id, name)
 	return nil
 end
 
-local function entity_is_wand(entity_id)
-	local acomp = EntityGetFirstComponentIncludingDisabled(entity_id, "AbilityComponent")
-	if not acomp then return false end
-	return ComponentGetValue2(acomp, "use_gun_script") == true
-end
-
---- Function to get an entity's held wand, if any
----@param entity_id entity_id Entity ID of the entity to check
----@return entity_id? entity_id Entity ID of the wand, or nil if the entity is not holding a wand
-function GetHeldWand(entity_id)
-	if entity_id ~= nil then
-		local inv2_comp = EntityGetFirstComponentIncludingDisabled(entity_id, "Inventory2Component")
-		if not inv2_comp then return nil end
-		local active_item = ComponentGetValue2(inv2_comp, "mActiveItem")
-		if entity_is_wand(active_item) then
-			return active_item
-		end
-	end
-	return nil
-end
-
 --- Replaces vanilla utilities' random_from_array function
 ---@param array table Array to get a random element from
 ---@param seed_a int? Seed value a (defaults to GameGetFrameNum() if nil)
@@ -832,25 +811,25 @@ function utils.get_distance(x1, y1, x2, y2)
 	return ((x2-x1)^2 + (y2-y1)^2)^.5
 end
 
-
----returns a table of material damage taken by this entity keyed by material id
 ---@param entity_id entity_id
 ---@return table
 function utils.EntityGetMaterialsThatDamage(entity_id)
 	local dmc = EntityGetFirstComponentIncludingDisabled(entity_id, "DamageModelComponent")
 	if not dmc then return {} end --maybe return nil here? will change based on what seems most convenient
 
-	local material_index = {}
-	for material in ComponentGetValue2(dmc, "materials_that_damage"):gmatch("[^,]+") do
-		material_index[#material_index+1] = material
-	end
 	local materials_that_damage = {}
-	for damage in ComponentGetValue2(dmc, "materials_how_much_damage"):gmatch("[^,]+") do
-		local i = #materials_that_damage+1
-		materials_that_damage[i] = {
-			material = material_index[i],
-			damage = tonumber(damage) or 0,
-		}
+
+	local mats = ComponentGetValue2(dmc, "materials_that_damage"):gmatch("[^,]+")
+	local dmgs = ComponentGetValue2(dmc, "materials_how_much_damage"):gmatch("[^,]+")
+
+	for mat in mats do
+		local damage = dmgs()
+		if not damage then break end
+
+		table.insert(materials_that_damage, {
+			material = mat,
+			damage = tonumber(damage) or 0
+		})
 	end
 
 	return materials_that_damage

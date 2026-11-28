@@ -3,10 +3,16 @@ extra_modifiers.projectile_homing = function()
 end
 
 extra_modifiers.lower_spread = function()
-	c.spread_degrees = c.spread_degrees - 5
-	c.damage_projectile_add = c.damage_projectile_add + 1
-	c.fire_rate_wait   = c.fire_rate_wait + 1
-	shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
+	if root_shot and not root_shot._lower_spread_applied then
+		c.spread_degrees = c.spread_degrees - 20
+
+		---@diagnostic disable-next-line: inject-field
+		root_shot._lower_spread_applied = true
+	end
+
+	c.damage_projectile_add = c.damage_projectile_add + 0.6
+	-- c.fire_rate_wait   = c.fire_rate_wait + 1
+	-- shot_effects.recoil_knockback = shot_effects.recoil_knockback + 10.0
 end
 
 extra_modifiers.low_recoil = function()

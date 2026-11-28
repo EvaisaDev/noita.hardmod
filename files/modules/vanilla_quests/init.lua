@@ -17,9 +17,4 @@ utils.modifile(
 -- Tower Quests
 ModLuaFileAppend("data/scripts/magic/__towercheck.lua", appends.."towercheck.lua")
 
--- EoE quest (only if Better Anvil is enabled)
-if not ModSettingGet("noita.hardmod.better_anvil.disabled") then
-	ModLuaFileAppend("data/scripts/buildings/statue_hand_modified.lua", appends.."statue_hand_modified.lua")
-end
-
 return {}

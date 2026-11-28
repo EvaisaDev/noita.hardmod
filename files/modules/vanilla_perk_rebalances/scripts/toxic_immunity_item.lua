@@ -12,7 +12,7 @@ local toxic_materials = {
 
 function enabled_changed(entity_id, state)
     local root = EntityGetRootEntity(entity_id)
-    if state == true then
+    if state then
         if root == entity_id then return end
 
         EntityAddComponent2(entity_id, "VariableStorageComponent", {

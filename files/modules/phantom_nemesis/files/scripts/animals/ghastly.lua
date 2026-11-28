@@ -9,7 +9,7 @@ if target ~= 0 then
 
     --Line of Sight check
     local hit = RaytraceSurfaces(r_x, r_y - 10, t_x, t_y - 6)
-    if not hit and IsInvisible(target) == false then
+    if not hit and not IsInvisible(target) then
         r_x = r_x + math.random(-50, 50)
         r_y = r_y + math.random(-50, 50)
         local proj_filepath = "mods/noita.hardmod/files/modules/phantom_nemesis/files/entities/projectiles/fire_wand_ghastly.xml"

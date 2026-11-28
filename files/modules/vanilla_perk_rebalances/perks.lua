@@ -431,6 +431,9 @@ hooks.perk_patches = {
 		ui_description = "$hardmod_perk_extra_shop_item_desc",
 		stackable_maximum = 10,
 	},
+	["LOWER_SPREAD"] = {
+		ui_description = "$hardmod_perk_lower_spread_desc",
+	},
 }
 
 --Perks recoverable via Kakkakikkare

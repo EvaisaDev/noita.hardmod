@@ -1,6 +1,6 @@
 local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua")---@type utils
 local nxml = dofile_once("mods/noita.hardmod/lib/nxml/nxml.lua")---@type nxml
-local root = "mods/noita.hardmod/files/modules/better_anvil"
+local root = "mods/noita.hardmod/files/modules/better_anvil/"
 local hooks = {}---@type hooks
 
 local function patch_broken_wand()
@@ -9,11 +9,10 @@ local function patch_broken_wand()
 		[[spell_amount = 18]], [[spell_amount = 27]]
 	)
 
-	local search = "shoot_projectile( entity_id, spell, pos_x, pos_y, vel_x, vel_y)"
-	utils.modifile(
-		"data/scripts/items/broken_wand_spells.lua",
-		search,
-		"local thrown_projectile = " .. search .. [[
+	utils.patchifile("data/scripts/items/broken_wand_spells.lua", {{
+		from = [[shoot_projectile( entity_id, spell, pos_x, pos_y, vel_x, vel_y)]],
+		insert_before = [[local thrown_projectile = ]],
+		insert_after = [[
 			EntityAddComponent2(thrown_projectile, "HomingComponent", {
 				_tags = "homing_projectile",
 				homing_targeting_coeff = 130.0,
@@ -22,7 +21,7 @@ local function patch_broken_wand()
 				predefined_target = 0
 			})
 		]]
-	)
+	}})
 end
 
 local forge_item_convert = "data/scripts/buildings/forge_item_convert.lua"
@@ -84,7 +83,8 @@ local function patch_broken_spell()
 		[[dofile("mods/noita.hardmod/files/modules/better_anvil/forge/repaired_spell.lua")(x, y)]]
 	)
 
-	ModLuaFileAppend("data/scripts/item_spawnlists.lua", root.."/appends/item_spawnlists.lua")
+	ModLuaFileAppend("data/scripts/item_spawnlists.lua", root.."appends/item_spawnlists.lua")
+	ModLuaFileAppend("data/scripts/buildings/statue_hand_modified.lua", root.."appends/statue_hand_modified.lua")
 
 	for broken_spell in nxml.edit_file("data/entities/items/pickup/summon_portal_broken.xml") do
 		local icomp = broken_spell:first_of("ItemComponent")
@@ -109,6 +109,21 @@ local function patch_broken_spell()
 			action_id = "HARDMOD_BROKEN_SPELL",
 		})
 	end
+
+	for file in nxml.edit_file("data/entities/buildings/statue_hand_1.xml") do
+		for luacomp in file:each_of("LuaComponent") do
+			if luacomp.attr.script_source_file == "data/scripts/buildings/statue_hand_state.lua" then
+				file:remove_child(luacomp)
+				break
+			end
+		end
+
+		file:create_child("LuaComponent", {
+			script_source_file = root.."scripts/statue_hand_init.lua",
+			execute_on_added = true,
+			remove_after_executed = true,
+		})
+	end
 end
 
 local function patch_random_forge_location()
@@ -121,9 +136,9 @@ local function patch_random_forge_location()
 		local orig_color_file = "data/biome_impl/snowcastle/forge_visual.png"
 		for child in scenes:each_child() do
 			if child:get("colors_filename") == orig_color_file then
-				child:set("background_filename", root.."/gfx/old_forge/background.png")
-				child:set("colors_filename", root.."/gfx/old_forge/visual.png")
-				child:set("material_filename", root.."/gfx/old_forge/material.png")
+				child:set("background_filename", root.."gfx/old_forge/background.png")
+				child:set("colors_filename", root.."gfx/old_forge/visual.png")
+				child:set("material_filename", root.."gfx/old_forge/material.png")
 				break
 			end
 		end
@@ -132,9 +147,9 @@ local function patch_random_forge_location()
 		scenes:create_child("PixelScene", {
 			DEBUG_RELOAD_ME = false, clean_area_before = true,
 			skip_biome_checks = true, skip_edge_textures = false,
-			background_filename = root.."/gfx/new_forge/background.png",
-			colors_filename = root.."/gfx/new_forge/visual.png",
-			material_filename = root.."/gfx/new_forge/material.png",
+			background_filename = root.."gfx/new_forge/background.png",
+			colors_filename = root.."gfx/new_forge/visual.png",
+			material_filename = root.."gfx/new_forge/material.png",
 			pos_x = location.x,
 			pos_y = location.y,
 		})
@@ -145,7 +160,7 @@ patch_broken_wand()
 patch_forge_convert()
 patch_broken_spell()
 
-ModLuaFileAppend("data/scripts/biomes/snowcastle.lua", root.."/appends/snowcastle.lua")
+ModLuaFileAppend("data/scripts/biomes/snowcastle.lua", root.."appends/snowcastle.lua")
 
 function hooks.magic_numbers_and_seed_initialised()
 	patch_random_forge_location()

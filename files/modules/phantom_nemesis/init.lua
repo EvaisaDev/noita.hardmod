@@ -57,7 +57,7 @@ hooks.post_update = function ()
 	end
 	::finishlimitcheck::
 
-	if (current_frame - biome_entered_frame) >= minimum_time_inside_biome and GameHasFlagRun(flag) == false then
+	if (current_frame - biome_entered_frame) >= minimum_time_inside_biome and not GameHasFlagRun(flag) then
 		GameAddFlagRun(flag)
 		GlobalsSetValue("felceis_last_biome_frame", tostring(current_frame))
 		last_frame_entered_new_biome = current_frame
@@ -77,7 +77,7 @@ hooks.post_update = function ()
 				local plyr_x, plyr_y = EntityGetTransform(player_id)
 				GamePlaySound("mods/noita.hardmod/files/modules/phantom_nemesis/files/audio/phantom_audio.bank", "felcesis/phantom_possess", plyr_x, plyr_y)
 
-				if GameHasFlagRun("felcesis_haunting_started") == false then
+				if not GameHasFlagRun("felcesis_haunting_started") then
 					GamePlaySound("mods/noita.hardmod/files/modules/phantom_nemesis/files/audio/phantom_audio.bank", "felcesis/phantom_summon", plyr_x, plyr_y)
 					GameAddFlagRun("felcesis_haunting_started")
 				end

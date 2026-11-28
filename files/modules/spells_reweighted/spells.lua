@@ -52,10 +52,10 @@ hooks.spell_patches = {
 	["NOLLA"] = { mana = 5 },
 	["EXPLOSION_REMOVE"] = { mana = 10 },
 	["PINGPONG_PATH"] = { mana = 6 },
-	["HORIZONTAL_ARC"] = { mana = 8 }, -- 0.3
-	["LINE_ARC"] = { mana = 7 }, -- 0.2
-	["ORBIT_SHOT"] = { mana = 6 }, -- 0.1 and lifetime
-	["SPIRALING_SHOT"] = { mana = 6 }, -- 0.1 and lifetime
+	["HORIZONTAL_ARC"] = { mana = 7 }, -- 0.3
+	["LINE_ARC"] = { mana = 6 }, -- 0.2
+	["ORBIT_SHOT"] = { mana = 5 }, -- 0.1 and lifetime
+	["SPIRALING_SHOT"] = { mana = 5 }, -- 0.1 and lifetime
 	["PHASING_ARC"] = { mana = 10 },
 	["TRUE_ORBIT"] = { mana = 10 },
 	["HOMING"] = { spawn_level = "3,4,5,6", spawn_probability = "0.2,0.3,0.3,0.3" },
@@ -65,8 +65,34 @@ hooks.spell_patches = {
 	["HOMING_ACCELERATING"] = { mana = 60, spawn_level = "3,4,5,6", spawn_probability = "0.2,0.3,0.3,0.3" },
 	["HOMING_AREA"] = { mana = 100 },
 	["DAMAGE"] = { mana = 11 },
-	["BLOODLUST"] = { mana = 11 },
-	["HEAVY_SHOT"] = { mana = 30 },
+	["BLOODLUST"] = {
+		mana = 20,
+		action = function()
+			c.damage_projectile_add = c.damage_projectile_add + 1
+			c.gore_particles = c.gore_particles + 15
+			c.fire_rate_wait = c.fire_rate_wait + 8
+			c.spread_degrees = c.spread_degrees + 6
+			c.extra_entities = c.extra_entities .. "data/entities/particles/tinyspark_red.xml,"
+			c.friendly_fire = true
+
+			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 30.0
+
+			draw_actions(1, true)
+		end
+	},
+	["HEAVY_SHOT"] = {
+		mana = 25,
+		action = function()
+			c.damage_projectile_add = c.damage_projectile_add + 1.2
+			c.fire_rate_wait = c.fire_rate_wait + 10
+			c.gore_particles = c.gore_particles + 10
+			c.speed_multiplier = c.speed_multiplier * 0.3
+			c.extra_entities = c.extra_entities .. "data/entities/particles/heavy_shot.xml,"
+			shot_effects.recoil_knockback = shot_effects.recoil_knockback + 50.0
+
+			draw_actions(1, true)
+		end
+	},
 	["SPEED"] = { mana = 5 },
 	["FLY_DOWNWARDS"] = { mana = 4 },
 	["FLY_UPWARDS"] = { mana = 4 },

@@ -9,7 +9,7 @@ if target ~= 0 then
 
     --Line of Sight check
     local hit = RaytraceSurfaces(r_x, r_y - 10, t_x, t_y - 6)
-    if not hit and IsInvisible(target) == false then
+    if not hit and not IsInvisible(target) then
         local proj_filepath = "mods/noita.hardmod/files/modules/phantom_nemesis/files/entities/projectiles/potion_alchemist.xml"
         GameShootProjectile(parent_id, r_x, r_y, t_x, t_y, EntityLoad(proj_filepath, r_x, r_y))
 
