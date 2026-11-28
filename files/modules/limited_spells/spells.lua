@@ -1,3 +1,5 @@
+local utils = dofile_once("mods/noita.hardmod/lib/utilities.lua") ---@type utils
+
 local action_id_table = nil
 local function get_spell_data(action_id)
 	if not action_id_table then
@@ -63,7 +65,7 @@ local function run_greek(data, recursion_level, dont_draw, no_recursion)
 	local spell = not has_aleph and get_spell_data(data.id)
 	if spell and spell.never_unlimited then
 		local frame = GameGetFrameNum()
-		if not reflecting and IsPlayer(GetUpdatedEntityID()) and frame - last_greek_error > 20 then
+		if not reflecting and utils.IsPlayer(GetUpdatedEntityID()) and frame - last_greek_error > 20 then
 			local player = GetUpdatedEntityID()
 			local x, y = EntityGetTransform(player)
 
@@ -125,8 +127,8 @@ hooks.new_spells = {
 				return
 			end
 
-			local player = GetUpdatedEntityID()
-			local wcomp = EntityGetFirstComponent(player, "WalletComponent")
+			local caster = GetUpdatedEntityID()
+			local wcomp = EntityGetFirstComponent(caster, "WalletComponent")
 			if wcomp == nil then return end
 			local money = ComponentGetValue2(wcomp, "money")
 
@@ -150,12 +152,14 @@ hooks.new_spells = {
 			local x, y = EntityGetTransform(GetUpdatedEntityID())
 			if money < cast_price then
 				GamePlaySound("data/audio/Desktop/items.bank", "magic_wand/out_of_mana", x, y)
-				GamePrint(
-					GameTextGet(
-						"$hardmod_spell_indulgence_not_enough",
-						GameTextGetTranslatedOrNot(data.name), tostring(cast_price)
+				if utils.IsPlayer(caster) then
+					GamePrint(
+						GameTextGet(
+							"$hardmod_spell_indulgence_not_enough",
+							GameTextGetTranslatedOrNot(data.name), tostring(cast_price)
+						)
 					)
-				)
+				end
 
 				return
 			end
@@ -167,7 +171,7 @@ hooks.new_spells = {
 
 			GamePlaySound("data/audio/Desktop/event_cues.bank", "event_cues/goldnugget/create", x, y)
 
-			local cost_label = entity_load_at_wand_tip(player, "mods/noita.hardmod/files/modules/limited_spells/entities/misc/indulgence_cost_label.xml")
+			local cost_label = entity_load_at_wand_tip(caster, "mods/noita.hardmod/files/modules/limited_spells/entities/misc/indulgence_cost_label.xml")
 			if cost_label then
 				EntityAddComponent2(cost_label, "VariableStorageComponent", {
 					name = "hardmod_indulgence_cast_price",

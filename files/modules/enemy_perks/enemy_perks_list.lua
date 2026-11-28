@@ -3,62 +3,9 @@ local eperk_utils ---@type eperk_utils
 
 local biomes = dofile_once("mods/noita.hardmod/lib/biome_index.lua")
 
----@class enemy_perk
----@field id string string ID
----@field name string? string name (viewable in progress)
----@field description string? description of the perk (viewable in progress)
----@field sprite string? path to the perk's sprite
----@field icon string? path to the perk's icon
----@field not_progress boolean? if true, perk won't show up in progress menu
----@field weight number? probability of the perk being pulled, default 10
----@field stack_multiplier number? the multiplier applied to the perk weight for each stack already held, default 1.15
----@field min_level number? the lower level limit for this perk to be selected
----@field max_level number? the upper level limit for this perk to be selected
----@field unique_slot string? if set, will disallow other enemy perks with the same unique_slot value to be selected
----@field not_boss bool? blacklists bosses from gaining this perk
----@field not_shop_guardian bool? blacklists stevari and skoude from gaining this perk
----@field biome_conditions table? custom condition functions that run if the target_enemy is in the keyed biome, if value is a number it will set the perk weight to that value
----@field priority number? priority for the order its shown above enemies' heads or in the inspect window, default 10
----@field max integer? max number of this perk an enemy can have
----@field condition function? if added, this function must return true, is passed the `data` table
----@field func function? function that actually does the stuff, is passed the `data` table
----@field func_handler function? function that runs on the perk handler every 80f, is passed sprite components of in-world perk icons
----@field func_inspector function? function that runs every frame in the eperk inspector, is passed a table of all the perks held by the enemy
----@field post_func function? function that runs after all perks have been applied
-
 local dir = "mods/noita.hardmod/files/modules/enemy_perks/"
 local sprites_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_sprites/"
 local icons_path = "mods/noita.hardmod/files/modules/enemy_perks/perk_icons/"
-
---TODO!!!! bake all of this into new eperk logic function
-local enemy_is_ranged_attack = function(self, data, min_attack_delay)
-	local summoners = {
-		["data/entities/animals/bigbat.xml"] = true,
-		["data/entities/animals/giant.xml"] = true,
-	}
-
-	if summoners[EntityGetFilename(data.target_enemy)] then return false end --even if a summoner has HANDY, they will inflict their summons with the status ailment, maybe fix?
-	if data.how_many_of_each_perk.HARDMOD_HANDY then return true end --this grants a ranged attack to enemies that wouldnt have it otherwise
-	if data.animal_ai_comp
-	and ComponentGetValue2(data.animal_ai_comp, "attack_ranged_enabled")
-	and not ComponentGetValue2(data.animal_ai_comp, "tries_to_ranged_attack_friends")
-	and (not min_attack_delay or ComponentGetValue2(data.animal_ai_comp, "attack_ranged_frames_between") >= min_attack_delay) then
-		return true
-	end
-end
-
-local enemy_is_ranged_support = function(self, data)
-	if data.animal_ai_comp
-	and ComponentGetValue2(data.animal_ai_comp, "tries_to_ranged_attack_friends") then
-		return true
-	end
-end
-
-local enemy_is_melee = function(self, data)
-	if data.animal_ai_comp and ComponentGetValue2(data.animal_ai_comp, "attack_melee_enabled") then
-		return true
-	end
-end
 
 -- dont give a blood perk if already has blood perk, is a boss, or is swapper mage
 local blood_perk_check = function(self, data)
@@ -66,12 +13,6 @@ local blood_perk_check = function(self, data)
 		if ComponentGetValue2(data.dmc, "blood_material") == self.blood_material then return end
 		return not (data.is_boss or EntityGetName(data.target_enemy) == "$animal_wizard_swapper")
 	end
-end
-
-local function increment_weight_with_level(self, data, multiplier)
-	multiplier = multiplier or 0.5
-	self.weight = math.max(0, self.weight + data.level*multiplier)
-	return true
 end
 
 local function is_projectile_immune(self, data)
@@ -275,17 +216,30 @@ enemy_perks = {
 			return data.animal_ai_comp or data.how_many_of_each_perk.HARDMOD_HANDY
 		end,
 		func = function(self, entity_id, data)
+			local allowed_luacomps = {
+				["data/scripts/animals/monk_hand_shoot.lua"] = true,
+			}
 			local comps = {
 				AnimalAIComponent = {
-					"attack_dash_frames_between",
-					"attack_melee_frames_between",
-					"attack_ranged_frames_between",
+					attributes = {
+						"attack_dash_frames_between",
+						"attack_melee_frames_between",
+						"attack_ranged_frames_between",
+					}
 				},
+				LuaComponent = {
+					condition = function(component)
+						return allowed_luacomps[ComponentGetValue2(component, "script_source_file")]
+					end,
+					attributes = {
+						"execute_every_n_frame"
+					}
+				}
 			}
-			for comp_name,attributes in pairs(comps) do
+			for comp_name,comp_data in pairs(comps) do
 				for _,comp in ipairs(EntityGetComponentIncludingDisabled(entity_id, comp_name) or {}) do
-					for _,attr in ipairs(attributes) do
-						ComponentSetValue2(comp, attr, ComponentGetValue2(comp, attr) * .6)
+					for _,attr in ipairs(comp_data.attributes) do
+						ComponentSetValue2(comp, attr, math.ceil(ComponentGetValue2(comp, attr) * .6))
 					end
 				end
 			end
@@ -340,6 +294,9 @@ enemy_perks = {
 		min_level = 4,
 		not_boss = true,
 		not_shop_guardian = true,
+		entity_blacklist = {
+			["data/entities/animals/ghost.xml"] = true,
+		},
 		biome_conditions = {
 			magical_temple = 3,
 			wizards_den = 3,
@@ -422,7 +379,7 @@ enemy_perks = {
 		biome_conditions = {
 			snowy_depths = 5,
 		},
-		condition = function(...) return not enemy_is_ranged_support(...) end,
+		condition = function(self, data) return data.animal_ranged_ability ~= "support" end,
 		func = function(self, entity_id, data)
 			local arms = EntityLoad("data/entities/misc/monk_arms_standalone.xml", data.x, data.y)
 			EntityAddChild(entity_id, arms)
@@ -440,7 +397,7 @@ enemy_perks = {
 			sandcave = 10,
 			hell = 10,
 		},
-		condition = enemy_is_ranged_attack,
+		requires_animal_ranged_ability = "attack",
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "PROTECTION_FIRE", false)
 
@@ -468,8 +425,9 @@ enemy_perks = {
 		biome_conditions = {
 			sky = 8,
 		},
+		requires_animal_ranged_ability = "attack",
 		condition = function(self, data)
-			return enemy_is_ranged_attack(self, data, 60) and not EntityHasTag(data.target_enemy, "thundermage")
+			return data.animal_ranged_cooldown >= 60 and not EntityHasTag(data.target_enemy, "thundermage")
 		end,
 		func = function(self, entity_id, data)
 			if not is_projectile_immune(self, data) then GetGameEffectLoadTo(entity_id, "PROTECTION_ELECTRICITY", false) end
@@ -488,7 +446,7 @@ enemy_perks = {
 		biome_conditions = {
 			sky = 2,
 		},
-		condition = enemy_is_ranged_attack,
+		requires_animal_ranged_ability = "attack",
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "KNOCKBACK_IMMUNITY", false)
 			EntityAddComponent2(entity_id, "LuaComponent", {
@@ -503,13 +461,14 @@ enemy_perks = {
 		description = "$hardmod_eperk_dark_flames_desc",
 		weight = 2,
 		max = 1,
+		requires_animal_ranged_ability = "attack",
 		biome_conditions = {
 			magical_temple = 4,
 			temple_of_the_art = 8,
 			wizards_den = 8,
 		},
 		condition = function(self, data)
-			return enemy_is_ranged_attack(self, data, 60)
+			return data.animal_ranged_cooldown >= 60
 		end,
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
@@ -525,7 +484,7 @@ enemy_perks = {
 		weight = 3,
 		priority = 7,
 		max = 1,
-		condition = enemy_is_ranged_attack,
+		requires_animal_ranged_ability = "attack",
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
 				script_shot = dir.."generated/curser_shot.lua",
@@ -537,11 +496,11 @@ enemy_perks = {
 		id = "TELEPORT_CURSER",
 		name = "$hardmod_eperk_teleport_curser_name",
 		description = "$hardmod_eperk_teleport_curser_desc",
-		weight = 1.5,
+		weight = 1,
 		priority = 16,
 		max = 1,
 		min_level = 2,
-		condition = enemy_is_ranged_attack,
+		requires_animal_ranged_ability = true, --honestly this with support/summoner sounds funny
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
 				script_shot = dir.."generated/teleport_curser_shot.lua",
@@ -572,7 +531,7 @@ enemy_perks = {
 		priority = 7,
 		max = 1,
 		min_level = 3,
-		condition = enemy_is_ranged_attack,
+		requires_animal_ranged_ability = "attack",
 		func = function(self, entity_id, data)
 			EntityAddComponent2(entity_id, "LuaComponent", {
 				script_shot = dir.."generated/homing_curser_shot.lua",
@@ -628,15 +587,15 @@ enemy_perks = {
 		id = "ELECTRICITY",
 		name = "$perk_electricity",
 		description = "$hardmod_eperk_electricity_desc",
-		weight = 500,
+		weight = 5,
 		priority = 3,
+		max = 1,
 		biome_conditions = {
 			fungal_caverns = 2,
 			vault = 2,
 			frozen_vault = 2,
 			powerplant = 8,
 		},
-		max = 1,
 		condition = function(self, data)
 			return not (EntityHasTag(data.target_enemy, "thundermage") or is_projectile_immune(self, data))
 		end,
@@ -676,11 +635,11 @@ enemy_perks = {
 		name = "$perk_protection_explosion",
 		description = "$hardmod_eperk_explosion_immunity_desc",
 		weight = 5,
+		level_add_weight = .5,
 		priority = 3,
 		max = 1,
 		requires_dmc = true,
 		condition = function(self, data)
-			increment_weight_with_level(self, data)
 			return GameGetGameEffectCount(data.target_enemy, "PROTECTION_EXPLOSION") == 0 and not is_projectile_immune(self, data) end,
 		func = function(self, entity_id, data)
 			GetGameEffectLoadTo(entity_id, "PROTECTION_EXPLOSION", false)
@@ -691,6 +650,7 @@ enemy_perks = {
 		name = "$hardmod_eperk_freeze_immunity_name",
 		description = "$hardmod_eperk_freeze_immunity_desc",
 		weight = 3,
+		level_add_weight = .5,
 		priority = 3,
 		max = 1,
 		min_level = 3,
@@ -701,7 +661,6 @@ enemy_perks = {
 			hell = 6,
 		},
 		condition = function(self, data)
-			increment_weight_with_level(self, data)
 			return GameGetGameEffectCount(data.target_enemy, "PROTECTION_FREEZE") == 0 and not is_projectile_immune(self, data)
 		end,
 		func = function(self, entity_id, data)
@@ -712,14 +671,14 @@ enemy_perks = {
 		id = "POLYMORPH_IMMUNITY",
 		name = "$hardmod_eperk_polymorph_immunity_name",
 		description = "$hardmod_eperk_polymorph_immunity_desc",
-		weight = 5,
+		weight = 3,
+		level_add_weight = .5,
 		priority = 3,
 		max = 1,
 		biome_conditions = {
 			ancient_lab = 10,
 		},
 		condition = function(self, data)
-			increment_weight_with_level(self, data)
 			return GameGetGameEffectCount(data.target_enemy, "PROTECTION_POLYMORPH") == 0
 				and not (EntityHasTag(data.target_enemy, "polymorphable_NOT") or data.is_polymorphed or data.boss)
 		end,
@@ -944,7 +903,7 @@ enemy_perks = {
 			coal_pits = 5,
 		},
 		condition = function(self, data)
-			return spawn_on_death_blacklist(self, data) and enemy_is_melee(self, data) and not enemy_is_ranged_attack(self, data) and not data.vigour
+			return spawn_on_death_blacklist(self, data)
 		end,
 		func = function(self, entity_id, data)
 			-- show nuke particles on the enemy
@@ -1245,7 +1204,8 @@ enemy_perks = {
 		id = "SHIELD_SAPPER",
 		name = "$hardmod_eperk_shield_sapper_name",
 		description = "$hardmod_eperk_shield_sapper_desc",
-		weight = 2,
+		weight = 1,
+		level_add_weight = .2,
 		max = 1,
 		min_level = 4,
 		unique_slot = "large_aura",
@@ -1256,9 +1216,7 @@ enemy_perks = {
 			sky = 6,
 			hell = 6,
 		},
-		condition = function(self, data)
-			return increment_weight_with_level(self, data) and no_nearby_giant_auras(self, data)
-		end,
+		condition = no_nearby_giant_auras,
 		func = function(self, entity_id, data)
 			local x, y = EntityGetTransform(entity_id)
 			EntityAddChild(entity_id, EntityLoad(dir.."entities/shield_sapper_aura.xml", x, y))
@@ -1268,12 +1226,12 @@ enemy_perks = {
 		id = "UNSTABLE_TELEPORTITIS",
 		name = "$hardmod_eperk_unstable_teleportitis_name",
 		description = "$hardmod_eperk_unstable_teleportitis_desc",
-		weight = .4,
+		weight = 2,
+		level_add_weight = -.1,
 		max = 1,
 		min_level = 2,
 		not_boss = true,
 		not_shop_guardian = true,
-		condition = function(self, data) return increment_weight_with_level(self, data, -.2) end,
 		func = function(self, entity_id, data)
 			local eid = EntityCreateNew("random_teleports")
 			EntityAddComponent2(eid, "GameEffectComponent", {
@@ -1400,7 +1358,8 @@ enemy_perks = {
 					filename_match = true
 				end
 			end
-			return enemy_is_ranged_attack(self, data)
+			local ranged_ability = data.animal_ranged_ability
+			return (ranged_ability and ranged_ability ~= "summon")
 				and (string.find(factions, HerdIdToString(utils.GetHerdID(data.target_enemy)))
 				or filename_match) and not EntityHasTag(data.target_enemy, "wand_ghost")
 		end,
@@ -1496,7 +1455,8 @@ enemy_perks = {
 		id = "BURDENED",
 		name = "$hardmod_eperk_burdened_name",
 		description = "$hardmod_eperk_burdened_desc",
-		weight = 1.5,
+		weight = 2,
+		level_add_weight = -0.1,
 		priority = 12,
 		max = 1,
 		min_level = 7,
@@ -1551,8 +1511,11 @@ for i,perk in ipairs(enemy_perks) do
 	perk.id = "HARDMOD_"..perk.id
 	perk.name = perk.name or perk.id
 	perk.weight = perk.weight or 10
+	perk.level_add_weight_min = perk.level_add_weight_min or perk.weight * .1
+	perk.level_add_weight_max = perk.level_add_weight_max or perk.weight * 10
 	perk.stack_multiplier = perk.stack_multiplier or 1.15 --default 15% stack multiplier, eg 10 stacks would multiply the base weight by ~4x
 	perk.priority = (perk.priority or 0) + i*0.001
+	if perk.requires_animal_ai_component == nil then perk.requires_animal_ai_component = not not (perk.requires_animal_ranged_ability) end
 	perk.sprite = ModDoesFileExist(perk.sprite or "") and perk.sprite
 		or ModDoesFileExist(sprites_path..id:lower()..".png") and sprites_path..id:lower()..".png"
 		or "mods/noita.hardmod/files/modules/enemy_perks/perk_sprites/missing.png"
