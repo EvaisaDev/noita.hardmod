@@ -1012,6 +1012,7 @@ add arrow as a possible starting spell
 tweaks + nonsense i need to revert
 reverted some nonsense that wasnt working
 final polish + ran translation script
+some tweaks, reworked Promote Spell (one-off) a bit
 change Concentrated Spells
 smh who broke biome modifier icons
 rename Biome Map module to World Generation Changes in settings
@@ -1024,3 +1025,5 @@ update globals.lua
 make shamans much less annoying but a bit more dangerous
 nerf hell snipers
 WIP!!
+polished eperk selection logic some more, seems to have perf. issues in far PWs? need to look into
+ran translation splitter
